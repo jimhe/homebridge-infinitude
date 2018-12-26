@@ -7,7 +7,6 @@ Infinitude Plugin for Homebridge
 ```json
 {
   "platform": "InfinitudePlatform",
-  "name": "DevInfinitudePlatform",
   "url": "http://10.0.0.142:3001"
 }
 ```
