@@ -17,10 +17,9 @@ module.exports = class InfinitudeClient {
   async getStatus() {
     try {
       const response = await axios.get(`${this.url}/status.xml`);
-      const statusJson = parser.convertToJson(
+      return parser.convertToJson(
         parser.getTraversalObj(response.data, this.xmlOptions)
       );
-      return statusJson;
     } catch (error) {
       this.log.error(error);
     }
@@ -39,10 +38,9 @@ module.exports = class InfinitudeClient {
           );
           for (const property in temperatures) {
             const targetTemperature = temperatures[property];
-            const setpointValue = [
+            activityConfig[property] = [
               Math.round(targetTemperature).toString() + '.0'
             ];
-            activityConfig[property] = setpointValue;
           }
           axios
             .post(`${this.url}/systems/infinitude`, configJson)

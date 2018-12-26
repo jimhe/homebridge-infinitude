@@ -60,9 +60,8 @@ module.exports = class InfinitudePlatform {
     for (const zone of enabledZones) {
       const zoneId = zone['id'];
       const tUuid = this.api.hap.uuid.generate(zoneId);
-      const accessory =
+      this.accessories[tUuid] =
         this.accessories[tUuid] || this.createThermostatAccessory(zone, tUuid);
-      this.accessories[tUuid] = accessory;
       this.zoneIds[tUuid] = zoneId;
       this.lastStatus[tUuid] = zone;
     }
@@ -134,8 +133,10 @@ module.exports = class InfinitudePlatform {
           }
           this.client.updateTemperatures(
             {
-              htsp: this.celsiusToFahrenheit(heatingThresholdTemperature),
-              clsp: this.celsiusToFahrenheit(
+              htsp: InfinitudePlatform.celsiusToFahrenheit(
+                heatingThresholdTemperature
+              ),
+              clsp: InfinitudePlatform.celsiusToFahrenheit(
                 this.lastCoolingThresholdTemperature
               )
             },
@@ -261,7 +262,9 @@ module.exports = class InfinitudePlatform {
             callback(null);
             return;
           }
-          const setTemperature = this.celsiusToFahrenheit(targetTemperature);
+          const setTemperature = InfinitudePlatform.celsiusToFahrenheit(
+            targetTemperature
+          );
           this.client.updateTemperatures(
             { htsp: setTemperature, clsp: setTemperature },
             this.getZoneId(accessory),
@@ -282,11 +285,11 @@ module.exports = class InfinitudePlatform {
       );
   }
 
-  fahrenheitToCelsius(temperature) {
+  static fahrenheitToCelsius(temperature) {
     return (temperature - 32) / 1.8;
   }
 
-  celsiusToFahrenheit(temperature) {
+  static celsiusToFahrenheit(temperature) {
     return temperature * 1.8 + 32;
   }
 
@@ -295,7 +298,7 @@ module.exports = class InfinitudePlatform {
   }
 
   getCurrentTemperature(accessory, property = 'rt') {
-    return this.fahrenheitToCelsius(
+    return InfinitudePlatform.fahrenheitToCelsius(
       parseFloat(this.lastStatus[accessory.UUID][property])
     );
   }
