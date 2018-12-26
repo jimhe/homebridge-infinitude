@@ -28,6 +28,7 @@ module.exports = class InfinitudePlatform {
     this.lastStatus = {};
     this.zoneIds = {};
     this.client = new InfinitudeClient(config['url'], this.log);
+    this.lastCoolingThresholdTemperature = null;
 
     this.api.on('didFinishLaunching', this.didFinishLaunching.bind(this));
   }
@@ -103,6 +104,13 @@ module.exports = class InfinitudePlatform {
           if (callback)
             callback(null, this.getCurrentTemperature(accessory, 'clsp'));
         }.bind(this)
+      )
+      .on(
+        'set',
+        function(coolingThresholdTemperature, callback) {
+          this.lastCoolingThresholdTemperature = coolingThresholdTemperature;
+          callback(null);
+        }.bind(this)
       );
 
     thermostatService
@@ -112,6 +120,29 @@ module.exports = class InfinitudePlatform {
         function(callback) {
           if (callback)
             callback(null, this.getCurrentTemperature(accessory, 'htsp'));
+        }.bind(this)
+      )
+      .on(
+        'set',
+        function(heatingThresholdTemperature, callback) {
+          if (
+            this.getTargetHeatingCoolingState(accessory) !==
+            Characteristic.TargetHeatingCoolingState.AUTO
+          ) {
+            callback(null);
+            return;
+          }
+          this.client.updateTemperatures(
+            {
+              htsp: this.celsiusToFahrenheit(heatingThresholdTemperature),
+              clsp: this.celsiusToFahrenheit(
+                this.lastCoolingThresholdTemperature
+              )
+            },
+            this.getZoneId(accessory),
+            'home',
+            callback
+          );
         }.bind(this)
       );
 
@@ -223,9 +254,18 @@ module.exports = class InfinitudePlatform {
       .on(
         'set',
         function(targetTemperature, callback) {
-          this.client.updateTemperature(
+          if (
+            this.getTargetHeatingCoolingState(accessory) ===
+            Characteristic.TargetHeatingCoolingState.AUTO
+          ) {
+            callback(null);
+            return;
+          }
+          const setTemperature = this.celsiusToFahrenheit(targetTemperature);
+          this.client.updateTemperatures(
+            { htsp: setTemperature, clsp: setTemperature },
             this.getZoneId(accessory),
-            this.celsiusToFahrenheit(targetTemperature),
+            'manual',
             callback
           );
         }.bind(this)

@@ -26,19 +26,24 @@ module.exports = class InfinitudeClient {
     }
   }
 
-  updateTemperature(zoneId, targetTemperature, callback) {
+  updateTemperatures(temperatures, zoneId, activityId, callback) {
     try {
-      axios.get(`${this.url}/systems.json`).then(
+      return axios.get(`${this.url}/systems.json`).then(
         function(response) {
           const configJson = response.data;
           const zone = configJson['system'][0]['config'][0]['zones'][0][
             'zone'
           ].find(zone => zone['id'] === zoneId);
-          const manual = zone['activities'][0]['activity'].find(
-            activity => activity['id'] === 'manual'
+          const activityConfig = zone['activities'][0]['activity'].find(
+            activity => activity['id'] === activityId
           );
-          manual['htsp'] = [Math.round(targetTemperature).toString() + '.0'];
-          manual['clsp'] = [Math.round(targetTemperature).toString() + '.0'];
+          for (const property in temperatures) {
+            const targetTemperature = temperatures[property];
+            const setpointValue = [
+              Math.round(targetTemperature).toString() + '.0'
+            ];
+            activityConfig[property] = setpointValue;
+          }
           axios
             .post(`${this.url}/systems/infinitude`, configJson)
             .then(function() {
