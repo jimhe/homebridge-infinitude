@@ -197,7 +197,6 @@ module.exports = class InfinitudePlatform {
                 'home',
                 callback
               );
-              callback(null);
               break;
           }
         }.bind(this)
