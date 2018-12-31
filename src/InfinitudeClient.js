@@ -25,6 +25,15 @@ module.exports = class InfinitudeClient {
     }
   }
 
+  async getSystems() {
+    try {
+      const response = await axios.get(`${this.url}/systems.json`);
+      return response.data;
+    } catch (error) {
+      this.log.error(error);
+    }
+  }
+
   updateTemperatures(temperatures, zoneId, activityId, callback) {
     try {
       return axios.get(`${this.url}/systems.json`).then(

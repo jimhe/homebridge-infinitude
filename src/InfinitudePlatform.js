@@ -26,6 +26,7 @@ module.exports = class InfinitudePlatform {
     this.api = api;
     this.accessories = {};
     this.lastStatus = {};
+    this.lastSystems = null;
     this.zoneIds = {};
     this.client = new InfinitudeClient(config['url'], this.log);
     this.lastCoolingThresholdTemperature = null;
@@ -38,7 +39,7 @@ module.exports = class InfinitudePlatform {
   }
 
   async didFinishLaunching() {
-    setInterval(() => this.refreshThermostats(), 30 * 1000);
+    setInterval(() => this.refreshThermostats(), 10 * 1000);
     this.refreshThermostats();
     for (const uuid in this.accessories) {
       this.configureThermostatAccessory(this.accessories[uuid]);
@@ -47,6 +48,9 @@ module.exports = class InfinitudePlatform {
 
   async refreshThermostats() {
     const status = await this.client.getStatus();
+    const systems = await this.client.getSystems();
+
+    this.lastSystems = systems;
 
     if (status === undefined) {
       return;
@@ -100,8 +104,7 @@ module.exports = class InfinitudePlatform {
       .on(
         'get',
         function(callback) {
-          if (callback)
-            callback(null, this.getCurrentTemperature(accessory, 'clsp'));
+          callback(null, this.getTargetTemperatures(accessory, 'home')['clsp']);
         }.bind(this)
       )
       .on(
@@ -117,8 +120,7 @@ module.exports = class InfinitudePlatform {
       .on(
         'get',
         function(callback) {
-          if (callback)
-            callback(null, this.getCurrentTemperature(accessory, 'htsp'));
+          callback(null, this.getTargetTemperatures(accessory, 'home')['htsp']);
         }.bind(this)
       )
       .on(
@@ -207,46 +209,22 @@ module.exports = class InfinitudePlatform {
       .on(
         'get',
         function(callback) {
-          const targetState = this.getTargetHeatingCoolingState(accessory);
-          const currentState = this.getCurrentHeatingCoolingState(accessory);
-          let targetTemperature;
-          switch (targetState) {
-            case Characteristic.TargetHeatingCoolingState.OFF:
-              targetTemperature = this.getCurrentTemperature(accessory);
-              break;
-            case Characteristic.TargetHeatingCoolingState.HEAT:
-              targetTemperature = this.getCurrentTemperature(accessory, 'htsp');
-              break;
-            case Characteristic.TargetHeatingCoolingState.COOL:
-              targetTemperature = this.getCurrentTemperature(accessory, 'clsp');
-              break;
-            case Characteristic.TargetHeatingCoolingState.AUTO:
-              switch (currentState) {
-                case Characteristic.CurrentHeatingCoolingState.OFF:
-                  targetTemperature = this.getCurrentTemperature(accessory);
-                  break;
-                case Characteristic.CurrentHeatingCoolingState.HEAT:
-                  targetTemperature = this.getCurrentTemperature(
-                    accessory,
-                    'htsp'
-                  );
-                  break;
-                case Characteristic.CurrentHeatingCoolingState.COOL:
-                  targetTemperature = this.getCurrentTemperature(
-                    accessory,
-                    'clsp'
-                  );
-                  break;
-                default:
-                  this.log.error(
-                    `Unexpected CurrentHeatingCoolingState: ${currentState}`
-                  );
-              }
-              break;
-            default:
-              this.log.error(
-                `Unexpected TargetHeatingCoolingState: ${targetState}`
-              );
+          const currentTemperature = this.getCurrentTemperature(accessory);
+          let targetTemperature = currentTemperature;
+          const targetTemperatures = this.getTargetTemperatures(
+            accessory,
+            'manual'
+          );
+          const coolingTarget = InfinitudePlatform.convertInfinitudeTemperature(
+            targetTemperatures['clsp']
+          );
+          const heatingTarget = InfinitudePlatform.convertInfinitudeTemperature(
+            targetTemperatures['htsp']
+          );
+          if (currentTemperature <= heatingTarget) {
+            targetTemperature = heatingTarget;
+          } else if (currentTemperature >= coolingTarget) {
+            targetTemperature = coolingTarget;
           }
           if (callback) callback(null, targetTemperature);
         }.bind(this)
@@ -297,7 +275,7 @@ module.exports = class InfinitudePlatform {
   }
 
   getCurrentTemperature(accessory, property = 'rt') {
-    return InfinitudePlatform.fahrenheitToCelsius(
+    return InfinitudePlatform.convertInfinitudeTemperature(
       parseFloat(this.lastStatus[accessory.UUID][property])
     );
   }
@@ -322,7 +300,7 @@ module.exports = class InfinitudePlatform {
     var targetState;
     const currentTemperature = this.getCurrentTemperature(accessory);
     const targetTemperature = this.getCurrentTemperature(accessory, 'htsp');
-    switch (this.lastStatus[accessory.UUID]['currentActivity']) {
+    switch (this.getTargetActivityId(accessory)) {
       case 'away':
         targetState = Characteristic.TargetHeatingCoolingState.OFF;
         break;
@@ -332,7 +310,7 @@ module.exports = class InfinitudePlatform {
         targetState = Characteristic.TargetHeatingCoolingState.AUTO;
         break;
       case 'manual':
-        if (currentTemperature > targetTemperature) {
+        if (currentTemperature < targetTemperature) {
           targetState = Characteristic.TargetHeatingCoolingState.COOL;
         } else if (currentTemperature < targetTemperature) {
           targetState = Characteristic.TargetHeatingCoolingState.HEAT;
@@ -346,5 +324,34 @@ module.exports = class InfinitudePlatform {
 
   getCurrentRelativeHumidity(accessory) {
     return parseFloat(this.lastStatus[accessory.UUID]['rh']);
+  }
+
+  getTargetActivityId(accessory) {
+    return this.getZoneTarget(this.getZoneId(accessory))['holdActivity'][0];
+  }
+
+  getTargetTemperatures(accessory, acvitityId) {
+    const zoneTarget = this.getZoneTarget(this.getZoneId(accessory));
+    const activityTarget = zoneTarget['activities'][0]['activity'].find(
+      activity => activity['id'] == acvitityId
+    );
+    return {
+      htsp: InfinitudePlatform.convertInfinitudeTemperature(
+        activityTarget['htsp'][0]
+      ),
+      clsp: InfinitudePlatform.convertInfinitudeTemperature(
+        activityTarget['clsp'][0]
+      )
+    };
+  }
+
+  getZoneTarget(zoneId) {
+    return this.lastSystems['system'][0]['config'][0]['zones'][0]['zone'].find(
+      zone => zone['id'] === zoneId
+    );
+  }
+
+  static convertInfinitudeTemperature(temperature) {
+    return this.fahrenheitToCelsius(temperature);
   }
 };
