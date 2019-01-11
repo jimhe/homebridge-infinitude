@@ -1,0 +1,4827 @@
+{
+  "system": [
+    {
+      "version": "1.7",
+      "config": [
+        {
+          "cfgcph": [
+            "4"
+          ],
+          "blowerPower": [
+            {}
+          ],
+          "humoff": [
+            "0"
+          ],
+          "weatherPostalCode": [
+            "95125"
+          ],
+          "huminterval": [
+            "12"
+          ],
+          "cfgzoning": [
+            "on"
+          ],
+          "blowerSpeed": [
+            "0"
+          ],
+          "cfgem": [
+            "F"
+          ],
+          "filterinterval": [
+            "3"
+          ],
+          "ventinterval": [
+            "90"
+          ],
+          "systemCFM": [
+            "0"
+          ],
+          "heatsource": [
+            "system"
+          ],
+          "uvrmd": [
+            "on"
+          ],
+          "cfgtype": [
+            "heatcool"
+          ],
+          "cfghumid": [
+            "off"
+          ],
+          "filtrrmd": [
+            "off"
+          ],
+          "wholeHouse": [
+            {
+              "otmr": [
+                {}
+              ],
+              "holdActivity": [
+                "none"
+              ],
+              "activities": [
+                {
+                  "activity": [
+                    {
+                      "blight": [
+                        "80"
+                      ],
+                      "id": "home"
+                    },
+                    {
+                      "id": "away",
+                      "blight": [
+                        "80"
+                      ]
+                    },
+                    {
+                      "id": "sleep",
+                      "blight": [
+                        "80"
+                      ]
+                    },
+                    {
+                      "id": "wake",
+                      "blight": [
+                        "80"
+                      ]
+                    },
+                    {
+                      "blight": [
+                        "80"
+                      ],
+                      "id": "manual"
+                    }
+                  ]
+                }
+              ],
+              "hold": [
+                "off"
+              ]
+            }
+          ],
+          "cfgauto": [
+            "on"
+          ],
+          "fueltype": [
+            "gas"
+          ],
+          "uvinterval": [
+            "12"
+          ],
+          "calcMinCFM": [
+            "0"
+          ],
+          "torqueControl": [
+            "off"
+          ],
+          "blowerHeatingCFM": [
+            {}
+          ],
+          "blight": [
+            "80"
+          ],
+          "vacmint": [
+            "60.0"
+          ],
+          "sound": [
+            "on"
+          ],
+          "blowerActualCFM": [
+            {}
+          ],
+          "odtmpoff": [
+            "0"
+          ],
+          "cfgsimultheatcool": [
+            "off"
+          ],
+          "utilityEvent": [
+            {
+              "maxLimit": [
+                "90"
+              ],
+              "minLimit": [
+                "50"
+              ],
+              "priceHtAbs": [
+                "60"
+              ],
+              "demandOffset": [
+                "4"
+              ],
+              "restoreDefaults": [
+                "off"
+              ],
+              "priceLimit": [
+                "10"
+              ],
+              "demandClAbs": [
+                "82"
+              ],
+              "demandResp": [
+                "offset"
+              ],
+              "demandHtAbs": [
+                "60"
+              ],
+              "priceResp": [
+                "offset"
+              ],
+              "enabled": [
+                "false"
+              ],
+              "priceClAbs": [
+                "82"
+              ],
+              "priceOffset": [
+                "4"
+              ]
+            }
+          ],
+          "vacat": [
+            "off"
+          ],
+          "vacmaxt": [
+            "80.0"
+          ],
+          "gasunit": [
+            "therm"
+          ],
+          "humidityVacation": [
+            {
+              "ventspdclg": [
+                "high"
+              ],
+              "ventspdhtg": [
+                "high"
+              ],
+              "ventclg": [
+                "off"
+              ],
+              "humidifier": [
+                "off"
+              ],
+              "venthtg": [
+                "off"
+              ],
+              "rhtg": [
+                "1"
+              ],
+              "rclgovercool": [
+                "off"
+              ],
+              "rclg": [
+                "15"
+              ]
+            }
+          ],
+          "staticPressure": [
+            "0.00"
+          ],
+          "screensaver": [
+            "off"
+          ],
+          "vacstart": [
+            {}
+          ],
+          "blowerCoolingCFM": [
+            {}
+          ],
+          "erate": [
+            "0.10"
+          ],
+          "mode": [
+            "auto"
+          ],
+          "statpressmon": [
+            "on"
+          ],
+          "humidityAway": [
+            {
+              "ventspdclg": [
+                "high"
+              ],
+              "ventspdhtg": [
+                "high"
+              ],
+              "humidifier": [
+                "off"
+              ],
+              "venthtg": [
+                "off"
+              ],
+              "humid": [
+                "off"
+              ],
+              "ventclg": [
+                "off"
+              ],
+              "rclgovercool": [
+                "off"
+              ],
+              "rclg": [
+                "15"
+              ],
+              "rhtg": [
+                "1"
+              ]
+            }
+          ],
+          "ventrmd": [
+            "on"
+          ],
+          "humrmd": [
+            "on"
+          ],
+          "cfgpgm": [
+            "on"
+          ],
+          "cfgvent": [
+            "off"
+          ],
+          "cfgfan": [
+            "on"
+          ],
+          "zones": [
+            {
+              "zone": [
+                {
+                  "airflowlimit": [
+                    "high"
+                  ],
+                  "enabled": [
+                    "on"
+                  ],
+                  "id": "1",
+                  "tempoffset": [
+                    "0"
+                  ],
+                  "otmr": [
+                    "00:00"
+                  ],
+                  "cfmlimit": [
+                    "2414"
+                  ],
+                  "name": [
+                    "Downstairs"
+                  ],
+                  "holdActivity": [
+                    "home"
+                  ],
+                  "hold": [
+                    "on"
+                  ],
+                  "program": [
+                    {
+                      "day": [
+                        {
+                          "id": "Sunday",
+                          "period": [
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "wake"
+                              ],
+                              "time": [
+                                "05:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "07:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "00:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "off"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "00:00"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:15"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "05:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "wake"
+                              ]
+                            },
+                            {
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "07:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "00:00"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "off"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "4",
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:15"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ]
+                            }
+                          ],
+                          "id": "Monday"
+                        },
+                        {
+                          "id": "Tuesday",
+                          "period": [
+                            {
+                              "activity": [
+                                "wake"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "time": [
+                                "05:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "07:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "00:00"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "off"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "00:00"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:15"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "Wednesday",
+                          "period": [
+                            {
+                              "time": [
+                                "05:00"
+                              ],
+                              "activity": [
+                                "wake"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "07:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2"
+                            },
+                            {
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "3",
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "00:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "4"
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:15"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "Thursday",
+                          "period": [
+                            {
+                              "time": [
+                                "05:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "wake"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "07:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2"
+                            },
+                            {
+                              "time": [
+                                "00:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "3"
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "4",
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:15"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "05:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "wake"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "07:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2"
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "3",
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "4",
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:15"
+                              ]
+                            }
+                          ],
+                          "id": "Friday"
+                        },
+                        {
+                          "period": [
+                            {
+                              "activity": [
+                                "wake"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "time": [
+                                "05:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "07:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "off"
+                              ],
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "00:00"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "off"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "time": [
+                                "22:15"
+                              ]
+                            }
+                          ],
+                          "id": "Saturday"
+                        }
+                      ]
+                    }
+                  ],
+                  "setback": [
+                    "on"
+                  ],
+                  "activities": [
+                    {
+                      "activity": [
+                        {
+                          "clsp": [
+                            "74.0"
+                          ],
+                          "id": "home",
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "66.0"
+                          ]
+                        },
+                        {
+                          "id": "away",
+                          "clsp": [
+                            "90.0"
+                          ],
+                          "htsp": [
+                            "50.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ]
+                        },
+                        {
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "60.0"
+                          ],
+                          "id": "sleep",
+                          "clsp": [
+                            "80.0"
+                          ]
+                        },
+                        {
+                          "clsp": [
+                            "78.0"
+                          ],
+                          "id": "wake",
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "70.0"
+                          ]
+                        },
+                        {
+                          "id": "manual",
+                          "clsp": [
+                            "50.0"
+                          ],
+                          "htsp": [
+                            "50.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "cfmlimit": [
+                    "2939"
+                  ],
+                  "activities": [
+                    {
+                      "activity": [
+                        {
+                          "htsp": [
+                            "67.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "id": "home",
+                          "clsp": [
+                            "77.0"
+                          ]
+                        },
+                        {
+                          "htsp": [
+                            "56.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "clsp": [
+                            "90.0"
+                          ],
+                          "id": "away"
+                        },
+                        {
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "sleep",
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "57.0"
+                          ]
+                        },
+                        {
+                          "id": "wake",
+                          "clsp": [
+                            "78.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "70.0"
+                          ]
+                        },
+                        {
+                          "htsp": [
+                            "50.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "clsp": [
+                            "50.0"
+                          ],
+                          "id": "manual"
+                        }
+                      ]
+                    }
+                  ],
+                  "setback": [
+                    "on"
+                  ],
+                  "program": [
+                    {
+                      "day": [
+                        {
+                          "id": "Sunday",
+                          "period": [
+                            {
+                              "time": [
+                                "05:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "wake"
+                              ]
+                            },
+                            {
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "07:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "00:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "off"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "00:00"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "off"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:15"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "period": [
+                            {
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "wake"
+                              ],
+                              "time": [
+                                "05:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "07:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "3",
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "00:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "off"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "time": [
+                                "22:15"
+                              ]
+                            }
+                          ],
+                          "id": "Monday"
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "05:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "wake"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "07:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2"
+                            },
+                            {
+                              "time": [
+                                "00:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "off"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "4",
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:15"
+                              ]
+                            }
+                          ],
+                          "id": "Tuesday"
+                        },
+                        {
+                          "period": [
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "wake"
+                              ],
+                              "time": [
+                                "05:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "07:00"
+                              ]
+                            },
+                            {
+                              "id": "3",
+                              "enabled": [
+                                "off"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "4",
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:15"
+                              ]
+                            }
+                          ],
+                          "id": "Wednesday"
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "05:00"
+                              ],
+                              "activity": [
+                                "wake"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "time": [
+                                "07:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "3",
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "00:00"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:15"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5"
+                            }
+                          ],
+                          "id": "Thursday"
+                        },
+                        {
+                          "id": "Friday",
+                          "period": [
+                            {
+                              "time": [
+                                "05:00"
+                              ],
+                              "activity": [
+                                "wake"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1"
+                            },
+                            {
+                              "time": [
+                                "07:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "3",
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "id": "4",
+                              "enabled": [
+                                "off"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:15"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "period": [
+                            {
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "wake"
+                              ],
+                              "time": [
+                                "05:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "07:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "off"
+                              ],
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "off"
+                              ],
+                              "id": "4",
+                              "time": [
+                                "00:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:15"
+                              ]
+                            }
+                          ],
+                          "id": "Saturday"
+                        }
+                      ]
+                    }
+                  ],
+                  "hold": [
+                    "on"
+                  ],
+                  "holdActivity": [
+                    "home"
+                  ],
+                  "name": [
+                    "Upstairs"
+                  ],
+                  "tempoffset": [
+                    "0"
+                  ],
+                  "id": "2",
+                  "airflowlimit": [
+                    "high"
+                  ],
+                  "enabled": [
+                    "on"
+                  ],
+                  "otmr": [
+                    "00:00"
+                  ]
+                },
+                {
+                  "id": "3",
+                  "enabled": [
+                    "off"
+                  ],
+                  "airflowlimit": [
+                    "high"
+                  ],
+                  "tempoffset": [
+                    "0"
+                  ],
+                  "otmr": [
+                    {}
+                  ],
+                  "cfmlimit": [
+                    "674"
+                  ],
+                  "name": [
+                    "Zone 3"
+                  ],
+                  "holdActivity": [
+                    {}
+                  ],
+                  "activities": [
+                    {
+                      "activity": [
+                        {
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "home",
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ]
+                        },
+                        {
+                          "clsp": [
+                            "80.0"
+                          ],
+                          "id": "away",
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "60.0"
+                          ]
+                        },
+                        {
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "sleep",
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "68.0"
+                          ]
+                        },
+                        {
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "wake"
+                        },
+                        {
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "id": "manual",
+                          "clsp": [
+                            "76.0"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "program": [
+                    {
+                      "day": [
+                        {
+                          "period": [
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "away"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ],
+                          "id": "Sunday"
+                        },
+                        {
+                          "id": "Monday",
+                          "period": [
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "away"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4"
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5"
+                            }
+                          ]
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "activity": [
+                                "away"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ],
+                          "id": "Tuesday"
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1"
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "activity": [
+                                "away"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "sleep"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5"
+                            }
+                          ],
+                          "id": "Wednesday"
+                        },
+                        {
+                          "id": "Thursday",
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "away"
+                              ]
+                            },
+                            {
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "away"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ]
+                            }
+                          ],
+                          "id": "Friday"
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "away"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ],
+                          "id": "Saturday"
+                        }
+                      ]
+                    }
+                  ],
+                  "hold": [
+                    "off"
+                  ],
+                  "setback": [
+                    "on"
+                  ]
+                },
+                {
+                  "tempoffset": [
+                    "0"
+                  ],
+                  "airflowlimit": [
+                    "high"
+                  ],
+                  "enabled": [
+                    "off"
+                  ],
+                  "id": "4",
+                  "otmr": [
+                    {}
+                  ],
+                  "cfmlimit": [
+                    "674"
+                  ],
+                  "program": [
+                    {
+                      "day": [
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "activity": [
+                                "away"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2"
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ],
+                          "id": "Sunday"
+                        },
+                        {
+                          "id": "Monday",
+                          "period": [
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "away"
+                              ]
+                            },
+                            {
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "sleep"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "Tuesday",
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "away"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "sleep"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "away"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5"
+                            }
+                          ],
+                          "id": "Wednesday"
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "away"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ]
+                            }
+                          ],
+                          "id": "Thursday"
+                        },
+                        {
+                          "id": "Friday",
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "away"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "Saturday",
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "away"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "hold": [
+                    "off"
+                  ],
+                  "setback": [
+                    "on"
+                  ],
+                  "activities": [
+                    {
+                      "activity": [
+                        {
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "home",
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "68.0"
+                          ]
+                        },
+                        {
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "60.0"
+                          ],
+                          "clsp": [
+                            "80.0"
+                          ],
+                          "id": "away"
+                        },
+                        {
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "sleep",
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "68.0"
+                          ]
+                        },
+                        {
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "id": "wake",
+                          "clsp": [
+                            "76.0"
+                          ]
+                        },
+                        {
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "manual"
+                        }
+                      ]
+                    }
+                  ],
+                  "name": [
+                    "Zone 4"
+                  ],
+                  "holdActivity": [
+                    {}
+                  ]
+                },
+                {
+                  "cfmlimit": [
+                    "674"
+                  ],
+                  "name": [
+                    "Zone 5"
+                  ],
+                  "holdActivity": [
+                    {}
+                  ],
+                  "hold": [
+                    "off"
+                  ],
+                  "program": [
+                    {
+                      "day": [
+                        {
+                          "id": "Sunday",
+                          "period": [
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "away"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4"
+                            },
+                            {
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "Monday",
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1"
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "activity": [
+                                "away"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2"
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "activity": [
+                                "sleep"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "Tuesday",
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1"
+                            },
+                            {
+                              "activity": [
+                                "away"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "away"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ]
+                            }
+                          ],
+                          "id": "Wednesday"
+                        },
+                        {
+                          "period": [
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "activity": [
+                                "away"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5"
+                            }
+                          ],
+                          "id": "Thursday"
+                        },
+                        {
+                          "id": "Friday",
+                          "period": [
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "activity": [
+                                "away"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2"
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "Saturday",
+                          "period": [
+                            {
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "away"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "setback": [
+                    "on"
+                  ],
+                  "activities": [
+                    {
+                      "activity": [
+                        {
+                          "id": "home",
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ]
+                        },
+                        {
+                          "clsp": [
+                            "80.0"
+                          ],
+                          "id": "away",
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "60.0"
+                          ]
+                        },
+                        {
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "sleep",
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "68.0"
+                          ]
+                        },
+                        {
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "id": "wake",
+                          "clsp": [
+                            "76.0"
+                          ]
+                        },
+                        {
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "id": "manual",
+                          "clsp": [
+                            "76.0"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "enabled": [
+                    "off"
+                  ],
+                  "airflowlimit": [
+                    "high"
+                  ],
+                  "id": "5",
+                  "tempoffset": [
+                    "0"
+                  ],
+                  "otmr": [
+                    {}
+                  ]
+                },
+                {
+                  "cfmlimit": [
+                    "674"
+                  ],
+                  "activities": [
+                    {
+                      "activity": [
+                        {
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "id": "home",
+                          "clsp": [
+                            "76.0"
+                          ]
+                        },
+                        {
+                          "clsp": [
+                            "80.0"
+                          ],
+                          "id": "away",
+                          "htsp": [
+                            "60.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ]
+                        },
+                        {
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "sleep",
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ]
+                        },
+                        {
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "wake"
+                        },
+                        {
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "manual"
+                        }
+                      ]
+                    }
+                  ],
+                  "program": [
+                    {
+                      "day": [
+                        {
+                          "id": "Sunday",
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1"
+                            },
+                            {
+                              "activity": [
+                                "away"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "activity": [
+                                "sleep"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "activity": [
+                                "away"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2"
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4"
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ],
+                          "id": "Monday"
+                        },
+                        {
+                          "period": [
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "away"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ],
+                          "id": "Tuesday"
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "away"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ],
+                          "id": "Wednesday"
+                        },
+                        {
+                          "id": "Thursday",
+                          "period": [
+                            {
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "activity": [
+                                "away"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "sleep"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "activity": [
+                                "sleep"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "period": [
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "away"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ],
+                          "id": "Friday"
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "away"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ],
+                          "id": "Saturday"
+                        }
+                      ]
+                    }
+                  ],
+                  "setback": [
+                    "on"
+                  ],
+                  "hold": [
+                    "off"
+                  ],
+                  "name": [
+                    "Zone 6"
+                  ],
+                  "holdActivity": [
+                    {}
+                  ],
+                  "tempoffset": [
+                    "0"
+                  ],
+                  "id": "6",
+                  "enabled": [
+                    "off"
+                  ],
+                  "airflowlimit": [
+                    "high"
+                  ],
+                  "otmr": [
+                    {}
+                  ]
+                },
+                {
+                  "tempoffset": [
+                    "0"
+                  ],
+                  "airflowlimit": [
+                    "high"
+                  ],
+                  "enabled": [
+                    "off"
+                  ],
+                  "id": "7",
+                  "otmr": [
+                    {}
+                  ],
+                  "cfmlimit": [
+                    "674"
+                  ],
+                  "setback": [
+                    "on"
+                  ],
+                  "program": [
+                    {
+                      "day": [
+                        {
+                          "period": [
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "activity": [
+                                "away"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2"
+                            },
+                            {
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ]
+                            }
+                          ],
+                          "id": "Sunday"
+                        },
+                        {
+                          "period": [
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "away"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4"
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ],
+                          "id": "Monday"
+                        },
+                        {
+                          "id": "Tuesday",
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "away"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4"
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "Wednesday",
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "away"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "sleep"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "Thursday",
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "away"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "Friday",
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "away"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "Saturday",
+                          "period": [
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "away"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4"
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "hold": [
+                    "off"
+                  ],
+                  "activities": [
+                    {
+                      "activity": [
+                        {
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "home",
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ]
+                        },
+                        {
+                          "htsp": [
+                            "60.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "clsp": [
+                            "80.0"
+                          ],
+                          "id": "away"
+                        },
+                        {
+                          "id": "sleep",
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "68.0"
+                          ]
+                        },
+                        {
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "wake",
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "68.0"
+                          ]
+                        },
+                        {
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "manual"
+                        }
+                      ]
+                    }
+                  ],
+                  "holdActivity": [
+                    {}
+                  ],
+                  "name": [
+                    "Zone 7"
+                  ]
+                },
+                {
+                  "name": [
+                    "Zone 8"
+                  ],
+                  "holdActivity": [
+                    {}
+                  ],
+                  "hold": [
+                    "off"
+                  ],
+                  "program": [
+                    {
+                      "day": [
+                        {
+                          "id": "Sunday",
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "activity": [
+                                "away"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2"
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "sleep"
+                              ]
+                            },
+                            {
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "period": [
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "away"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ],
+                          "id": "Monday"
+                        },
+                        {
+                          "id": "Tuesday",
+                          "period": [
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "away"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4"
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "period": [
+                            {
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "away"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4"
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ],
+                          "id": "Wednesday"
+                        },
+                        {
+                          "period": [
+                            {
+                              "time": [
+                                "06:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "home"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "id": "2",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "away"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "17:00"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "3"
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "activity": [
+                                "sleep"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "22:00"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "activity": [
+                                "sleep"
+                              ]
+                            }
+                          ],
+                          "id": "Thursday"
+                        },
+                        {
+                          "id": "Friday",
+                          "period": [
+                            {
+                              "id": "1",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "time": [
+                                "08:00"
+                              ],
+                              "activity": [
+                                "away"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2"
+                            },
+                            {
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "4",
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "5",
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "period": [
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "1",
+                              "activity": [
+                                "home"
+                              ],
+                              "time": [
+                                "06:00"
+                              ]
+                            },
+                            {
+                              "enabled": [
+                                "on"
+                              ],
+                              "id": "2",
+                              "activity": [
+                                "away"
+                              ],
+                              "time": [
+                                "08:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "home"
+                              ],
+                              "id": "3",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "17:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "4",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            },
+                            {
+                              "activity": [
+                                "sleep"
+                              ],
+                              "id": "5",
+                              "enabled": [
+                                "on"
+                              ],
+                              "time": [
+                                "22:00"
+                              ]
+                            }
+                          ],
+                          "id": "Saturday"
+                        }
+                      ]
+                    }
+                  ],
+                  "setback": [
+                    "on"
+                  ],
+                  "activities": [
+                    {
+                      "activity": [
+                        {
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "home"
+                        },
+                        {
+                          "clsp": [
+                            "80.0"
+                          ],
+                          "id": "away",
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "60.0"
+                          ]
+                        },
+                        {
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "sleep"
+                        },
+                        {
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "id": "wake",
+                          "htsp": [
+                            "68.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ]
+                        },
+                        {
+                          "id": "manual",
+                          "clsp": [
+                            "76.0"
+                          ],
+                          "fan": [
+                            "off"
+                          ],
+                          "htsp": [
+                            "68.0"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "cfmlimit": [
+                    "674"
+                  ],
+                  "otmr": [
+                    {}
+                  ],
+                  "airflowlimit": [
+                    "high"
+                  ],
+                  "enabled": [
+                    "off"
+                  ],
+                  "id": "8",
+                  "tempoffset": [
+                    "0"
+                  ]
+                }
+              ]
+            }
+          ],
+          "windowprotect": [
+            {
+              "enabled": [
+                "on"
+              ],
+              "ventprotect": [
+                "on"
+              ],
+              "rhtg": [
+                "9"
+              ]
+            }
+          ],
+          "ducthour": [
+            "13"
+          ],
+          "grate": [
+            "1.10"
+          ],
+          "filtertype": [
+            "air filter"
+          ],
+          "humidityHome": [
+            {
+              "rclg": [
+                "3"
+              ],
+              "rclgovercool": [
+                "on"
+              ],
+              "rhtg": [
+                "4"
+              ],
+              "humid": [
+                "manual"
+              ],
+              "ventclg": [
+                "auto"
+              ],
+              "humidifier": [
+                "on"
+              ],
+              "venthtg": [
+                "auto"
+              ],
+              "ventspdhtg": [
+                "high"
+              ],
+              "ventspdclg": [
+                "high"
+              ]
+            }
+          ],
+          "cfgrecovery": [
+            "on"
+          ],
+          "vacend": [
+            {}
+          ],
+          "humidityfan": [
+            "off"
+          ],
+          "cfgdead": [
+            "2"
+          ],
+          "cfguv": [
+            "off"
+          ],
+          "vacfan": [
+            "off"
+          ],
+          "cfgchgovr": [
+            "30"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<status version="1.7">
+  <cfgem>F</cfgem>
+  <cfgtype>heatcool</cfgtype>
+  <filtrlvl>100</filtrlvl>
+  <humid>off</humid>
+  <humlvl>100</humlvl>
+  <localTime>2019-01-07T14:32:35-08:00</localTime>
+  <mode>off</mode>
+  <oat>57</oat>
+  <oprstsmsg>idle</oprstsmsg>
+  <uvlvl>100</uvlvl>
+  <vacatrunning>off</vacatrunning>
+  <ventlvl>100</ventlvl>
+  <zones>
+    <zone id="1">
+      <clsp>90.0</clsp>
+      <currentActivity>home</currentActivity>
+      <damperposition>15</damperposition>
+      <enabled>on</enabled>
+      <fan>off</fan>
+      <hold>on</hold>
+      <htsp>50.0</htsp>
+      <name>Downstairs</name>
+      <otmr>00:00</otmr>
+      <rh>53</rh>
+      <rt>69.0</rt>
+      <zoneconditioning>active_heat</zoneconditioning>
+    </zone>
+    <zone id="2">
+      <clsp>77.0</clsp>
+      <currentActivity>home</currentActivity>
+      <damperposition>0</damperposition>
+      <enabled>on</enabled>
+      <fan>off</fan>
+      <hold>on</hold>
+      <htsp>67.0</htsp>
+      <name>Upstairs</name>
+      <otmr>00:00</otmr>
+      <rh>53</rh>
+      <rt>69.0</rt>
+      <zoneconditioning>active_heat</zoneconditioning>
+    </zone>
+    <zone id="3">
+      <clsp>80.0</clsp>
+      <currentActivity>away</currentActivity>
+      <damperposition>0</damperposition>
+      <enabled>off</enabled>
+      <fan>off</fan>
+      <hold>off</hold>
+      <htsp>60.0</htsp>
+      <name>Zone 3</name>
+      <otmr/>
+      <rh>53</rh>
+      <rt/>
+      <zoneconditioning>idle</zoneconditioning>
+    </zone>
+    <zone id="4">
+      <clsp>80.0</clsp>
+      <currentActivity>away</currentActivity>
+      <damperposition>0</damperposition>
+      <enabled>off</enabled>
+      <fan>off</fan>
+      <hold>off</hold>
+      <htsp>60.0</htsp>
+      <name>Zone 4</name>
+      <otmr/>
+      <rh>53</rh>
+      <rt/>
+      <zoneconditioning>idle</zoneconditioning>
+    </zone>
+    <zone id="5">
+      <clsp>80.0</clsp>
+      <currentActivity>away</currentActivity>
+      <damperposition>0</damperposition>
+      <enabled>off</enabled>
+      <fan>off</fan>
+      <hold>off</hold>
+      <htsp>60.0</htsp>
+      <name>Zone 5</name>
+      <otmr/>
+      <rh>53</rh>
+      <rt/>
+      <zoneconditioning>idle</zoneconditioning>
+    </zone>
+    <zone id="6">
+      <clsp>80.0</clsp>
+      <currentActivity>away</currentActivity>
+      <damperposition>0</damperposition>
+      <enabled>off</enabled>
+      <fan>off</fan>
+      <hold>off</hold>
+      <htsp>60.0</htsp>
+      <name>Zone 6</name>
+      <otmr/>
+      <rh>53</rh>
+      <rt/>
+      <zoneconditioning>idle</zoneconditioning>
+    </zone>
+    <zone id="7">
+      <clsp>80.0</clsp>
+      <currentActivity>away</currentActivity>
+      <damperposition>0</damperposition>
+      <enabled>off</enabled>
+      <fan>off</fan>
+      <hold>off</hold>
+      <htsp>60.0</htsp>
+      <name>Zone 7</name>
+      <otmr/>
+      <rh>53</rh>
+      <rt/>
+      <zoneconditioning>idle</zoneconditioning>
+    </zone>
+    <zone id="8">
+      <clsp>80.0</clsp>
+      <currentActivity>away</currentActivity>
+      <damperposition>0</damperposition>
+      <enabled>off</enabled>
+      <fan>off</fan>
+      <hold>off</hold>
+      <htsp>60.0</htsp>
+      <name>Zone 8</name>
+      <otmr/>
+      <rh>53</rh>
+      <rt/>
+      <zoneconditioning>idle</zoneconditioning>
+    </zone>
+  </zones>
+</status>

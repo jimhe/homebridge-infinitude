@@ -23,7 +23,7 @@
   },
   "scripts": {
     "dropcache": "rm -f ./node_modules/node-persist/storage/accessories/cachedAccessories",
-    "test": "eslint .",
+    "test": "jest",
     "prettier": "prettier --write src/**/*.js",
     "precommit": "lint-staged",
     "start": "homebridge --debug --plugin-path . --user-storage-path ."
@@ -35,18 +35,23 @@
     ]
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "fast-xml-parser": "^3.12.11",
     "homebridge": "^0.4.45",
     "joi": "^13.6.0",
-    "yarn": "^1.12.3",
-    "axios": "^0.18.0",
-    "fast-xml-parser": "^3.12.11"
+    "lodash": "^4.17.11",
+    "yarn": "^1.12.3"
   },
   "devDependencies": {
     "eslint": "^5.3.0",
     "eslint-config-prettier": "^3.0.1",
     "eslint-plugin-prettier": "^2.6.2",
     "husky": "^0.14.3",
+    "jest": "^23.6.0",
+    "jest-mock-axios": "^2.1.11",
     "lint-staged": "^7.2.2",
+    "mockdate": "^2.0.2",
+    "nock": "^10.0.6",
     "prettier": "^1.14.2"
   }
 }
