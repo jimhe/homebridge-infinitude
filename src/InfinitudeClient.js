@@ -37,7 +37,7 @@ module.exports = class InfinitudeClient {
       }
     }
     return axios
-      .get(`${this.url}${path}`, { timeout: 1000 })
+      .get(`${this.url}${path}`, { timeout: 3000 })
       .then(
         function(response) {
           const cachedObj = new InfinitudeCachedObject(handler(response), new Date().getTime());
@@ -52,7 +52,7 @@ module.exports = class InfinitudeClient {
       );
   }
 
-  getStatus(ttlMs = 1000) {
+  getStatus(ttlMs = 5000) {
     return this.get(
       '/status.xml',
       ttlMs,
@@ -60,7 +60,7 @@ module.exports = class InfinitudeClient {
     );
   }
 
-  getSystems(ttlMs = 1000) {
+  getSystems(ttlMs = 5000) {
     return this.get('/systems.json', ttlMs, response => response.data);
   }
 

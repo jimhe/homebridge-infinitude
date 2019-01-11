@@ -24,7 +24,7 @@ describe('InfinitudeClient', () => {
     const status = await client.getStatus();
     MockDate.set('2018-01-07 00:01:00:01');
     await client.getStatus();
-    MockDate.set('2018-01-07 00:01:01:01');
+    MockDate.set('2018-01-07 00:01:05:01');
     await client.getStatus();
 
     expect(status['cfgem']).toBe('F');
@@ -43,7 +43,7 @@ describe('InfinitudeClient', () => {
     const systems = await client.getSystems();
     MockDate.set('2018-01-07 00:01:00:01');
     await client.getSystems();
-    MockDate.set('2018-01-07 00:01:01:01');
+    MockDate.set('2018-01-07 00:01:05:01');
     await client.getSystems();
 
     expect(systems['system'][0]['version']).toBe('1.7');
@@ -67,7 +67,7 @@ describe('InfinitudeClient', () => {
   test('Systems handles timeouts', async () => {
     const scope = nock(url)
       .get('/systems.json')
-      .delayConnection(2000)
+      .delayConnection(5000)
       .replyWithFile(200, '__tests__/resources/systems.json', 'UTF-8', {
         'Content-Type': 'application/json'
       });

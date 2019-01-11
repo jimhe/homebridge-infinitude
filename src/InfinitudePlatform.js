@@ -4,7 +4,7 @@ const Joi = require('joi');
 const configSchema = require('./configSchema');
 const InfinitudeClient = require('./InfinitudeClient');
 
-let Characteristic, Thermostat;
+let Characteristic, AccessoryCategories, Thermostat;
 
 module.exports = class InfinitudePlatform {
   constructor(log, config, api) {
@@ -22,6 +22,7 @@ module.exports = class InfinitudePlatform {
 
     Characteristic = api.hap.Characteristic;
     Thermostat = api.hap.Service.Thermostat;
+    AccessoryCategories = api.hap.Accessory.Categories;
 
     this.log = log;
     this.api = api;
@@ -35,13 +36,14 @@ module.exports = class InfinitudePlatform {
 
   configureAccessory(accessory) {
     this.accessories[accessory.UUID] = accessory;
+
+    if (accessory.category === AccessoryCategories.THERMOSTAT) {
+      this.configureThermostatAccessory(accessory);
+    }
   }
 
   async didFinishLaunching() {
     this.initializeThermostats();
-    for (const uuid in this.accessories) {
-      this.configureThermostatAccessory(this.accessories[uuid]);
-    }
   }
 
   async initializeThermostats() {
@@ -61,8 +63,10 @@ module.exports = class InfinitudePlatform {
   }
 
   createThermostatAccessory(zone, uuid) {
+    const zoneName = zone.name;
+    this.log.info(`Found new thermostat in zone: ${zoneName}`);
     const thermostatName = `${zone['name']} Thermostat`;
-    const newAccessory = new this.api.platformAccessory(thermostatName, uuid);
+    const newAccessory = new this.api.platformAccessory(thermostatName, uuid, AccessoryCategories.THERMOSTAT);
     newAccessory.addService(Thermostat, thermostatName);
     this.api.registerPlatformAccessories(pluginName, platformName, [newAccessory]);
     this.configureThermostatAccessory(newAccessory);
