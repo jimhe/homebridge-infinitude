@@ -103,23 +103,21 @@ describe('InfinitudePlatform', () => {
       );
 
       // Temperature changes unsupported
-      await platform
-        .setValue(accessory, Characteristic.HeatingThresholdTemperature, 10)
-        .catch(e => expect(e).toBe('Not supported'));
-      await platform
-        .setValue(accessory, Characteristic.CoolingThresholdTemperature, 10)
-        .catch(e => expect(e).toBe('Not supported'));
-      await platform
-        .setValue(accessory, Characteristic.TargetTemperature, 10)
-        .catch(e => expect(e).toBe('Not supported'));
+      await platform.setValue(accessory, Characteristic.HeatingThresholdTemperature, 10);
+      await platform.setValue(accessory, Characteristic.CoolingThresholdTemperature, 10);
+      await platform.setValue(accessory, Characteristic.TargetTemperature, 10);
 
       // Heat / Cool unsupported
-      await platform
-        .setValue(accessory, Characteristic.TargetHeatingCoolingState, Characteristic.TargetHeatingCoolingState.HEAT)
-        .catch(e => expect(e).toBe('Not supported'));
-      await platform
-        .setValue(accessory, Characteristic.TargetHeatingCoolingState, Characteristic.TargetHeatingCoolingState.COOL)
-        .catch(e => expect(e).toBe('Not supported'));
+      await platform.setValue(
+        accessory,
+        Characteristic.TargetHeatingCoolingState,
+        Characteristic.TargetHeatingCoolingState.HEAT
+      );
+      await platform.setValue(
+        accessory,
+        Characteristic.TargetHeatingCoolingState,
+        Characteristic.TargetHeatingCoolingState.COOL
+      );
 
       expect(nock.isDone()).toBe(true);
       done();

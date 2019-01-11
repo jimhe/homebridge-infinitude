@@ -54,6 +54,7 @@ module.exports = class InfinitudePlatform {
       const tUuid = this.api.hap.uuid.generate(zoneId);
       this.accessories[tUuid] = this.accessories[tUuid] || this.createThermostatAccessory(zone, tUuid);
       this.zoneIds[tUuid] = zoneId;
+      this.zoneNames[tUuid] = this.accessories[tUuid].displayName;
     }
 
     this.api.emit('didFinishInit');
@@ -65,13 +66,12 @@ module.exports = class InfinitudePlatform {
     newAccessory.addService(Thermostat, thermostatName);
     this.api.registerPlatformAccessories(pluginName, platformName, [newAccessory]);
     this.configureThermostatAccessory(newAccessory);
-    this.zoneNames[uuid] = thermostatName;
     return newAccessory;
   }
 
   configureThermostatAccessory(accessory) {
     const thermostatService = accessory.getService(Thermostat);
-    const zoneName = this.getZoneName(accessory);
+    const thermostatName = this.getThermostatName(accessory);
 
     thermostatService.setCharacteristic(
       Characteristic.TemperatureDisplayUnits,
@@ -115,8 +115,8 @@ module.exports = class InfinitudePlatform {
             case Characteristic.TargetHeatingCoolingState.AUTO:
               return this.client.setActivity(this.getZoneId(accessory), 'home', callback);
             default:
-              this.log.warn(`Unsupported state ${targetHeatingCoolingState} for zone ${zoneName}`);
-              callback('Not supported');
+              this.log.warn(`Unsupported state ${targetHeatingCoolingState} for ${thermostatName}`);
+              callback();
               break;
           }
         }.bind(this)
@@ -135,8 +135,12 @@ module.exports = class InfinitudePlatform {
       .on(
         'set',
         function(heatingThresholdTemperature, callback) {
-          this.log.warn(`Unsupported heatingThresholdTemperature ${heatingThresholdTemperature} for zone ${zoneName}`);
-          callback('Not supported');
+          this.log.warn(
+            `Unsupported heatingThresholdTemperature ${InfinitudePlatform.celsiusToFahrenheit(
+              heatingThresholdTemperature
+            )} for ${thermostatName}`
+          );
+          callback();
         }.bind(this)
       );
 
@@ -153,8 +157,12 @@ module.exports = class InfinitudePlatform {
       .on(
         'set',
         function(coolingThresholdTemperature, callback) {
-          this.log.warn(`Unsupported coolingThresholdTemperature ${coolingThresholdTemperature} for zone ${zoneName}`);
-          callback('Not supported');
+          this.log.warn(
+            `Unsupported coolingThresholdTemperature ${InfinitudePlatform.celsiusToFahrenheit(
+              coolingThresholdTemperature
+            )} for ${thermostatName}`
+          );
+          callback();
         }.bind(this)
       );
 
@@ -170,8 +178,12 @@ module.exports = class InfinitudePlatform {
     thermostatService.getCharacteristic(Characteristic.TargetTemperature).on(
       'set',
       function(targetTemperature, callback) {
-        this.log.warn(`Unsupported targetTemperature ${targetTemperature} for zone ${zoneName}`);
-        callback('Not supported');
+        this.log.warn(
+          `Unsupported targetTemperature ${InfinitudePlatform.celsiusToFahrenheit(
+            targetTemperature
+          )} for ${thermostatName}`
+        );
+        callback();
       }.bind(this)
     );
   }
@@ -210,7 +222,11 @@ module.exports = class InfinitudePlatform {
     return (temperature - 32) / 1.8;
   }
 
-  getZoneName(accessory) {
+  static celsiusToFahrenheit(temperature) {
+    return temperature * 1.8 + 32;
+  }
+
+  getThermostatName(accessory) {
     return this.zoneNames[accessory.UUID];
   }
 
@@ -256,7 +272,7 @@ module.exports = class InfinitudePlatform {
           case 'home':
             return Characteristic.TargetHeatingCoolingState.AUTO;
           default:
-            this.log.warn(`Unexpected activity ${targetActivityId} for zone ${this.getZoneId(accessory)}`);
+            this.log.warn(`Unexpected activity ${targetActivityId} for ${this.getThermostatName(accessory)}`);
             return Characteristic.TargetHeatingCoolingState.OFF;
         }
       }.bind(this)
