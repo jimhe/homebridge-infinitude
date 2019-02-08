@@ -1,14 +1,12 @@
 const axios = require('axios');
 const parser = require('fast-xml-parser');
-
-class InfinitudeCachedObject {
-  constructor(object, time) {
-    this.object = object;
-    this.time = time;
-  }
-}
+const _ = require('lodash');
 
 module.exports = class InfinitudeClient {
+  static get REFRESH_MS() {
+    return 10000;
+  }
+
   constructor(url, log) {
     this.url = url;
     this.log = log;
@@ -18,31 +16,26 @@ module.exports = class InfinitudeClient {
       ignoreAttributes: false,
       attributeNamePrefix: ''
     };
+
+    setInterval(
+      function() {
+        this.refreshAll();
+      }.bind(this),
+      InfinitudeClient.REFRESH_MS
+    );
   }
 
-  clearCache() {
-    this.cachedObjects = {};
+  refreshAll() {
+    this.refreshStatus();
+    this.refreshSystems();
   }
 
-  get(path, ttlMs, handler) {
-    const now = new Date().getTime();
-
-    let cachedObj = this.cachedObjects[path];
-    if (cachedObj !== undefined) {
-      const diff = now - cachedObj.time;
-      if (diff <= ttlMs) {
-        return new Promise(function(resolve) {
-          resolve(cachedObj.object);
-        });
-      }
-    }
+  refresh(path, handler) {
     return axios
       .get(`${this.url}${path}`, { timeout: 3000 })
       .then(
         function(response) {
-          const cachedObj = new InfinitudeCachedObject(handler(response), new Date().getTime());
-          this.cachedObjects[path] = cachedObj;
-          return cachedObj.object;
+          this.cachedObjects[path] = handler(response);
         }.bind(this)
       )
       .catch(
@@ -52,46 +45,66 @@ module.exports = class InfinitudeClient {
       );
   }
 
-  getStatus(ttlMs = 5000) {
-    return this.get(
+  refreshStatus() {
+    return this.refresh(
       '/status.xml',
-      ttlMs,
       response => parser.convertToJson(parser.getTraversalObj(response.data, this.xmlOptions))['status']
     );
   }
 
-  getSystems(ttlMs = 5000) {
-    return this.get('/systems.json', ttlMs, response => response.data);
+  refreshSystems() {
+    return this.refresh('/systems.json', response => response.data);
+  }
+
+  async getStatus() {
+    if (this.cachedObjects['/status.xml'] === undefined) {
+      await this.refreshStatus();
+    }
+
+    return new Promise(
+      function(resolve) {
+        resolve(this.cachedObjects['/status.xml']);
+      }.bind(this)
+    );
+  }
+
+  async getSystems() {
+    if (this.cachedObjects['/systems.json'] === undefined) {
+      await this.refreshSystems();
+    }
+
+    return new Promise(
+      function(resolve) {
+        resolve(this.cachedObjects['/systems.json']);
+      }.bind(this)
+    );
   }
 
   async updateSystem(zoneId, handler, callback) {
-    return this.getSystems(30000)
-      .then(
-        function(configJson) {
-          const zone = configJson['system'][0]['config'][0]['zones'][0]['zone'].find(zone => zone['id'] === zoneId);
-          handler(zone);
-          return axios
-            .post(`${this.url}/systems/infinitude`, configJson)
-            .then(function(result) {
-              if (callback) {
-                callback(null);
-              }
-              return result;
-            })
-            .catch(
-              function(error) {
-                this.log.error(error);
-                if (callback) {
-                  callback(error);
-                }
-                return error.response;
-              }.bind(this)
-            );
+    if (this.cachedObjects['/systems.json'] === undefined) {
+      await this.refreshSystems();
+    }
+
+    const configJson = _.cloneDeep(this.cachedObjects['/systems.json']);
+    const zone = configJson['system'][0]['config'][0]['zones'][0]['zone'].find(zone => zone['id'] === zoneId);
+    handler(zone);
+    return axios
+      .post(`${this.url}/systems/infinitude`, configJson)
+      .then(function(result) {
+        if (callback) {
+          callback(null);
+        }
+        return result;
+      })
+      .catch(
+        function(error) {
+          this.log.error(error);
+          if (callback) {
+            callback(error);
+          }
+          return error.response;
         }.bind(this)
-      )
-      .catch(function(error) {
-        callback(error);
-      });
+      );
   }
 
   updateTemperatures(temperatures, zoneId, activityId, callback) {

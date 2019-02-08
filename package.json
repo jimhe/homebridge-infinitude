@@ -1,6 +1,6 @@
 {
   "name": "homebridge-infinitude",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "Infinitude Plugin for Homebridge",
   "license": "ISC",
   "main": "src/index.js",
@@ -40,6 +40,7 @@
     "homebridge": "^0.4.45",
     "joi": "^13.6.0",
     "lodash": "^4.17.11",
+    "threads": "^0.12.0",
     "yarn": "^1.12.3"
   },
   "devDependencies": {
@@ -50,7 +51,6 @@
     "jest": "^23.6.0",
     "jest-mock-axios": "^2.1.11",
     "lint-staged": "^7.2.2",
-    "mockdate": "^2.0.2",
     "nock": "^10.0.6",
     "prettier": "^1.14.2"
   }

@@ -1,49 +1,44 @@
 const nock = require('nock');
 const InfinitudeClient = require('../src/InfinitudeClient');
-const MockDate = require('mockdate');
 const _ = require('lodash');
+jest.useFakeTimers();
 
 global.console = { error: jest.fn() };
 
 describe('InfinitudeClient', () => {
   const url = 'http://localhost';
-  const client = new InfinitudeClient(url, console);
 
-  afterEach(() => {
-    client.clearCache();
-  });
-
-  test('Status caches as expected', async () => {
+  test('Status works as expected', async () => {
+    const client = new InfinitudeClient(url, console);
     const scope = nock(url)
       .get('/status.xml')
       .times(2)
       .replyWithFile(200, '__tests__/resources/status.xml', {
         'Content-Type': 'application/xml'
       });
-    MockDate.set('2018-01-07 00:01:00:00');
     const status = await client.getStatus();
-    MockDate.set('2018-01-07 00:01:00:01');
     await client.getStatus();
-    MockDate.set('2018-01-07 00:01:05:01');
+    // trigger refreshAll
+    jest.advanceTimersByTime(InfinitudeClient.REFRESH_MS);
     await client.getStatus();
 
     expect(status['cfgem']).toBe('F');
     expect(scope.isDone()).toBe(true);
   });
 
-  test('Systems caches as expected', async () => {
+  test('Systems works as expected', async () => {
+    const client = new InfinitudeClient(url, console);
     const scope = nock(url)
       .get('/systems.json')
       .times(2)
-      .replyWithFile(200, '__tests__/resources/systems.json', 'UTF-8', {
+      .replyWithFile(200, '__tests__/resources/systems.json', {
         'Content-Type': 'application/json'
       });
 
-    MockDate.set('2018-01-07 00:01:00:00');
     const systems = await client.getSystems();
-    MockDate.set('2018-01-07 00:01:00:01');
     await client.getSystems();
-    MockDate.set('2018-01-07 00:01:05:01');
+    // trigger refreshAll
+    jest.advanceTimersByTime(InfinitudeClient.REFRESH_MS);
     await client.getSystems();
 
     expect(systems['system'][0]['version']).toBe('1.7');
@@ -51,6 +46,7 @@ describe('InfinitudeClient', () => {
   });
 
   test('Status handles errors', async () => {
+    const client = new InfinitudeClient(url, console);
     const scope = nock(url)
       .get('/status.xml')
       .reply(500)
@@ -64,81 +60,8 @@ describe('InfinitudeClient', () => {
     expect(scope.isDone()).toBe(true);
   });
 
-  test('Systems handles timeouts', async () => {
-    const scope = nock(url)
-      .get('/systems.json')
-      .delayConnection(5000)
-      .replyWithFile(200, '__tests__/resources/systems.json', 'UTF-8', {
-        'Content-Type': 'application/json'
-      });
-
-    const systems = await client.getSystems();
-    expect(systems).toBe(undefined);
-    expect(scope.isDone()).toBe(true);
-  });
-
-  test('Updates temperatures', async () => {
-    const scope = nock(url)
-      .get('/systems.json')
-      .times(2)
-      .replyWithFile(200, '__tests__/resources/systems.json', 'UTF-8', {
-        'Content-Type': 'application/json'
-      })
-      .post(
-        '/systems/infinitude',
-        _.matches({
-          system: [
-            {
-              config: [
-                {
-                  zones: [
-                    {
-                      zone: [
-                        {
-                          id: '1',
-                          activities: [
-                            {
-                              activity: [
-                                {
-                                  id: 'home',
-                                  clsp: ['25.0'],
-                                  htsp: ['100.0']
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        })
-      )
-      .times(3)
-      .reply(200);
-
-    const temperatures = {
-      htsp: 100,
-      clsp: 25
-    };
-
-    // Issues GET + POST
-    MockDate.set('2018-01-07 00:01:00:00');
-    await client.updateTemperatures(temperatures, '1', 'home', () => {});
-    // Before 30s TTL, issues only POST
-    MockDate.set('2018-01-07 00:01:05:00');
-    await client.updateTemperatures(temperatures, '1', 'home', () => {});
-    // After 30s TTL, issues GET + POST
-    MockDate.set('2018-01-07 00:01:31:00');
-    await client.updateTemperatures(temperatures, '1', 'home', () => {});
-
-    expect(scope.isDone()).toBe(true);
-  });
-
   test('Updates activity', async () => {
+    const client = new InfinitudeClient(url, console);
     const scope = nock(url)
       .get('/systems.json')
       .times(2)
@@ -172,13 +95,11 @@ describe('InfinitudeClient', () => {
       .reply(200);
 
     // Issues GET + POST
-    MockDate.set('2018-01-07 00:01:00:00');
     const result = await client.setActivity('1', 'home', () => {});
-    // Before 30s TTL, issues only POST
-    MockDate.set('2018-01-07 00:01:05:00');
+    // Before refresh, issues only POST
     await client.setActivity('1', 'home', () => {});
-    // After 30s TTL, issues GET + POST
-    MockDate.set('2018-01-07 00:01:31:00');
+    // After refresh, issues GET + POST
+    jest.advanceTimersByTime(InfinitudeClient.REFRESH_MS);
     await client.setActivity('1', 'home', () => {});
 
     expect(result.status).toBe(200);
@@ -186,6 +107,7 @@ describe('InfinitudeClient', () => {
   });
 
   test('Handles update activity failures', async () => {
+    const client = new InfinitudeClient(url, console);
     const scope = nock(url)
       .get('/systems.json')
       .replyWithFile(200, '__tests__/resources/systems.json', 'UTF-8', {
@@ -220,13 +142,11 @@ describe('InfinitudeClient', () => {
       .reply(500);
 
     // Issues GET + POST
-    MockDate.set('2018-01-07 00:01:00:00');
     const result = await client.setActivity('1', 'home', () => {});
-    // Before 30s TTL, issues only POST
-    MockDate.set('2018-01-07 00:01:05:00');
+    // Before refresh, issues only POST
     await client.setActivity('1', 'home', () => {});
-    // After 30s TTL, issues GET, but does not POST since GET returns 500
-    MockDate.set('2018-01-07 00:01:31:00');
+    // After refresh, issues GET + POST
+    jest.advanceTimersByTime(InfinitudeClient.REFRESH_MS);
     await client.setActivity('1', 'home', () => {});
 
     expect(result.status).toBe(500);
