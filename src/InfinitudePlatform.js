@@ -10,6 +10,8 @@ let AccessoryCategories, Thermostat, Switch;
 
 module.exports = class InfinitudePlatform {
   constructor(log, config, api) {
+    log.info('Initializing...');
+
     if (!config) {
       log.info('Plugin not configured.');
       return;
@@ -38,6 +40,8 @@ module.exports = class InfinitudePlatform {
   }
 
   configureAccessory(accessory) {
+    this.log.info('Configuring accessory...');
+
     this.initializeZones(false).then(
       function() {
         this.accessories[accessory.UUID] = accessory;
