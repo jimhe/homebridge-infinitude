@@ -4,9 +4,8 @@ const Joi = require('joi');
 const configSchema = require('./configSchema');
 const InfinitudeClient = require('./InfinitudeClient');
 const InfinitudeThermostat = require('./InfinitudeThermostat');
-const InfinitudeThermostatSwitch = require('./InfinitudeThermostatSwitch');
 
-let AccessoryCategories, Thermostat, Switch;
+let AccessoryCategories, Thermostat;
 
 module.exports = class InfinitudePlatform {
   constructor(log, config, api) {
@@ -25,7 +24,6 @@ module.exports = class InfinitudePlatform {
     log.info(result);
 
     Thermostat = api.hap.Service.Thermostat;
-    Switch = api.hap.Service.Switch;
     AccessoryCategories = api.hap.Accessory.Categories;
 
     this.log = log;
@@ -40,8 +38,6 @@ module.exports = class InfinitudePlatform {
   }
 
   configureAccessory(accessory) {
-    this.log.info('Configuring accessory...');
-
     this.initializeZones(false).then(
       function() {
         this.accessories[accessory.UUID] = accessory;
@@ -53,7 +49,7 @@ module.exports = class InfinitudePlatform {
   async didFinishLaunching() {
     setTimeout(
       function() {
-        this.initializeZones();
+        this.initializeZones(true);
       }.bind(this),
       // wait 5 seconds to allow for existing accessories to be configured
       5000
@@ -91,8 +87,6 @@ module.exports = class InfinitudePlatform {
     const zoneAccessory = new this.api.platformAccessory(zoneName, uuid, AccessoryCategories.THERMOSTAT);
     this.log.info(`Creating new thermostat in zone: ${zoneName}`);
     zoneAccessory.addService(Thermostat, zoneName);
-    this.log.info(`Creating new switch in zone: ${zoneName}`);
-    zoneAccessory.addService(Switch, zoneName);
     this.api.registerPlatformAccessories(pluginName, platformName, [zoneAccessory]);
     this.configureThermostatAccessory(zoneAccessory);
     return zoneAccessory;
@@ -102,31 +96,6 @@ module.exports = class InfinitudePlatform {
     const thermostatName = this.getThermostatName(accessory);
     const zoneId = this.getZoneId(accessory);
     new InfinitudeThermostat(thermostatName, zoneId, this.client, this.log, accessory);
-    new InfinitudeThermostatSwitch(thermostatName, zoneId, this.client, this.log, accessory);
-  }
-
-  getValue(service, characteristic) {
-    return new Promise((resolve, reject) => {
-      service.getCharacteristic(characteristic).getValue(function(error, value) {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(value);
-        }
-      });
-    });
-  }
-
-  setValue(service, characteristic, newValue) {
-    return new Promise((resolve, reject) => {
-      service.getCharacteristic(characteristic).setValue(newValue, function(error) {
-        if (error) {
-          reject(error);
-        } else {
-          resolve();
-        }
-      });
-    });
   }
 
   getThermostatName(accessory) {

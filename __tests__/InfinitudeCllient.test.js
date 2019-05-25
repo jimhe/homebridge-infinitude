@@ -68,29 +68,7 @@ describe('InfinitudeClient', () => {
       .replyWithFile(200, '__tests__/resources/systems.json', 'UTF-8', {
         'Content-Type': 'application/json'
       })
-      .post(
-        '/systems/infinitude',
-        _.matches({
-          system: [
-            {
-              config: [
-                {
-                  zones: [
-                    {
-                      zone: [
-                        {
-                          id: '1',
-                          holdActivity: ['home']
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        })
-      )
+      .post('/api/config/zones/zone/1/holdActivity', 'home')
       .times(3)
       .reply(200);
 
@@ -115,29 +93,7 @@ describe('InfinitudeClient', () => {
       })
       .get('/systems.json')
       .reply(500)
-      .post(
-        '/systems/infinitude',
-        _.matches({
-          system: [
-            {
-              config: [
-                {
-                  zones: [
-                    {
-                      zone: [
-                        {
-                          id: '1',
-                          holdActivity: ['home']
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        })
-      )
+      .post('/api/config/zones/zone/1/holdActivity', 'home')
       .times(2)
       .reply(500);
 

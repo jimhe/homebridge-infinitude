@@ -1,11 +1,12 @@
-const InfinitudeAccessory = require('./InfinitudeAccessory');
-
 const Characteristic = require('hap-nodejs').Characteristic;
 const Thermostat = require('hap-nodejs').Service.Thermostat;
 
-module.exports = class InfinitudeThermostat extends InfinitudeAccessory {
+module.exports = class InfinitudeThermostat {
   constructor(name, zoneId, client, log, platformAccessory) {
-    super(name, zoneId, client, log);
+    this.name = name;
+    this.zoneId = zoneId;
+    this.client = client;
+    this.log = log;
     this.initialize(platformAccessory.getService(Thermostat));
   }
 
@@ -51,6 +52,10 @@ module.exports = class InfinitudeThermostat extends InfinitudeAccessory {
               return this.client.setActivity(this.zoneId, 'away', callback);
             case Characteristic.TargetHeatingCoolingState.AUTO:
               return this.client.setActivity(this.zoneId, 'home', callback);
+            case Characteristic.TargetHeatingCoolingState.HEAT:
+              return this.client.setActivity(this.zoneId, 'manual', callback, 'heat');
+            case Characteristic.TargetHeatingCoolingState.COOL:
+              return this.client.setActivity(this.zoneId, 'manual', callback, 'cool');
             default:
               this.log.warn(`Unsupported state ${targetHeatingCoolingState} for ${this.name}`);
               callback('Not supported');
@@ -64,20 +69,24 @@ module.exports = class InfinitudeThermostat extends InfinitudeAccessory {
       .on(
         'get',
         function(callback) {
-          this.getTargetTemperatures('home').then(function(targetTemperatures) {
-            callback(null, targetTemperatures.htsp);
-          });
+          this.getTargetTemperatures().then(
+            function(targetTemperatures) {
+              callback(null, targetTemperatures.htsp);
+            }.bind(this)
+          );
         }.bind(this)
       )
       .on(
         'set',
-        function(heatingThresholdTemperature, callback) {
-          this.log.warn(
-            `Unsupported heatingThresholdTemperature ${InfinitudeThermostat.celsiusToFahrenheit(
-              heatingThresholdTemperature
-            )} for ${this.name}`
+        function(thresholdTemperature, callback) {
+          this.log.info(`setting heating target temperature to ${thresholdTemperature}`);
+          return this.client.setTargetTemperature(
+            this.zoneId,
+            'home',
+            InfinitudeThermostat.convertToHomeKit(thresholdTemperature),
+            'htsp',
+            callback
           );
-          callback('Not supported');
         }.bind(this)
       );
 
@@ -86,20 +95,22 @@ module.exports = class InfinitudeThermostat extends InfinitudeAccessory {
       .on(
         'get',
         function(callback) {
-          this.getTargetTemperatures('home').then(function(targetTemperatures) {
+          this.getTargetTemperatures().then(function(targetTemperatures) {
             callback(null, targetTemperatures.clsp);
           });
         }.bind(this)
       )
       .on(
         'set',
-        function(coolingThresholdTemperature, callback) {
-          this.log.warn(
-            `Unsupported coolingThresholdTemperature ${InfinitudeThermostat.celsiusToFahrenheit(
-              coolingThresholdTemperature
-            )} for ${this.name}`
+        function(thresholdTemperature, callback) {
+          this.log.info(`setting cooling target temperature to ${thresholdTemperature}`);
+          return this.client.setTargetTemperature(
+            this.zoneId,
+            'home',
+            InfinitudeThermostat.convertToHomeKit(thresholdTemperature),
+            'clsp',
+            callback
           );
-          callback('Not supported');
         }.bind(this)
       );
 
@@ -112,33 +123,92 @@ module.exports = class InfinitudeThermostat extends InfinitudeAccessory {
       }.bind(this)
     );
 
-    thermostatService.getCharacteristic(Characteristic.TargetTemperature).on(
-      'set',
-      function(targetTemperature, callback) {
-        this.log.warn(
-          `Unsupported targetTemperature ${InfinitudeThermostat.celsiusToFahrenheit(targetTemperature)} for ${
-            this.name
-          }`
+    thermostatService
+      .getCharacteristic(Characteristic.TargetTemperature)
+      .on(
+        'get',
+        function(callback) {
+          this.getZoneTarget().then(function(zoneTarget) {
+            const targetActivity = zoneTarget['holdActivity'][0];
+            const activityTarget = zoneTarget['activities'][0]['activity'].find(
+              activity => activity['id'] == targetActivity
+            );
+            let manualMode = 'off';
+            if (zoneTarget.hasOwnProperty('manualMode')) {
+              manualMode = zoneTarget['manualMode'][0];
+            }
+            switch (manualMode) {
+              case 'heat':
+                callback(null, InfinitudeThermostat.convertInfinitudeTemperature(activityTarget.htsp[0]));
+                break;
+              case 'cool':
+                callback(null, InfinitudeThermostat.convertInfinitudeTemperature(activityTarget.clsp[0]));
+                break;
+              default:
+                callback(null, InfinitudeThermostat.convertInfinitudeTemperature(activityTarget.htsp[0]));
+                break;
+            }
+          });
+        }.bind(this)
+      )
+      .on(
+        'set',
+        function(targetTemperature, callback) {
+          this.log.info(`setting target temperature to ${targetTemperature}`);
+          this.getZoneTarget().then(
+            function(zoneTarget) {
+              const targetActivity = zoneTarget['holdActivity'][0];
+              let manualMode = 'off';
+              if (zoneTarget.hasOwnProperty('manualMode')) {
+                manualMode = zoneTarget['manualMode'][0];
+              }
+
+              if (targetActivity === 'away' || manualMode === 'off') {
+                callback(null);
+              } else {
+                switch (manualMode) {
+                  case 'cool':
+                    this.client.setTargetTemperature(
+                      this.zoneId,
+                      targetActivity,
+                      InfinitudeThermostat.convertToHomeKit(targetTemperature),
+                      'clsp',
+                      callback
+                    );
+                    break;
+                  case 'heat':
+                    this.client.setTargetTemperature(
+                      this.zoneId,
+                      targetActivity,
+                      InfinitudeThermostat.convertToHomeKit(targetTemperature),
+                      'htsp',
+                      callback
+                    );
+                    break;
+                  default:
+                    this.log.warn(`Unknown manualMode ${manualMode}`);
+                    callback(null);
+                }
+              }
+            }.bind(this)
+          );
+        }.bind(this)
+      );
+  }
+
+  getTargetTemperatures() {
+    return this.getZoneTarget().then(
+      function(zoneTarget) {
+        const targetActivity = zoneTarget['holdActivity'][0];
+        const activityTarget = zoneTarget['activities'][0]['activity'].find(
+          activity => activity['id'] == targetActivity
         );
-        callback('Not supported');
+        return {
+          htsp: InfinitudeThermostat.convertInfinitudeTemperature(activityTarget.htsp[0]),
+          clsp: InfinitudeThermostat.convertInfinitudeTemperature(activityTarget.clsp[0])
+        };
       }.bind(this)
     );
-  }
-
-  getCurrentTemperature(property = 'rt') {
-    return this.getZoneStatus().then(function(zoneStatus) {
-      return InfinitudeThermostat.convertInfinitudeTemperature(zoneStatus[property]);
-    });
-  }
-
-  getTargetTemperatures(acvitityId) {
-    return this.getZoneTarget().then(function(zoneTarget) {
-      const activityTarget = zoneTarget['activities'][0]['activity'].find(activity => activity['id'] == acvitityId);
-      return {
-        htsp: InfinitudeThermostat.convertInfinitudeTemperature(activityTarget.htsp[0]),
-        clsp: InfinitudeThermostat.convertInfinitudeTemperature(activityTarget.clsp[0])
-      };
-    });
   }
 
   getCurrentHeatingCoolingState() {
@@ -154,6 +224,45 @@ module.exports = class InfinitudeThermostat extends InfinitudeAccessory {
     });
   }
 
+  getCurrentRelativeHumidity() {
+    return this.getZoneStatus().then(function(status) {
+      return parseFloat(status['rh']);
+    });
+  }
+
+  getTargetHeatingCoolingState() {
+    return this.getZoneTarget().then(
+      function(zoneTarget) {
+        const targetActivity = zoneTarget['holdActivity'][0];
+        let manualMode = 'off';
+        if (zoneTarget.hasOwnProperty('manualMode')) {
+          manualMode = zoneTarget['manualMode'][0];
+        }
+        switch (targetActivity) {
+          case 'away':
+            return Characteristic.TargetHeatingCoolingState.OFF;
+          case 'home':
+            return Characteristic.TargetHeatingCoolingState.AUTO;
+          default:
+            switch (manualMode) {
+              case 'heat':
+                return Characteristic.TargetHeatingCoolingState.HEAT;
+              case 'cool':
+                return Characteristic.TargetHeatingCoolingState.COOL;
+              default:
+                return Characteristic.TargetHeatingCoolingState.OFF;
+            }
+        }
+      }.bind(this)
+    );
+  }
+
+  getCurrentTemperature(property = 'rt') {
+    return this.getZoneStatus().then(function(zoneStatus) {
+      return InfinitudeThermostat.convertInfinitudeTemperature(zoneStatus[property]);
+    });
+  }
+
   getZoneStatus() {
     return this.client.getStatus().then(
       function(status) {
@@ -162,10 +271,12 @@ module.exports = class InfinitudeThermostat extends InfinitudeAccessory {
     );
   }
 
-  getCurrentRelativeHumidity() {
-    return this.getZoneStatus().then(function(status) {
-      return parseFloat(status['rh']);
-    });
+  getZoneTarget() {
+    return this.client.getSystems().then(
+      function(systems) {
+        return systems['system'][0]['config'][0]['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
+      }.bind(this)
+    );
   }
 
   static fahrenheitToCelsius(temperature) {
@@ -174,6 +285,10 @@ module.exports = class InfinitudeThermostat extends InfinitudeAccessory {
 
   static celsiusToFahrenheit(temperature) {
     return temperature * 1.8 + 32;
+  }
+
+  static convertToHomeKit(temperature) {
+    return Math.round(this.celsiusToFahrenheit(temperature)).toFixed(1);
   }
 
   static convertInfinitudeTemperature(temperature) {

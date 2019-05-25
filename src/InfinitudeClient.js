@@ -80,22 +80,66 @@ module.exports = class InfinitudeClient {
     );
   }
 
-  async updateSystem(zoneId, handler, callback) {
-    if (this.cachedObjects['/systems.json'] === undefined) {
-      await this.refreshSystems();
-    }
+  setTargetTemperature(zoneId, activity, targetTemperature, setpoint, callback) {
+    // zone 1 is at position 0 of the array
+    const zoneArrayPosition = zoneId - 1;
 
-    const configJson = _.cloneDeep(this.cachedObjects['/systems.json']);
-    const zone = configJson['system'][0]['config'][0]['zones'][0]['zone'].find(zone => zone['id'] === zoneId);
-    handler(zone);
+    return this.getSystems().then(
+      function(systems) {
+        const zone = systems['system'][0]['config'][0]['zones'][0]['zone'].find(zone => zone['id'] === zoneId);
+        const activityIndex = zone['activities'][0]['activity'].findIndex(a => a['id'] === activity);
+        this.log.info(
+          `Setting ${setpoint} temperature to ${targetTemperature} for zone ${zoneId}, activity ${activity}, activityIndex ${activityIndex}`
+        );
+        return axios
+          .get(
+            `${
+              this.url
+            }/api/config/zones/zone/${zoneArrayPosition}/activities/activity/${activityIndex}?${setpoint}=${targetTemperature}`
+          )
+          .then(
+            function(result) {
+              this.refreshSystems().then(function() {
+                if (callback) {
+                  callback(null);
+                }
+              });
+              return result;
+            }.bind(this)
+          )
+          .catch(
+            function(error) {
+              this.log.error(error);
+              if (callback) {
+                callback(error);
+              }
+              return error.response;
+            }.bind(this)
+          );
+      }.bind(this)
+    );
+  }
+
+  setActivity(zoneId, activity, callback, manualMode = 'off') {
+    this.log.info(`Setting activity to ${activity}: ${manualMode} for zone ${zoneId}`);
+    // zone 1 is at position 0 of the array
+    const zoneArrayPosition = zoneId - 1;
     return axios
-      .post(`${this.url}/systems/infinitude`, configJson)
-      .then(function(result) {
-        if (callback) {
-          callback(null);
-        }
-        return result;
-      })
+      .get(
+        `${
+          this.url
+        }/api/config/zones/zone/${zoneArrayPosition}?holdActivity=${activity}&hold=on&manualMode=${manualMode}`
+      )
+      .then(
+        function(result) {
+          this.refreshSystems().then(function() {
+            if (callback) {
+              callback(null);
+            }
+          });
+          return result;
+        }.bind(this)
+      )
       .catch(
         function(error) {
           this.log.error(error);
@@ -105,29 +149,5 @@ module.exports = class InfinitudeClient {
           return error.response;
         }.bind(this)
       );
-  }
-
-  updateTemperatures(temperatures, zoneId, activityId, callback) {
-    return this.updateSystem(
-      zoneId,
-      zone => {
-        const activityConfig = zone['activities'][0]['activity'].find(activity => activity['id'] === activityId);
-        for (const property in temperatures) {
-          const targetTemperature = temperatures[property];
-          activityConfig[property] = [Math.round(targetTemperature).toString() + '.0'];
-        }
-      },
-      callback
-    );
-  }
-
-  setActivity(zoneId, activity, callback) {
-    return this.updateSystem(
-      zoneId,
-      zone => {
-        zone['holdActivity'] = [activity];
-      },
-      callback
-    );
   }
 };

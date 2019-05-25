@@ -1,6 +1,6 @@
 {
   "name": "homebridge-infinitude",
-  "version": "0.1.3",
+  "version": "0.2.2",
   "description": "Infinitude Plugin for Homebridge",
   "license": "ISC",
   "main": "src/index.js",
@@ -22,7 +22,7 @@
     "name": "Jim He"
   },
   "scripts": {
-    "dropcache": "rm -f ./node_modules/node-persist/storage/accessories/cachedAccessories",
+    "dropcache": "rm -f ./node_modules/node-persist/storage/accessories/cachedAccessories && rm -f ./accessories/cachedAccessories",
     "test": "jest",
     "prettier": "prettier --write src/**/*.js",
     "precommit": "lint-staged",
