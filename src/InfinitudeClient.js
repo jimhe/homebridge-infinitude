@@ -47,10 +47,7 @@ module.exports = class InfinitudeClient {
 
   refreshStatus() {
     return this.refresh('/status.xml', response => {
-      const xml = parser.getTraversalObj(response.data, this.xmlOptions);
-      this.log.info(xml);
-      const json = parser.convertToJson(xml);
-      this.log.info(json);
+      const json = parser.parse(response.data, this.xmlOptions);
       return json['status'];
     });
   }
