@@ -1,5 +1,4 @@
 const { pluginName, platformName } = require('./constants');
-const Joi = require('joi');
 
 const configSchema = require('./configSchema');
 const InfinitudeClient = require('./InfinitudeClient');
@@ -16,7 +15,7 @@ module.exports = class InfinitudePlatform {
       return;
     }
 
-    const result = Joi.validate(config, configSchema);
+    const result = configSchema.validate(config);
     if (result.error) {
       log.error('Invalid config.', result.error.message);
       return;
