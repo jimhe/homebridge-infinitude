@@ -35,7 +35,6 @@ module.exports = class InfinitudeClient {
       .get(`${this.url}${path}`, { timeout: 3000 })
       .then(
         function(response) {
-          this.log.info(response);
           this.cachedObjects[path] = handler(response);
         }.bind(this)
       )
@@ -47,10 +46,13 @@ module.exports = class InfinitudeClient {
   }
 
   refreshStatus() {
-    return this.refresh(
-      '/status.xml',
-      response => parser.convertToJson(parser.getTraversalObj(response.data, this.xmlOptions))['status']
-    );
+    return this.refresh('/status.xml', response => {
+      const xml = parser.getTraversalObj(response.data, this.xmlOptions);
+      this.log.info(xml);
+      const json = parser.convertToJson(xml);
+      this.log.info(json);
+      return json['status'];
+    });
   }
 
   refreshSystems() {
