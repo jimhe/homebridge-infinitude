@@ -35,6 +35,7 @@ module.exports = class InfinitudeClient {
       .get(`${this.url}${path}`, { timeout: 3000 })
       .then(
         function(response) {
+          this.log.info(response);
           this.cachedObjects[path] = handler(response);
         }.bind(this)
       )

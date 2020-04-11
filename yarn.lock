@@ -1861,10 +1861,10 @@ hoek@6.x.x:
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-6.1.3.tgz#73b7d33952e01fe27a38b0457294b79dd8da242c"
   integrity sha512-YXXAAhmF9zpQbC7LEcREFtXfGq5K1fmd+4PHkBq8NUqmzW3G+Dq10bI/i0KucLRwss3YYFQ0fSfoxBZYiGUqtQ==
 
-homebridge@^0.4.49:
-  version "0.4.49"
-  resolved "https://registry.yarnpkg.com/homebridge/-/homebridge-0.4.49.tgz#d57cf2d206749ab8e3b46b6b73fa21b34e8050de"
-  integrity sha512-YEGI8LZYOZTIsVS/uJHuCqp3tr5WHN1DVzVnsQUded6xTYWPtcZen69pERsci5ZUPhCi3T7hC2yKXv/p9de2Nw==
+homebridge@^0.4.53:
+  version "0.4.53"
+  resolved "https://registry.yarnpkg.com/homebridge/-/homebridge-0.4.53.tgz#081b71d3cec93a02b903deb4beaa4945c90482b5"
+  integrity sha512-yi8GEKVEkQWeOE9CPmZiu+7dZzeiqzVX/P8suTd2h1hjXHiuots3UdZunEY4MOwNNPc8w62m47T9pbK6RZM4WA==
   dependencies:
     chalk "^1.1.1"
     commander "2.8.1"
