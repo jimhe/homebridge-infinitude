@@ -1,3 +1,6 @@
 node_modules
 config.json
 .idea/
+*.iml
+persist
+accessories

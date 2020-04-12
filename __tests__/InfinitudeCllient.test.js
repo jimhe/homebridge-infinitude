@@ -3,7 +3,7 @@ const InfinitudeClient = require('../src/InfinitudeClient');
 const _ = require('lodash');
 jest.useFakeTimers();
 
-global.console = { error: jest.fn() };
+global.console = { error: jest.fn(), info: jest.fn() };
 
 describe('InfinitudeClient', () => {
   const url = 'http://localhost';
@@ -63,49 +63,17 @@ describe('InfinitudeClient', () => {
   test('Updates activity', async () => {
     const client = new InfinitudeClient(url, console);
     const scope = nock(url)
+      .get('/api/config/zones/zone/0?holdActivity=home&hold=on&manualMode=off')
+      .reply(200)
       .get('/systems.json')
-      .times(2)
       .replyWithFile(200, '__tests__/resources/systems.json', 'UTF-8', {
         'Content-Type': 'application/json'
-      })
-      .post('/api/config/zones/zone/1/holdActivity', 'home')
-      .times(3)
-      .reply(200);
+      });
 
-    // Issues GET + POST
     const result = await client.setActivity('1', 'home', () => {});
-    // Before refresh, issues only POST
-    await client.setActivity('1', 'home', () => {});
-    // After refresh, issues GET + POST
-    jest.advanceTimersByTime(InfinitudeClient.REFRESH_MS);
     await client.setActivity('1', 'home', () => {});
 
     expect(result.status).toBe(200);
-    expect(scope.isDone()).toBe(true);
-  });
-
-  test('Handles update activity failures', async () => {
-    const client = new InfinitudeClient(url, console);
-    const scope = nock(url)
-      .get('/systems.json')
-      .replyWithFile(200, '__tests__/resources/systems.json', 'UTF-8', {
-        'Content-Type': 'application/json'
-      })
-      .get('/systems.json')
-      .reply(500)
-      .post('/api/config/zones/zone/1/holdActivity', 'home')
-      .times(2)
-      .reply(500);
-
-    // Issues GET + POST
-    const result = await client.setActivity('1', 'home', () => {});
-    // Before refresh, issues only POST
-    await client.setActivity('1', 'home', () => {});
-    // After refresh, issues GET + POST
-    jest.advanceTimersByTime(InfinitudeClient.REFRESH_MS);
-    await client.setActivity('1', 'home', () => {});
-
-    expect(result.status).toBe(500);
     expect(scope.isDone()).toBe(true);
   });
 });
