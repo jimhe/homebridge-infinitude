@@ -1,0 +1,21 @@
+{
+  "pluginAlias": "InfinitudePlatform",
+  "pluginType": "platform",
+  "singular": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "title": "URL of Infinitude e.g. http://{host}:{port}",
+        "type": "string",
+        "format": "uri",
+        "required": true
+      },
+      "holdUntil": {
+        "title": "Time to hold until (will hold forever if not specified)",
+        "type": "string",
+        "pattern": "^([0-1][0-9]|2[0-3]):[0-5][0-9]$"
+      }
+    }
+  }
+}

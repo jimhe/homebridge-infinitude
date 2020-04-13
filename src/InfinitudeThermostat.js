@@ -51,14 +51,10 @@ module.exports = class InfinitudeThermostat {
             case Characteristic.TargetHeatingCoolingState.OFF:
               return this.client.setActivity(this.zoneId, 'away', callback);
             case Characteristic.TargetHeatingCoolingState.AUTO:
-              return this.client.setActivity(this.zoneId, 'home', callback);
-            case Characteristic.TargetHeatingCoolingState.HEAT:
-              return this.client.setActivity(this.zoneId, 'manual', callback, 'heat');
-            case Characteristic.TargetHeatingCoolingState.COOL:
-              return this.client.setActivity(this.zoneId, 'manual', callback, 'cool');
+              return this.client.setActivity(this.zoneId, 'manual', callback);
             default:
               this.log.warn(`Unsupported state ${targetHeatingCoolingState} for ${this.name}`);
-              callback('Not supported');
+              callback('The only supported states are OFF or AUTO');
               break;
           }
         }.bind(this)
@@ -79,10 +75,9 @@ module.exports = class InfinitudeThermostat {
       .on(
         'set',
         function(thresholdTemperature, callback) {
-          this.log.info(`setting heating target temperature to ${thresholdTemperature}`);
           return this.client.setTargetTemperature(
             this.zoneId,
-            'home',
+            'manual',
             InfinitudeThermostat.convertToHomeKit(thresholdTemperature),
             'htsp',
             callback
@@ -103,10 +98,9 @@ module.exports = class InfinitudeThermostat {
       .on(
         'set',
         function(thresholdTemperature, callback) {
-          this.log.info(`setting cooling target temperature to ${thresholdTemperature}`);
           return this.client.setTargetTemperature(
             this.zoneId,
-            'home',
+            'manual',
             InfinitudeThermostat.convertToHomeKit(thresholdTemperature),
             'clsp',
             callback
@@ -122,78 +116,6 @@ module.exports = class InfinitudeThermostat {
         });
       }.bind(this)
     );
-
-    thermostatService
-      .getCharacteristic(Characteristic.TargetTemperature)
-      .on(
-        'get',
-        function(callback) {
-          this.getZoneTarget().then(function(zoneTarget) {
-            const targetActivity = zoneTarget['holdActivity'][0];
-            const activityTarget = zoneTarget['activities'][0]['activity'].find(
-              activity => activity['id'] == targetActivity
-            );
-            let manualMode = 'off';
-            if (zoneTarget.hasOwnProperty('manualMode')) {
-              manualMode = zoneTarget['manualMode'][0];
-            }
-            switch (manualMode) {
-              case 'heat':
-                callback(null, InfinitudeThermostat.convertInfinitudeTemperature(activityTarget.htsp[0]));
-                break;
-              case 'cool':
-                callback(null, InfinitudeThermostat.convertInfinitudeTemperature(activityTarget.clsp[0]));
-                break;
-              default:
-                callback(null, InfinitudeThermostat.convertInfinitudeTemperature(activityTarget.htsp[0]));
-                break;
-            }
-          });
-        }.bind(this)
-      )
-      .on(
-        'set',
-        function(targetTemperature, callback) {
-          this.log.info(`setting target temperature to ${targetTemperature}`);
-          this.getZoneTarget().then(
-            function(zoneTarget) {
-              const targetActivity = zoneTarget['holdActivity'][0];
-              let manualMode = 'off';
-              if (zoneTarget.hasOwnProperty('manualMode')) {
-                manualMode = zoneTarget['manualMode'][0];
-              }
-
-              if (targetActivity === 'away' || manualMode === 'off') {
-                callback(null);
-              } else {
-                switch (manualMode) {
-                  case 'cool':
-                    this.client.setTargetTemperature(
-                      this.zoneId,
-                      targetActivity,
-                      InfinitudeThermostat.convertToHomeKit(targetTemperature),
-                      'clsp',
-                      callback
-                    );
-                    break;
-                  case 'heat':
-                    this.client.setTargetTemperature(
-                      this.zoneId,
-                      targetActivity,
-                      InfinitudeThermostat.convertToHomeKit(targetTemperature),
-                      'htsp',
-                      callback
-                    );
-                    break;
-                  default:
-                    this.log.warn(`Unknown manualMode ${manualMode}`);
-                    callback(null);
-                }
-              }
-            }.bind(this)
-          );
-        }.bind(this)
-      );
   }
 
   getTargetTemperatures() {
@@ -201,7 +123,7 @@ module.exports = class InfinitudeThermostat {
       function(zoneTarget) {
         const targetActivity = zoneTarget['holdActivity'][0];
         const activityTarget = zoneTarget['activities'][0]['activity'].find(
-          activity => activity['id'] == targetActivity
+          activity => activity['id'] === targetActivity
         );
         return {
           htsp: InfinitudeThermostat.convertInfinitudeTemperature(activityTarget.htsp[0]),
@@ -234,24 +156,11 @@ module.exports = class InfinitudeThermostat {
     return this.getZoneTarget().then(
       function(zoneTarget) {
         const targetActivity = zoneTarget['holdActivity'][0];
-        let manualMode = 'off';
-        if (zoneTarget.hasOwnProperty('manualMode')) {
-          manualMode = zoneTarget['manualMode'][0];
-        }
         switch (targetActivity) {
-          case 'away':
-            return Characteristic.TargetHeatingCoolingState.OFF;
-          case 'home':
+          case 'manual':
             return Characteristic.TargetHeatingCoolingState.AUTO;
           default:
-            switch (manualMode) {
-              case 'heat':
-                return Characteristic.TargetHeatingCoolingState.HEAT;
-              case 'cool':
-                return Characteristic.TargetHeatingCoolingState.COOL;
-              default:
-                return Characteristic.TargetHeatingCoolingState.OFF;
-            }
+            return Characteristic.TargetHeatingCoolingState.OFF;
         }
       }.bind(this)
     );

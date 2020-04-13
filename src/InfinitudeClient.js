@@ -1,14 +1,14 @@
 const axios = require('axios');
 const parser = require('fast-xml-parser');
-const _ = require('lodash');
 
 module.exports = class InfinitudeClient {
   static get REFRESH_MS() {
     return 10000;
   }
 
-  constructor(url, log) {
+  constructor(url, holdUntil, log) {
     this.url = url;
+    this.holdUntil = holdUntil;
     this.log = log;
     this.cachedObjects = {};
 
@@ -32,7 +32,7 @@ module.exports = class InfinitudeClient {
 
   refresh(path, handler) {
     return axios
-      .get(`${this.url}${path}`, { timeout: 3000 })
+      .get(`${this.url}${path}`, { timeout: 5000 })
       .then(
         function(response) {
           this.cachedObjects[path] = handler(response);
@@ -88,15 +88,10 @@ module.exports = class InfinitudeClient {
       function(systems) {
         const zone = systems['system'][0]['config'][0]['zones'][0]['zone'].find(zone => zone['id'] === zoneId);
         const activityIndex = zone['activities'][0]['activity'].findIndex(a => a['id'] === activity);
-        this.log.info(
-          `Setting ${setpoint} temperature to ${targetTemperature} for zone ${zoneId}, activity ${activity}, activityIndex ${activityIndex}`
-        );
+        const uri = `${this.url}/api/config/zones/zone/${zoneArrayPosition}/activities/activity/${activityIndex}?${setpoint}=${targetTemperature}`;
+        this.log.info(uri);
         return axios
-          .get(
-            `${
-              this.url
-            }/api/config/zones/zone/${zoneArrayPosition}/activities/activity/${activityIndex}?${setpoint}=${targetTemperature}`
-          )
+          .get(uri)
           .then(
             function(result) {
               this.refreshSystems().then(function() {
@@ -120,16 +115,20 @@ module.exports = class InfinitudeClient {
     );
   }
 
-  setActivity(zoneId, activity, callback, manualMode = 'off') {
-    this.log.info(`Setting activity to ${activity}: ${manualMode} for zone ${zoneId}`);
+  setActivity(zoneId, activity, callback) {
     // zone 1 is at position 0 of the array
     const zoneArrayPosition = zoneId - 1;
+    const uri = new URL(`/api/config/zones/zone/${zoneArrayPosition}`, this.url);
+    uri.searchParams.set('holdActivity', activity);
+    uri.searchParams.set('hold', 'on');
+
+    if (activity !== 'away' && this.holdUntil) {
+      uri.searchParams.set('otmr', this.holdUntil);
+    }
+
+    this.log.info(uri.href);
     return axios
-      .get(
-        `${
-          this.url
-        }/api/config/zones/zone/${zoneArrayPosition}?holdActivity=${activity}&hold=on&manualMode=${manualMode}`
-      )
+      .get(uri.href)
       .then(
         function(result) {
           this.refreshSystems().then(function() {

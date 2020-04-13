@@ -11,7 +11,7 @@ module.exports = class InfinitudePlatform {
     log.info('Initializing...');
 
     if (!config) {
-      log.info('Plugin not configured.');
+      log.error('Plugin not configured.');
       return;
     }
 
@@ -20,7 +20,6 @@ module.exports = class InfinitudePlatform {
       log.error('Invalid config.', result.error.message);
       return;
     }
-    log.info(result);
 
     Thermostat = api.hap.Service.Thermostat;
     AccessoryCategories = api.hap.Accessory.Categories;
@@ -31,7 +30,7 @@ module.exports = class InfinitudePlatform {
     this.zoneIds = {};
     this.zoneNames = {};
     this.initialized = false;
-    this.client = new InfinitudeClient(config.url, this.log);
+    this.client = new InfinitudeClient(config.url, config.holdUntil, this.log);
 
     this.api.on('didFinishLaunching', this.didFinishLaunching.bind(this));
   }
