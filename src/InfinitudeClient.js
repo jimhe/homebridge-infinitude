@@ -118,17 +118,15 @@ module.exports = class InfinitudeClient {
   setActivity(zoneId, activity, callback) {
     // zone 1 is at position 0 of the array
     const zoneArrayPosition = zoneId - 1;
-    const uri = new URL(`/api/config/zones/zone/${zoneArrayPosition}`, this.url);
-    uri.searchParams.set('holdActivity', activity);
-    uri.searchParams.set('hold', 'on');
+    let uri = `${this.url}/api/config/zones/zone/${zoneArrayPosition}?holdActivity=${activity}&hold=on`;
 
     if (activity !== 'away' && this.holdUntil) {
-      uri.searchParams.set('otmr', this.holdUntil);
+      uri += `&otmr=${encodeURIComponent(this.holdUntil)}`;
     }
 
-    this.log.info(uri.href);
+    this.log.info(uri);
     return axios
-      .get(uri.href)
+      .get(uri)
       .then(
         function(result) {
           this.refreshSystems().then(function() {

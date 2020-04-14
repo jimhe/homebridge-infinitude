@@ -58,7 +58,6 @@ describe('InfinitudeClient', () => {
       });
 
     const result = await client.setActivity('1', 'home', () => {});
-    await client.setActivity('1', 'home', () => {});
 
     expect(result.status).toBe(200);
     expect(scope.isDone()).toBe(true);
