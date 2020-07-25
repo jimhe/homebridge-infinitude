@@ -91,7 +91,7 @@ module.exports = class InfinitudeClient {
         const uri = `${this.url}/api/config/zones/zone/${zoneArrayPosition}/activities/activity/${activityIndex}?${setpoint}=${targetTemperature}`;
         this.log.info(uri);
         return axios
-          .get(uri)
+          .put(uri)
           .then(
             function(result) {
               this.refreshSystems().then(function() {
