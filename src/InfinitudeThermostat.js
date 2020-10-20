@@ -116,6 +116,15 @@ module.exports = class InfinitudeThermostat {
         });
       }.bind(this)
     );
+    
+    thermostatService.getCharacteristic(Characteristic.FilterLifeLevel).on(
+      'get',
+      function(callback) {
+      this.getFilterLifeLevel().then(function(filterlevel) {
+          callback(null, filterlevel);
+        });
+      }.bind(this)
+    );
   }
 
   getTargetTemperatures() {
@@ -149,6 +158,12 @@ module.exports = class InfinitudeThermostat {
   getCurrentRelativeHumidity() {
     return this.getZoneStatus().then(function(status) {
       return parseFloat(status['rh']);
+    });
+  }
+  
+  getFilterLifeLevel() {
+    return this.client.getStatus().then(function(status) {
+      return status.filtrlvl
     });
   }
 
