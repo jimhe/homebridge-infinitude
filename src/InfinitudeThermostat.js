@@ -1,13 +1,16 @@
-const Characteristic = require('hap-nodejs').Characteristic;
-const Thermostat = require('hap-nodejs').Service.Thermostat;
+let Characteristic, Service;
 
 module.exports = class InfinitudeThermostat {
-  constructor(name, zoneId, client, log, platformAccessory) {
+  constructor(name, zoneId, client, log, platformAccessory, service, characteristic) {
     this.name = name;
     this.zoneId = zoneId;
     this.client = client;
     this.log = log;
-    this.initialize(platformAccessory.getService(Thermostat));
+
+    Service = service;
+    Characteristic = characteristic;
+
+    this.initialize(platformAccessory.getService(Service.Thermostat));
   }
 
   initialize(thermostatService) {
