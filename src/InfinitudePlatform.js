@@ -33,8 +33,7 @@ module.exports = class InfinitudePlatform {
     this.zoneIds = {};
     this.zoneNames = {};
     this.initialized = false;
-    this.client = new InfinitudeClient(config.url, config.holdUntil, this.log)
-    this.TemperatureSensor = new this.Service(this.Service.TemperatureSensor);
+    this.client = new InfinitudeClient(config.url, config.holdUntil, this.log);
 
     this.api.on('didFinishLaunching', this.didFinishLaunching.bind(this));
   }
