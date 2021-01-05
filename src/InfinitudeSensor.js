@@ -1,6 +1,6 @@
 let Characteristic, Service;
 
-module.exports = class SensorAccessory {
+module.exports = class InfinitudeSensor {
   constructor(name, zoneId, client, log, platformAccessory, service, characteristic) {
     this.name = name;
     this.zoneId = zoneId;
