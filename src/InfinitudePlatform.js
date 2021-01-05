@@ -3,8 +3,9 @@ const { pluginName, platformName } = require('./constants');
 const configSchema = require('./configSchema');
 const InfinitudeClient = require('./InfinitudeClient');
 const InfinitudeThermostat = require('./InfinitudeThermostat');
+const InfinitudeSensor = require('./InfinitudeSensor');
 
-let AccessoryCategories, Thermostat;
+let AccessoryCategories, Thermostat,FilterMaintenance,TemperatureSensor,Fanv2;
 
 module.exports = class InfinitudePlatform {
   constructor(log, config, api) {
@@ -20,7 +21,9 @@ module.exports = class InfinitudePlatform {
       log.error('Invalid config.', result.error.message);
       return;
     }
-
+	
+	TemperatureSensor = api.hap.Service.TemperatureSensor;
+	FilterMaintenance = api.hap.Service.FilterMaintenance;
     Thermostat = api.hap.Service.Thermostat;
     AccessoryCategories = api.hap.Accessory.Categories;
 
@@ -30,7 +33,8 @@ module.exports = class InfinitudePlatform {
     this.zoneIds = {};
     this.zoneNames = {};
     this.initialized = false;
-    this.client = new InfinitudeClient(config.url, config.holdUntil, this.log);
+    this.client = new InfinitudeClient(config.url, config.holdUntil, this.log)
+    this.TemperatureSensor = new this.Service(this.Service.TemperatureSensor);
 
     this.api.on('didFinishLaunching', this.didFinishLaunching.bind(this));
   }
@@ -95,7 +99,21 @@ module.exports = class InfinitudePlatform {
     const zoneId = this.getZoneId(accessory);
     new InfinitudeThermostat(thermostatName, zoneId, this.client, this.log, accessory);
   }
-
+  
+  createSensorAccessory('Outside Temperature', uuid) {
+    const SensorAccessory = new this.api.platformAccessory('OAT', uuid);
+    this.log.info(`Creating new Sensor for OAT`);
+    SensorAccessory.addService(TemperatureSensor);
+    this.api.registerPlatformAccessories(pluginName, platformName, [SensorAccessory]);
+    this.configureSensorAccessory(SensorAccessory);
+    return SensorAccessory;
+  }
+  
+    configureSensorAccessory(accessory) {
+    const sensorName = 'Outside Temperature';
+    new InfinitudeSensor(sensorName, this.client, this.log, SensorAccessory);
+  }
+  
   getThermostatName(accessory) {
     return this.zoneNames[accessory.UUID];
   }
