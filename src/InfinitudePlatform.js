@@ -5,7 +5,7 @@ const InfinitudeClient = require('./InfinitudeClient');
 const InfinitudeThermostat = require('./InfinitudeThermostat');
 const InfinitudeSensor = require('./InfinitudeSensor');
 
-let AccessoryCategories, Thermostat,FilterMaintenance,TemperatureSensor,Fanv2;
+let AccessoryCategories, Thermostat,Sensor,;
 
 module.exports = class InfinitudePlatform {
   constructor(log, config, api) {
@@ -22,7 +22,7 @@ module.exports = class InfinitudePlatform {
       return;
     }
 	
-	TemperatureSensor = api.hap.Service.TemperatureSensor;
+	Sensor = api.hap.Service.TemperatureSensor;
 	FilterMaintenance = api.hap.Service.FilterMaintenance;
     Thermostat = api.hap.Service.Thermostat;
     AccessoryCategories = api.hap.Accessory.Categories;
@@ -101,7 +101,7 @@ module.exports = class InfinitudePlatform {
   }
   
   createSensorAccessory('Outside Temperature', uuid) {
-    const SensorAccessory = new this.api.platformAccessory('OAT', uuid);
+    const SensorAccessory = new this.api.platformAccessory('OAT', uuid, AccessoryCategories.SENSOR);
     this.log.info(`Creating new Sensor for OAT`);
     SensorAccessory.addService(TemperatureSensor);
     this.api.registerPlatformAccessories(pluginName, platformName, [SensorAccessory]);
