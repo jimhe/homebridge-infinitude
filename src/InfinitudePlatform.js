@@ -30,6 +30,7 @@ module.exports = class InfinitudePlatform {
     this.log = log;
     this.api = api;
     this.accessories = {};
+    this.sensors = {};
     this.zoneIds = {};
     this.zoneNames = {};
     this.initialized = false;
@@ -75,6 +76,7 @@ module.exports = class InfinitudePlatform {
           this.zoneNames[tUuid] = zoneName;
           if (create) {
             this.accessories[tUuid] = this.accessories[tUuid] || this.createZoneAccessory(zoneName, tUuid);
+	    this.sensors[sUuid] = this.sensors[sUuid] || this.createSensorAccessory(sUuid);
           }
         }
 
