@@ -35,6 +35,8 @@ module.exports = class InfinitudePlatform {
     this.zoneNames = {};
     this.initialized = false;
     this.client = new InfinitudeClient(config.url, config.holdUntil, this.log);
+    this.Service = api.hap.Service;
+    this.Characteristic = api.hap.Characteristic;
 
     this.api.on('didFinishLaunching', this.didFinishLaunching.bind(this));
   }
@@ -44,6 +46,15 @@ module.exports = class InfinitudePlatform {
       function() {
         this.accessories[accessory.UUID] = accessory;
         this.configureThermostatAccessory(accessory);
+      }.bind(this)
+    );
+  }
+	
+ configureAccessory(accessory) {
+    this.initializeZones(false).then(
+      function() {
+        this.accessories[accessory.UUID] = accessory;
+        this.configureSensorAccessory(accessory);
       }.bind(this)
     );
   }
@@ -98,7 +109,15 @@ module.exports = class InfinitudePlatform {
   configureThermostatAccessory(accessory) {
     const thermostatName = this.getThermostatName(accessory);
     const zoneId = this.getZoneId(accessory);
-    new InfinitudeThermostat(thermostatName, zoneId, this.client, this.log, accessory);
+    new InfinitudeThermostat(
+      thermostatName,
+      zoneId,
+      this.client,
+      this.log,
+      accessory,
+      this.Service,
+      this.Characteristic
+    );
   }
   
   createSensorAccessory(uuid) {
@@ -110,13 +129,26 @@ module.exports = class InfinitudePlatform {
     return SensorAccessory;
   }
   
-    configureSensorAccessory(accessory) {
-    const sensorName = 'Outside Temperature';
-    new InfinitudeSensor(sensorName, this.client, this.log, accessory);
+  configureSensorAccessory(accessory) {
+    const sensorName = this.getSensorName(accessory);
+    const zoneId = this.getZoneId(accessory);
+    new InfinitudeSensor(
+      sensorName,
+      zoneId,
+      this.client,
+      this.log,
+      accessory,
+      this.Service,
+      this.Characteristic
+    )
   }
   
   getThermostatName(accessory) {
     return this.zoneNames[accessory.UUID];
+  }
+	
+  getSensorName(accessory) {
+    return 'OAT';
   }
 
   getZoneId(accessory) {
