@@ -32,7 +32,7 @@ module.exports = class InfinitudeSensor {
   }
 
   getCurrentOutdoorTemperature() {
-    return this.getStatus().then(function(status) {
+    return this.client.getStatus().then(function(status) {
       return parseFloat(status['oat']);
     });
   }
