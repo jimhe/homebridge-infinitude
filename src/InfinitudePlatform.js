@@ -82,12 +82,11 @@ module.exports = class InfinitudePlatform {
         for (const zone of enabledZones) {
           const zoneId = zone.id;
           const zoneName = `${zone.name} Thermostat`;
-          const tUuid = this.api.hap.uuid.generate(zoneId);
+          const tUuid = this.api.hap.uuid.generate(zoneId);	
           this.zoneIds[tUuid] = zoneId;
           this.zoneNames[tUuid] = zoneName;
           if (create) {
             this.accessories[tUuid] = this.accessories[tUuid] || this.createZoneAccessory(zoneName, tUuid);
-	    this.sensors[sUuid] = this.sensors[sUuid] || this.createSensorAccessory(sUuid);
           }
         }
 
@@ -131,10 +130,8 @@ module.exports = class InfinitudePlatform {
   
   configureSensorAccessory(accessory) {
     const sensorName = this.getSensorName(accessory);
-    const zoneId = this.getZoneId(accessory);
     new InfinitudeSensor(
       sensorName,
-      zoneId,
       this.client,
       this.log,
       accessory,
