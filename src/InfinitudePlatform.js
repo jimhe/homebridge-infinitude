@@ -120,7 +120,7 @@ module.exports = class InfinitudePlatform {
   }
   
   createSensorAccessory(uuid) {
-    const sensorAccessory = new this.api.platformAccessory('OAT', uuid, AccessoryCategories.SENSOR);
+    const sensorAccessory = new this.api.platformAccessory('OAT', uuid, AccessoryCategories.TEMPERATURESENSOR);
     this.log.info(`Creating new Sensor for OAT`);
     sensorAccessory.addService(TemperatureSensor);
     this.api.registerPlatformAccessories(pluginName, platformName, [sensorAccessory]);
