@@ -23,7 +23,7 @@ module.exports = class InfinitudePlatform {
     }
 	
     //FilterMaintenance = api.hap.Service.FilterMaintenance;
-    Sensor = api.hap.Service.TemperatureSensor;
+    TemperatureSensor = api.hap.Service.TemperatureSensor;
     Thermostat = api.hap.Service.Thermostat;
     AccessoryCategories = api.hap.Accessory.Categories;
 
