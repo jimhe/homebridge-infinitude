@@ -5,7 +5,7 @@ const InfinitudeClient = require('./InfinitudeClient');
 const InfinitudeThermostat = require('./InfinitudeThermostat');
 const InfinitudeSensor = require('./InfinitudeSensor');
 
-let AccessoryCategories, Thermostat,Sensor;
+let AccessoryCategories, Thermostat, TemperatureSensor, OutsideUuid;
 
 module.exports = class InfinitudePlatform {
   constructor(log, config, api) {
@@ -23,9 +23,10 @@ module.exports = class InfinitudePlatform {
     }
 	
     //FilterMaintenance = api.hap.Service.FilterMaintenance;
-    TemperatureSensor = api.hap.Service.TemperatureSensor;
     Thermostat = api.hap.Service.Thermostat;
     AccessoryCategories = api.hap.Accessory.Categories;
+    TemperatureSensor = api.hap.Service.TemperatureSensor;
+    OutsideUuid = api.hap.uuid.generate('outsideZone');
 
     this.log = log;
     this.api = api;
@@ -45,20 +46,15 @@ module.exports = class InfinitudePlatform {
     this.initializeZones(false).then(
       function() {
         this.accessories[accessory.UUID] = accessory;
-        this.configureThermostatAccessory(accessory);
+        if (accessory.UUID === OutsideUuid) {
+          this.configureSensorAccessory(accessory);
+        } else {
+          this.configureThermostatAccessory(accessory);
+        }
       }.bind(this)
     );
   }
 	
- configureAccessory(accessory) {
-    this.initializeZones(false).then(
-      function() {
-        this.accessories[accessory.UUID] = accessory;
-        this.configureSensorAccessory(accessory);
-      }.bind(this)
-    );
-  }
-
   async didFinishLaunching() {
     setTimeout(
       function() {
@@ -73,6 +69,10 @@ module.exports = class InfinitudePlatform {
     if (this.initialized) {
       this.log.info('INITIALIZED!');
       return;
+    }
+
+  if (create) {
+      this.accessories[OutsideUuid] = this.accessories[OutsideUuid] || this.createSensorAccessory(OutsideUuid);
     }
 
     return this.client.getStatus().then(
