@@ -71,10 +71,6 @@ module.exports = class InfinitudePlatform {
       return;
     }
 
-  if (create) {
-      this.accessories[OutsideUuid] = this.accessories[OutsideUuid] || this.createSensorAccessory(OutsideUuid);
-    }
-
     return this.client.getStatus().then(
       function(status) {
         const enabledZones = status['zones']['zone'].filter(zone => zone['enabled'] === 'on');
@@ -89,6 +85,9 @@ module.exports = class InfinitudePlatform {
             this.accessories[tUuid] = this.accessories[tUuid] || this.createZoneAccessory(zoneName, tUuid);
           }
         }
+	 if (create) {
+      this.accessories[OutsideUuid] = this.accessories[OutsideUuid] || this.createSensorAccessory(OutsideUuid);
+    }
 
         this.initialized = true;
         this.api.emit('didFinishInit');
