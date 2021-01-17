@@ -30,10 +30,11 @@ module.exports = class InfinitudePlatform {
     this.zoneIds = {};
     this.zoneNames = {};
     this.initialized = false;
-    this.client = new InfinitudeClient(config.url, config.holdUntil, this.log);
+    this.client = new InfinitudeClient(config.url, this.log);
+    this.config = config;
     this.Service = api.hap.Service;
     this.Characteristic = api.hap.Characteristic;
-
+    
     this.api.on('didFinishLaunching', this.didFinishLaunching.bind(this));
   }
 
@@ -64,7 +65,7 @@ module.exports = class InfinitudePlatform {
 
     return this.client.getStatus().then(
       function(status) {
-        const enabledZones = status['zones']['zone'].filter(zone => zone['enabled'] === 'on');
+        const enabledZones = status['zones'][0]['zone'].filter(zone => zone['enabled'][0] === 'on');
 
         for (const zone of enabledZones) {
           const zoneId = zone.id;
@@ -96,14 +97,15 @@ module.exports = class InfinitudePlatform {
     const thermostatName = this.getThermostatName(accessory);
     const zoneId = this.getZoneId(accessory);
     new InfinitudeThermostat(
-      thermostatName,
-      zoneId,
-      this.client,
-      this.log,
+      thermostatName, 
+      zoneId, 
+      this.client, 
+      this.log, 
+      this.config, 
       accessory,
       this.Service,
       this.Characteristic
-    );
+      );
   }
 
   getThermostatName(accessory) {
