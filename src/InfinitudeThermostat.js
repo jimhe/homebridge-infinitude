@@ -261,7 +261,7 @@ module.exports = class InfinitudeThermostat {
 
   getCurrentRelativeHumidity() {
     return this.getZoneStatus().then(function(status) {
-      return parseFloat(status['rh']);
+      return parseFloat(status['rh'][0]);
     });
   }
 
@@ -362,7 +362,7 @@ module.exports = class InfinitudeThermostat {
 
   getFilterLifeLevel() {
     return this.client.getStatus().then(function(status) {
-      return status.filtrlvl
+      return parseFloat(status['filtrlvl'][0]);
     });
   }
 
