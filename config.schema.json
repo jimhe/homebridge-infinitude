@@ -12,9 +12,19 @@
         "required": true
       },
       "holdUntil": {
-        "title": "Time to hold until (will hold forever if not specified)",
+        "title": "Time to hold until (will hold forever if not specified), used when no activity scheduled in t-stat",
         "type": "string",
         "pattern": "^([0-1][0-9]|2[0-3]):[0-5][0-9]$"
+      },
+      "shutOffAway": {
+        "title": "Set system to Away when Off",
+        "type": "boolean",
+        "default": false
+      },
+      "holdUntilNextActivity": {
+        "title": "Hold away until next scheduled activity",
+        "type": "boolean",
+        "default": false
       }
     }
   }
