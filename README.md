@@ -14,7 +14,7 @@ HomeKit Features:
 - **Thermostat Control**: Set Target Temperature for Heat & Cooling. Infinitude values `htsp` and `clsp` respectively.
 - **Current Temperature:** Dislays current temperature reported by the zone thermostat. Infinitude values `rt`
 - **Hardware Display Unit:** control temperature unit (Celcius/Fahrenheit) of physical Theromstat.
-- **Filter Life Level:** Displays life of Filter, `0` being breand new and `100` needing replacement. Infinitude value `filtrlvl`
+- **Filter Life Level:** Displays life of Filter, `0` being brand new and `100` needing replacement. Infinitude value `filtrlvl`
 - **Current Relative Humidity:** Displays indoor humidity reported by Thermostat. Infinitude value `rh`
 
 # Install
