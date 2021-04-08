@@ -44,6 +44,7 @@ docker run -d -e MODE='Production' -e PASS_REQS='0' jimhe/infinitude:1.0.0
 You can use HomeKit to completely control your thermostat's schedule.
 
 **Scenes -** I use scenes to create my desired temperature profiles for both Heat & Cool, e.g.,:
+
 Climate Home - desired settings for during the day when I am home.
 Climate Away - desired settings for while the house is empty.
 Climate Sleep - desired settings for while we sleep.
