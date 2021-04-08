@@ -55,4 +55,5 @@ When Last Person Leaves - Climate Away
 When First Person Arrives - Climate Home
 
 **Shortcuts -** I use a personal automation in Shortcuts to tell me if I need to change my air filter.
+
 <img src="https://user-images.githubusercontent.com/8211291/114083700-52a7e180-987d-11eb-8b2c-5287763a8e1c.PNG" width=300>
