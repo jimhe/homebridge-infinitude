@@ -10,6 +10,13 @@ This plugin will create thermostat accessories for each enabled zone in infinitu
 Other settings:
  - If `holdUntil` is specified, it will set `otmr` to the specified hour when changing to `AUTO` mode.
 
+HomeKit Features:
+- **Thermostat Control**: Set Target Temperature for Heat & Cooling. Infinitude values `htsp` and `clsp` respectively.
+- **Current Temperature:** Dislays current temperature reported by the zone thermostat. Infinitude values `rt`
+- **Hardware Display Unit:** control temperature unit (Celcius/Fahrenheit) of physical Theromstat.
+- **Filter Life Level:** Displays life of Filter, `0` being breand new and `100` needing replacement. Infinitude value `filtrlvl`
+- **Current Relative Humidity:** Displays indoor humidity reported by Thermostat. Infinitude value `rh`
+
 # Install
 
 ## Homebridge Configuration
@@ -25,14 +32,11 @@ Other settings:
 }
 ```
 
+If running Infinitude & Homebridge on same devive, e.g., Raspberry Pi, use LocalHost 127.0.0.1 for url.
+
 ## Running Infinitude
 ```
 docker run -d -e MODE='Production' -e PASS_REQS='0' jimhe/infinitude:1.0.0
 ```
+[Instructions for Raspberry Pi](https://github.com/nebulous/infinitude/wiki/Installing-Infinitude-on-Raspberry-PI-(raspbian))
 
-# Development
-
-1. Add `InfinitudePlatform` to `platforms`in new `config.json` in root directory of this repository.
-2. `yarn && yarn test && yarn start`
-
-To reset cache: `yarn dropcache`
