@@ -45,15 +45,15 @@ You can use HomeKit to completely control your thermostat's schedule.
 
 **Scenes -** I use scenes to create my desired temperature profiles for both Heat & Cool, e.g.,:
 
-	Climate Home - desired settings for during the day when I am home.
-	Climate Away - desired settings for while the house is empty.
-	Climate Sleep - desired settings for while we sleep.
+-Climate Home - desired settings for during the day when I am home.
+-Climate Away - desired settings for while the house is empty.
+-Climate Sleep - desired settings for while we sleep.
 
 **Automations -** I use time and location based Automations to trigger my scenes. e.g.,:
-At 6:00 AM - Climate Home
-At 11:00 PM - Climate Sleep
-When Last Person Leaves - Climate Away
-When First Person Arrives - Climate Home
+-At 6:00 AM - Climate Home
+-At 11:00 PM - Climate Sleep
+-When Last Person Leaves - Climate Away
+-When First Person Arrives - Climate Home
 
 **Shortcuts -** I use a personal automation in Shortcuts to tell me if I need to change my air filter.
 
