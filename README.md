@@ -1,5 +1,7 @@
 # homebridge-infinitude
-[Infinitude](https://github.com/nebulous/infinitude) Plugin for Homebridge
+[Infinitude](https://github.com/nebulous/infinitude) Plugin for Homebridge. Enable Carrier/Bryant Infinity Touch Thermostats in HomeKit.
+
+What is Infinitude? Infinitude is an alternative web service for Carrier Infinity Touch and other compatible thermostats. It allows read and control of your Infinity system over your network (no serial connection needed).
 
 # Behavior
 This plugin will create thermostat accessories for each enabled zone in infinitude. For simplicity, it only supports `OFF` or `AUTO` mode:
@@ -18,6 +20,12 @@ HomeKit Features:
 - **Current Relative Humidity:** Displays indoor humidity reported by Thermostat. Infinitude value `rh`
 
 # Install
+
+Use Homebridge-UI-X and Search for homebridge-infinitude
+
+OR
+
+run `sudo npm i -g homebridge-infinitude`
 
 ## Homebridge Configuration
 ```json
@@ -39,6 +47,8 @@ If running Infinitude & Homebridge on same devive, e.g., Raspberry Pi, use Local
 docker run -d -e MODE='Production' -e PASS_REQS='0' jimhe/infinitude:1.0.0
 ```
 [Instructions for Raspberry Pi](https://github.com/nebulous/infinitude/wiki/Installing-Infinitude-on-Raspberry-PI-(raspbian))
+
+Running Infinitude on Homebridge Raspbian Image.
 
 ## Useful HomeKit Automations / Scenes:
 You can use HomeKit to completely control your thermostat's schedule.
