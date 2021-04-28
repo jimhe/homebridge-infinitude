@@ -9,10 +9,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/jimhe/homebridge-infinitude.git"
+    "url": "git://github.com/dotfortun3-code/homebridge-infinitude-schedules.git"
   },
   "bugs": {
-    "url": "http://github.com/jimhe/homebridge-infinitude/issues"
+    "url": "https://github.com/dotfortun3-code/homebridge-infinitude-schedules/issues"
   },
   "engines": {
     "node": ">=8.9.0",
