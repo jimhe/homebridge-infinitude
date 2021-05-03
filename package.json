@@ -1,6 +1,6 @@
 {
   "name": "homebridge-infinitude",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Infinitude Plugin for Homebridge",
   "license": "ISC",
   "main": "src/index.js",
