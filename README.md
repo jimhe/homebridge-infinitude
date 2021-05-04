@@ -1,6 +1,3 @@
-# Deprecated
-New maintainer is https://github.com/dotfortun3-code/homebridge-infinitude-schedules
-
 # homebridge-infinitude
 [Infinitude](https://github.com/nebulous/infinitude) Plugin for Homebridge
 
