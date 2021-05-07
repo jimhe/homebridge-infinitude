@@ -3,9 +3,8 @@ const { pluginName, platformName } = require('./constants');
 const configSchema = require('./configSchema');
 const InfinitudeClient = require('./InfinitudeClient');
 const InfinitudeThermostat = require('./InfinitudeThermostat');
-const InfinitudeSensor = require('./InfinitudeSensor');
 
-let AccessoryCategories, Thermostat, TemperatureSensor, OutsideUuid;
+let AccessoryCategories, Thermostat;
 
 module.exports = class InfinitudePlatform {
   constructor(log, config, api) {
@@ -21,24 +20,21 @@ module.exports = class InfinitudePlatform {
       log.error('Invalid config.', result.error.message);
       return;
     }
-	
-    //FilterMaintenance = api.hap.Service.FilterMaintenance;
+
     Thermostat = api.hap.Service.Thermostat;
     AccessoryCategories = api.hap.Accessory.Categories;
-    TemperatureSensor = api.hap.Service.TemperatureSensor;
-    OutsideUuid = api.hap.uuid.generate('outsideZone');
 
     this.log = log;
     this.api = api;
     this.accessories = {};
-    this.sensors = {};
     this.zoneIds = {};
     this.zoneNames = {};
     this.initialized = false;
-    this.client = new InfinitudeClient(config.url, config.holdUntil, this.log);
+    this.client = new InfinitudeClient(config.url, this.log);
+    this.config = config;
     this.Service = api.hap.Service;
     this.Characteristic = api.hap.Characteristic;
-
+    
     this.api.on('didFinishLaunching', this.didFinishLaunching.bind(this));
   }
 
@@ -46,15 +42,11 @@ module.exports = class InfinitudePlatform {
     this.initializeZones(false).then(
       function() {
         this.accessories[accessory.UUID] = accessory;
-        if (accessory.UUID === OutsideUuid) {
-          this.configureSensorAccessory(accessory);
-        } else {
-          this.configureThermostatAccessory(accessory);
-        }
+        this.configureThermostatAccessory(accessory);
       }.bind(this)
     );
   }
-	
+
   async didFinishLaunching() {
     setTimeout(
       function() {
@@ -73,21 +65,18 @@ module.exports = class InfinitudePlatform {
 
     return this.client.getStatus().then(
       function(status) {
-        const enabledZones = status['zones']['zone'].filter(zone => zone['enabled'] === 'on');
+        const enabledZones = status['zones'][0]['zone'].filter(zone => zone['enabled'][0] === 'on');
 
         for (const zone of enabledZones) {
           const zoneId = zone.id;
           const zoneName = `${zone.name} Thermostat`;
-          const tUuid = this.api.hap.uuid.generate(zoneId);	
+          const tUuid = this.api.hap.uuid.generate(zoneId);
           this.zoneIds[tUuid] = zoneId;
           this.zoneNames[tUuid] = zoneName;
           if (create) {
             this.accessories[tUuid] = this.accessories[tUuid] || this.createZoneAccessory(zoneName, tUuid);
           }
         }
-	 if (create) {
-      this.accessories[OutsideUuid] = this.accessories[OutsideUuid] || this.createSensorAccessory(OutsideUuid);
-    }
 
         this.initialized = true;
         this.api.emit('didFinishInit');
@@ -108,43 +97,19 @@ module.exports = class InfinitudePlatform {
     const thermostatName = this.getThermostatName(accessory);
     const zoneId = this.getZoneId(accessory);
     new InfinitudeThermostat(
-      thermostatName,
-      zoneId,
-      this.client,
-      this.log,
+      thermostatName, 
+      zoneId, 
+      this.client, 
+      this.log, 
+      this.config, 
       accessory,
       this.Service,
       this.Characteristic
-    );
+      );
   }
-  
-  createSensorAccessory(uuid) {
-    const sensorAccessory = new this.api.platformAccessory('OAT', uuid, AccessoryCategories.TEMPERATURESENSOR);
-    this.log.info(`Creating new Sensor for OAT`);
-    sensorAccessory.addService(TemperatureSensor);
-    this.api.registerPlatformAccessories(pluginName, platformName, [sensorAccessory]);
-    this.configureSensorAccessory(sensorAccessory);
-    return sensorAccessory;
-  }
-  
-  configureSensorAccessory(accessory) {
-    const sensorName = this.getSensorName(accessory);
-    new InfinitudeSensor(
-      sensorName,
-      this.client,
-      this.log,
-      accessory,
-      this.Service,
-      this.Characteristic
-    )
-  }
-  
+
   getThermostatName(accessory) {
     return this.zoneNames[accessory.UUID];
-  }
-	
-  getSensorName(accessory) {
-    return 'OAT';
   }
 
   getZoneId(accessory) {
