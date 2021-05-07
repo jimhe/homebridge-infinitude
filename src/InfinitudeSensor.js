@@ -14,11 +14,6 @@ module.exports = class InfinitudeSensor {
   }
   
   initialize(TemperatureSensorService) {
-   TemperatureSensorService.setCharacteristic(
-      Characteristic.TemperatureDisplayUnits,
-      Characteristic.TemperatureDisplayUnits.FAHRENHEIT
-    );
-
     TemperatureSensorService
       .getCharacteristic(Characteristic.CurrentTemperature)
       .on(
@@ -33,22 +28,22 @@ module.exports = class InfinitudeSensor {
 
   getCurrentOutdoorTemperature() {
     return this.client.getStatus().then(function(status) {
-      return parseFloat(status['oat']);
+      return parseFloat(status['oat'][0]);
     });
   }
 
   getZoneStatus() {
     return this.client.getStatus().then(
       function(status) {
-        return status.zones.zone.find(zone => zone['id'] === this.zoneId);
+        return status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
       }.bind(this)
     );
   }
 
   getZoneTarget() {
-    return this.client.getSystems().then(
-      function(systems) {
-        return systems['system'][0]['config'][0]['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
+    return this.client.getConfig().then(
+      function(config) {
+        return config['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
       }.bind(this)
     );
   }
