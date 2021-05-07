@@ -3,6 +3,7 @@ const { pluginName, platformName } = require('./constants');
 const configSchema = require('./configSchema');
 const InfinitudeClient = require('./InfinitudeClient');
 const InfinitudeThermostat = require('./InfinitudeThermostat');
+const InfinitudeSensor = require('./InfinitudeSensor');
 
 let AccessoryCategories, Thermostat, TemperatureSensor, OutsideUuid;
 
@@ -49,7 +50,6 @@ module.exports = class InfinitudePlatform {
         } else {
           this.configureThermostatAccessory(accessory);
         }
-        this.configureThermostatAccessory(accessory);
       }.bind(this)
     );
   }
