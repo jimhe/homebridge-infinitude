@@ -1,11 +1,12 @@
 let Characteristic, Service;
 
 module.exports = class InfinitudeSensor {
-  constructor(name, zoneId, client, log, platformAccessory, service, characteristic) {
+  constructor(name, zoneId, client, log, config, platformAccessory, service, characteristic) {
     this.name = name;
     this.zoneId = zoneId;
     this.client = client;
-    this.log = log;
+    this.log = log;;
+    this.config = config;
 
     Service = service;
     Characteristic = characteristic;
