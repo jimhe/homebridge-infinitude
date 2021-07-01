@@ -47,7 +47,7 @@ module.exports = class InfinitudeThermostat {
     ).on(
       'set',
       function(thresholdTemperature, callback) {
-        return this.getTemperatureScale().then(
+        return this.client.getTemperatureScale().then(
           function(tempScale) {
             return this.getNextActivityTime().then(
               function(time) {
@@ -63,7 +63,7 @@ module.exports = class InfinitudeThermostat {
                   const mode = (state === Characteristic.TargetHeatingCoolingState.HEAT) ? "htsp" : "clsp";
                   return this.client.setTargetTemperature(
                     this.zoneId,
-                    InfinitudeThermostat.convertToInfinitude(thresholdTemperature, tempScale),
+                    this.client.convertToInfinitude(thresholdTemperature, tempScale),
                     mode,
                     activity,
                     callback
@@ -161,11 +161,11 @@ module.exports = class InfinitudeThermostat {
       .on(
         'set',
         function(thresholdTemperature, callback) {
-          return this.getTemperatureScale().then(
+          return this.client.getTemperatureScale().then(
             function(tempScale) {
               return this.client.setTargetTemperature(
                 this.zoneId,
-                InfinitudeThermostat.convertToHomeKit(thresholdTemperature, tempScale),
+                this.client.convertToHomeKit(thresholdTemperature, tempScale),
                 'htsp',
                 null,
                 callback
@@ -191,7 +191,7 @@ module.exports = class InfinitudeThermostat {
             function(tempScale) {
               return this.client.setTargetTemperature(
                 this.zoneId,
-                InfinitudeThermostat.convertToHomeKit(thresholdTemperature, tempScale),
+                this.client.convertToHomeKit(thresholdTemperature, tempScale),
                 'clsp',
                 null,
                 callback
@@ -220,7 +220,7 @@ module.exports = class InfinitudeThermostat {
   }
 
   getTemperatures() {
-    return this.getTemperatureScale().then(
+    return this.client.getTemperatureScale().then(
       function(tempScale) {
         return this.client.getSystem().then(
           function(system) {
@@ -236,8 +236,8 @@ module.exports = class InfinitudeThermostat {
                 }
 
                 return {
-                  htsp: InfinitudeThermostat.convertToHomeKit(htsp, tempScale),
-                  clsp: InfinitudeThermostat.convertToHomeKit(clsp, tempScale),
+                  htsp: this.client.convertToHomeKit(htsp, tempScale),
+                  clsp: this.client.convertToHomeKit(clsp, tempScale),
                   currentTemp: this.getCurrentTemperature(),
                   mode: system.config['mode'][0]
                 };
@@ -391,37 +391,34 @@ module.exports = class InfinitudeThermostat {
     );
   }
 
-  getTemperatureScale() {
+  getFilterLifeLevel() {
+    return this.client.getStatus().then(function(status) {
+      return parseFloat(status['filtrlvl'][0]);
+    });
+  }
+
+  getCurrentTemperature(property = 'rt') {
+    return this.client.getTemperatureScale().then(
+      function(tempScale) {
+        return this.getZoneStatus().then(function(zoneStatus) {
+          return this.client.convertToHomeKit(zoneStatus[property][0], tempScale);
+        }.bind(this));
+      }.bind(this))
+  }
+
+  getZoneStatus() {
+    return this.client.getStatus().then(
+      function(status) {
+        return status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
+      }.bind(this)
+    );
+  }
+
+  getZoneTarget() {
     return this.client.getConfig().then(
       function(config) {
-        return config['cfgem'][0];
-      }
-    )
-  }
-
-  static fahrenheitToCelsius(temperature) {
-    return (temperature - 32) / 1.8;
-  }
-
-  static celsiusToFahrenheit(temperature) {
-    return temperature * 1.8 + 32;
-  }
-
-  static convertToInfinitude(temperature, scale) {
-    if (scale === 'F') {
-      return Math.round(this.celsiusToFahrenheit(temperature)).toFixed(1);
-    }
-    else {
-      return temperature;
-    }
-  }
-
-  static convertToHomeKit(temperature, scale) {
-    if (scale === 'F') {
-      return this.fahrenheitToCelsius(temperature);
-    }
-    else {
-      return temperature;
-    }
+        return config['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
+      }.bind(this)
+    );
   }
 };

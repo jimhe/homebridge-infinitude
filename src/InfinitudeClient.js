@@ -229,4 +229,39 @@ module.exports = class InfinitudeClient {
     }
   }
 
+  
+  getTemperatureScale() {
+    return this.getConfig().then(
+      function(config) {
+        return config['cfgem'][0];
+      }
+    )
+  }
+
+  
+  fahrenheitToCelsius(temperature) {
+    return (temperature - 32) / 1.8;
+  }
+
+  celsiusToFahrenheit(temperature) {
+    return temperature * 1.8 + 32;
+  }
+
+  convertToInfinitude(temperature, scale) {
+    if (scale === 'F') {
+      return Math.round(this.celsiusToFahrenheit(temperature)).toFixed(1);
+    }
+    else {
+      return temperature;
+    }
+  }
+
+  convertToHomeKit(temperature, scale) {
+    if (scale === 'F') {
+      return this.fahrenheitToCelsius(temperature);
+    }
+    else {
+      return temperature;
+    }
+  }
 };
