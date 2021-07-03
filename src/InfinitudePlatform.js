@@ -9,7 +9,7 @@ let AccessoryCategories, Thermostat, TemperatureSensor, OutsideUuid;
 
 module.exports = class InfinitudePlatform {
   constructor(log, config, api) {
-    log.info('Initializing...');
+    log.info('Plugin initializing...');
 
     if (!config) {
       log.error('Plugin not configured.');
@@ -37,6 +37,7 @@ module.exports = class InfinitudePlatform {
     this.config = config;
     this.Service = api.hap.Service;
     this.Characteristic = api.hap.Characteristic;
+
     
     this.api.on('didFinishLaunching', this.didFinishLaunching.bind(this));
   }
@@ -46,7 +47,7 @@ module.exports = class InfinitudePlatform {
       function() {
         this.accessories[accessory.UUID] = accessory;
         if (accessory.UUID === OutsideUuid) {
-          this.configureSensorAccessory(accessory);
+            this.configureSensorAccessory(accessory);
         } else {
           this.configureThermostatAccessory(accessory);
         }
@@ -66,7 +67,7 @@ module.exports = class InfinitudePlatform {
 
   async initializeZones(create = true) {
     if (this.initialized) {
-      this.log.info('INITIALIZED!');
+      this.log.info('Plugin initialized');
       return;
     }
 
@@ -84,7 +85,7 @@ module.exports = class InfinitudePlatform {
             this.accessories[tUuid] = this.accessories[tUuid] || this.createZoneAccessory(zoneName, tUuid);
           }
         }
-        	if (create) {
+        	if (create && this.config.useOutdoorTemperatureSensor) {
             this.accessories[OutsideUuid] = this.accessories[OutsideUuid] || this.createSensorAccessory(OutsideUuid);
         }
 
@@ -124,7 +125,7 @@ module.exports = class InfinitudePlatform {
 
     createSensorAccessory(uuid) {
     const sensorAccessory = new this.api.platformAccessory(this.getSensorName(), uuid, AccessoryCategories.TEMPERATURESENSOR);
-    this.log.info(`Creating new Sensor for OAT`);
+    this.log.info(`Creating outdoor temperature sensor`);
     sensorAccessory.addService(TemperatureSensor);
     this.api.registerPlatformAccessories(pluginName, platformName, [sensorAccessory]);
     this.configureSensorAccessory(sensorAccessory);

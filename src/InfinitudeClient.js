@@ -117,7 +117,7 @@ module.exports = class InfinitudeClient {
         }
         
         const uri = `${this.url}/api/${zoneId}/activity/${activity}?${setpoint}=${targetTemperature}`;
-        this.log.info(uri);
+        this.log.debug(uri);
         return axios
           .get(uri)
           .then(
@@ -146,7 +146,7 @@ module.exports = class InfinitudeClient {
   setActivity(zoneId, activity, until, callback) {
     let uri = `${this.url}/api/${zoneId}/hold?activity=${activity}&until=${until}`;
 
-    this.log.info(uri);
+    this.log.debug(uri);
     return axios
       .get(uri)
       .then(
@@ -173,7 +173,7 @@ module.exports = class InfinitudeClient {
   removeHold(zoneId, callback) {
     let uri = `${this.url}/api/${zoneId}/hold?hold=off`;
 
-    this.log.info(uri);
+    this.log.debug(uri);
     return axios
       .get(uri)
       .then(
@@ -201,7 +201,7 @@ module.exports = class InfinitudeClient {
     let uri = `${this.url}/api/config?mode=${mode}`;
     const config = this.cachedObjects['/api/config'];
     if (config['mode'][0] !== mode) {
-      this.log.info(uri);
+      this.log.debug(uri);
       return axios
         .get(uri)
         .then(

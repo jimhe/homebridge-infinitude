@@ -12,19 +12,24 @@
         "required": true
       },
       "holdUntil": {
-        "title": "Time to hold until (will hold forever if not specified), used when no activity scheduled in t-stat",
+        "title": "Time to hold until (will hold forever if not specified), also used when no activity scheduled in t-stat",
         "type": "string",
         "pattern": "^([0-1][0-9]|2[0-3]):[0-5][0-9]$"
       },
       "shutOffAway": {
-        "title": "Set system to Away when Off",
+        "title": "Set system to Away when set to Off in HomeKit",
         "type": "boolean",
         "default": false
       },
       "holdUntilNextActivity": {
-        "title": "Hold away until next scheduled activity",
+        "title": "Hold until next scheduled activity",
         "type": "boolean",
         "default": false
+      },
+      "useOutdoorTemperatureSensor": {
+        "title": "Create outdoor temperature sensor",
+        "type": "boolean",
+        "default": true
       }
     }
   }
