@@ -213,6 +213,8 @@ module.exports = class InfinitudeThermostat {
       'get',
       function (callback) {
         this.getFilterLifeLevel().then(function (filterlevel) {
+          //reverses filter level to make it more user intuitive. 100 means new, 0 means needs to be replaced.
+          filterlevel = 100-filterlevel;
           callback(null, filterlevel);
         });
       }.bind(this)
