@@ -17,7 +17,7 @@ module.exports = class InfinitudeClient {
     };
 
     setInterval(
-      function() {
+      function () {
         this.refreshAll();
       }.bind(this),
       InfinitudeClient.REFRESH_MS
@@ -33,12 +33,12 @@ module.exports = class InfinitudeClient {
     return axios
       .get(`${this.url}${path}`, { timeout: 5000 })
       .then(
-        function(response) {
+        function (response) {
           this.cachedObjects[path] = handler(response);
         }.bind(this)
       )
       .catch(
-        function(error) {
+        function (error) {
           this.log.error(error);
         }.bind(this)
       );
@@ -57,7 +57,7 @@ module.exports = class InfinitudeClient {
     await this.getConfig();
 
     return new Promise(
-      function(resolve) {
+      function (resolve) {
         resolve({
           config: this.cachedObjects['/api/config'],
           status: this.cachedObjects['/api/status']
@@ -72,7 +72,7 @@ module.exports = class InfinitudeClient {
     }
 
     return new Promise(
-      function(resolve) {
+      function (resolve) {
         resolve(this.cachedObjects['/api/status']);
       }.bind(this)
     );
@@ -87,7 +87,7 @@ module.exports = class InfinitudeClient {
     const status = this.cachedObjects['/api/status'];
     const zone = status['zones'][0]['zone'].filter(zone => zone['id'] === zoneId);
     return new Promise(
-      function(resolve) {
+      function (resolve) {
         resolve(zone);
       }.bind(this)
     );
@@ -99,7 +99,7 @@ module.exports = class InfinitudeClient {
     }
 
     return new Promise(
-      function(resolve) {
+      function (resolve) {
         resolve(this.cachedObjects['/api/config']);
       }.bind(this)
     );
@@ -109,20 +109,20 @@ module.exports = class InfinitudeClient {
     // zone 1 is at position 0 of the array
     const zoneArrayPosition = zoneId - 1;
     return this.getStatus().then(
-      function(status) {
+      function (status) {
         const zone = status['zones'][0]['zone'].find(zone => zone['id'] === zoneId);
 
         if (!activity) {
           activity = zone['currentActivity'][0];
         }
-        
+
         const uri = `${this.url}/api/${zoneId}/activity/${activity}?${setpoint}=${targetTemperature}`;
         this.log.debug(uri);
         return axios
           .get(uri)
           .then(
-            function(result) {
-              this.refreshSystems().then(function() {
+            function (result) {
+              this.refreshSystems().then(function () {
                 if (callback) {
                   callback(null);
                 }
@@ -131,7 +131,7 @@ module.exports = class InfinitudeClient {
             }.bind(this)
           )
           .catch(
-            function(error) {
+            function (error) {
               this.log.error(error);
               if (callback) {
                 callback(error);
@@ -150,8 +150,8 @@ module.exports = class InfinitudeClient {
     return axios
       .get(uri)
       .then(
-        function(result) {
-          this.refreshSystems().then(function() {
+        function (result) {
+          this.refreshSystems().then(function () {
             if (callback) {
               callback(null);
             }
@@ -160,7 +160,7 @@ module.exports = class InfinitudeClient {
         }.bind(this)
       )
       .catch(
-        function(error) {
+        function (error) {
           this.log.error(error);
           if (callback) {
             callback(error);
@@ -177,8 +177,8 @@ module.exports = class InfinitudeClient {
     return axios
       .get(uri)
       .then(
-        function(result) {
-          this.refreshSystems().then(function() {
+        function (result) {
+          this.refreshSystems().then(function () {
             if (callback) {
               callback(null);
             }
@@ -187,7 +187,7 @@ module.exports = class InfinitudeClient {
         }.bind(this)
       )
       .catch(
-        function(error) {
+        function (error) {
           this.log.error(error);
           if (callback) {
             callback(error);
@@ -205,8 +205,8 @@ module.exports = class InfinitudeClient {
       return axios
         .get(uri)
         .then(
-          function(result) {
-            this.refreshSystems().then(function() {
+          function (result) {
+            this.refreshSystems().then(function () {
               if (callback) {
                 callback(null);
               }
@@ -215,7 +215,7 @@ module.exports = class InfinitudeClient {
           }.bind(this)
         )
         .catch(
-          function(error) {
+          function (error) {
             this.log.error(error);
             if (callback) {
               callback(error);
@@ -229,16 +229,16 @@ module.exports = class InfinitudeClient {
     }
   }
 
-  
+
   getTemperatureScale() {
     return this.getConfig().then(
-      function(config) {
+      function (config) {
         return config['cfgem'][0];
       }
     )
   }
 
-  
+
   fahrenheitToCelsius(temperature) {
     return (temperature - 32) / 1.8;
   }
