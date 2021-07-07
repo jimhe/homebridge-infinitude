@@ -407,20 +407,4 @@ module.exports = class InfinitudeThermostat {
         }.bind(this));
       }.bind(this))
   }
-
-  getZoneStatus() {
-    return this.client.getStatus().then(
-      function (status) {
-        return status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
-      }.bind(this)
-    );
-  }
-
-  getZoneTarget() {
-    return this.client.getConfig().then(
-      function (config) {
-        return config['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
-      }.bind(this)
-    );
-  }
 };
