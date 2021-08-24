@@ -25,6 +25,7 @@ module.exports = class InfinitudePlatform {
     Thermostat = api.hap.Service.Thermostat;
     AccessoryCategories = api.hap.Accessory.Categories;
     TemperatureSensor = api.hap.Service.TemperatureSensor;
+    Fanv2 = api.hap.Service.Fanv2;
     OutsideUuid = api.hap.uuid.generate('outsideZone');
 
     this.log = log;
@@ -144,9 +145,35 @@ module.exports = class InfinitudePlatform {
       this.Characteristic
     )
   }
+  
+    createFanAccessory(uuid) {
+    const fanAccessory = new this.api.platformAccessory(this.getFanName(), uuid, AccessoryCategories.FAN);
+    this.log.info(`Creating Fan Service`);
+    fanAccessory.addService(Fanv2);
+    this.api.registerPlatformAccessories(pluginName, platformName, [fanAccessory]);
+    this.configureSensorAccessory(fanAccessory);
+    return fanAccessory;
+  }
+
+  configureFanAccessory(accessory) {
+    const fanName = this.getFanName(accessory);
+    new InfinitudeFan(
+      fanName,
+      this.client,
+      this.log,
+      this.config,
+      accessory,
+      this.Service,
+      this.Characteristic
+    )
+  }
 
   getSensorName(accessory) {
     return 'Outdoor';
+  }
+  
+  getFanName(accessory) {
+    return this.zoneNames[accessory.UUID] + 'Fan';
   }
 
   getZoneId(accessory) {
