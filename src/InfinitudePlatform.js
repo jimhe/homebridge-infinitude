@@ -4,8 +4,9 @@ const configSchema = require('./configSchema');
 const InfinitudeClient = require('./InfinitudeClient');
 const InfinitudeThermostat = require('./InfinitudeThermostat');
 const InfinitudeSensor = require('./InfinitudeSensor');
+const InfinitudeFan = require('./InfinitudeFan');
 
-let AccessoryCategories, Thermostat, TemperatureSensor, OutsideUuid;
+let AccessoryCategories, Thermostat, TemperatureSensor, Fanv2, OutsideUuid;
 
 module.exports = class InfinitudePlatform {
   constructor(log, config, api) {
@@ -83,7 +84,7 @@ module.exports = class InfinitudePlatform {
           this.zoneIds[tUuid] = zoneId;
           this.zoneNames[tUuid] = zoneName;
           if (create) {
-            this.accessories[tUuid] = this.accessories[tUuid] || this.createZoneAccessory(zoneName, tUuid);
+            this.accessories[tUuid] = this.accessories[tUuid] || this.createZoneAccessory(zoneName, tUuid) && this.createFanAccessory(fanName, fUUID);
           }
         }
         if (create && this.config.useOutdoorTemperatureSensor) {
