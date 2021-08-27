@@ -5,7 +5,7 @@ module.exports = class InfinitudeFan {
     this.name = name;
     this.zoneId = zoneId;
     this.client = client;
-    this.log = log;;
+    this.log = log;
     this.config = config;
 
     Service = service;
@@ -16,7 +16,17 @@ module.exports = class InfinitudeFan {
 
   initialize(FanService) {
     FanService
-      .getCharacteristic(Characteristic.CurrentFanState)
+      .getCharacteristic(Characteristic.Active)
+    .on(
+        'get',
+      function (callback) {
+        this.getActiveState().then(function (fanActiveState) {
+            callback (null, fanActiveState);
+        });
+      }.bind(this)
+      );
+    
+      FanService.getCharacteristic(Characteristic.CurrentFanState)
       .on(
         'get',
         function (callback) {
@@ -27,15 +37,34 @@ module.exports = class InfinitudeFan {
       );
   }
 
-getCurrentFanState() {
-    return this.getZoneStatus().then(function (status) {
-      switch (status['fan'][0]) {
-        case 'off':
+	getActiveState() {
+  	return this.getZoneStatus().then(function (status) {
+          if (status['fan'][0] == 'off') {
+          return Characteristic.Active.INACTIVE;
+        }
+        else {
+          return Characteristic.Active.ACTIVE;
+  }}).bind(this)}
+    
+	getCurrentFanState() {
+	return this.getZoneStatus().then(function (status) {
+      if (status['fan'][0] == 'off') {
           return Characteristic.CurrentFanState.IDLE;
-        default:
+          }
+    else {
           return Characteristic.CurrentFanState.BLOWING_AIR;
       }
-};
+}).bind(this)}
+    
+
+	getZoneStatus() {
+    return this.client.getStatus().then(
+      function (status) {
+        return status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
+      }.bind(this)
+    );
+  }
+  
   getZoneTarget() {
     return this.client.getSystems().then(
       function(systems) {
