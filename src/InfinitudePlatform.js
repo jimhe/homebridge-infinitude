@@ -175,7 +175,7 @@ module.exports = class InfinitudePlatform {
   }
   
   getFanName(accessory) {
-    return this.zoneNames + 'Fan';
+    return this.zoneId + 'Fan';
   }
 
   getZoneId(accessory) {
