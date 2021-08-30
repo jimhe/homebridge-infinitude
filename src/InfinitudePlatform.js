@@ -84,7 +84,7 @@ module.exports = class InfinitudePlatform {
           this.zoneIds[tUuid] = zoneId;
           this.zoneNames[tUuid] = zoneName;
           if (create) {
-            this.accessories[tUuid] = this.accessories[tUuid] || this.createZoneAccessory(zoneName, tUuid) && this.createFanAccessory(fanName, fUUID);
+            this.accessories[tUuid] = this.accessories[tUuid] || this.createZoneAccessory(zoneName, tUuid) && this.createFanAccessory(UUID);
           }
         }
         if (create && this.config.useOutdoorTemperatureSensor) {
