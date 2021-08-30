@@ -81,10 +81,11 @@ module.exports = class InfinitudePlatform {
           const zoneId = zone.id;
           const zoneName = `${zone.name} Thermostat`;
           const tUuid = this.api.hap.uuid.generate(zoneId);
+          const fUuid = this.api.hap.uuid.generate('fan');
           this.zoneIds[tUuid] = zoneId;
           this.zoneNames[tUuid] = zoneName;
           if (create) {
-            this.accessories[tUuid] = this.accessories[tUuid] || this.createZoneAccessory(zoneName, tUuid) && this.createFanAccessory(UUID);
+            this.accessories[tUuid] = this.accessories[tUuid] || this.createZoneAccessory(zoneName, tUuid) && this.createFanAccessory(fUuid);
           }
         }
         if (create && this.config.useOutdoorTemperatureSensor) {
@@ -174,7 +175,7 @@ module.exports = class InfinitudePlatform {
   }
   
   getFanName(accessory) {
-    return this.zoneNames[accessory.UUID] + 'Fan';
+    return this.zoneNames + 'Fan';
   }
 
   getZoneId(accessory) {
