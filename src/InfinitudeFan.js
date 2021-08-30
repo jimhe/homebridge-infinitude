@@ -37,23 +37,24 @@ module.exports = class InfinitudeFan {
       );
   }
 
-	getActiveState() {
-  	return this.getZoneStatus().then(function (status) {
-          if (status['fan'][0] == 'off') {
+        getActiveState() {
+        return this.getZoneStatus().then(function (status) {
+        switch (status['fan'][0]) {
+        case 'off':
           return Characteristic.Active.INACTIVE;
-        }
-        else {
+        case 'med':
           return Characteristic.Active.ACTIVE;
-  }}).bind(this)}
+}
+});
+}
     
 	getCurrentFanState() {
 	return this.getZoneStatus().then(function (status) {
-      if (status['fan'][0] == 'off') {
+	switch (status['fan'][0]) {
+        case 'off':
           return Characteristic.CurrentFanState.IDLE;
-          }
-    else {
+	default:
           return Characteristic.CurrentFanState.BLOWING_AIR;
-      }
 }).bind(this)}
     
 
