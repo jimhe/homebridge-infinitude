@@ -16,28 +16,27 @@ module.exports = class InfinitudeFan {
 
   initialize(FanService) {
     FanService
-      .getCharacteristic(Characteristic.Active)
-    .on(
+      .getCharacteristic(Characteristic.Active).on(
         'get',
       function (callback) {
-        this.getActiveState().then(function (fanActiveState) {
-            callback (null, fanActiveState);
+        this.getActiveState().then(function (state) {
+            callback (null, state);
         });
       }.bind(this)
       );
-    
-      FanService.getCharacteristic(Characteristic.CurrentFanState)
+
+      FanService.getCharacteristic(Characteristic.TargetFanState)
       .on(
         'get',
         function (callback) {
-          this.getCurrentFanState().then(function (currentFanState) {
-            callback(null, currentFanState);
+          this.getTargetFanState().then(function (targetFanState) {
+            callback(null, targetFanState);
           });
         }.bind(this)
       );
   }
 
-        getActiveState() {
+	getActiveState() {
         return this.getZoneStatus().then(function (status) {
         switch (status['fan'][0]) {
         case 'off':
@@ -47,17 +46,16 @@ module.exports = class InfinitudeFan {
 }
 });
 }
-    
-	getCurrentFanState() {
-	return this.getZoneStatus().then(function (status) {
-	switch (status['fan'][0]) {
-        case 'off':
-          return Characteristic.CurrentFanState.IDLE;
-	default:
-          return Characteristic.CurrentFanState.BLOWING_AIR;
-}).bind(this)}
-    
 
+        getTargetFanState() { return this.getZoneStatus().then(function (status) {
+        switch (status['fan'][0]) {
+        case 'off':
+          return Characteristic.TargetFanState.OFF;
+        default:
+          return Characteristic.TargetFanState.AUTO;
+}
+});
+}
 	getZoneStatus() {
     return this.client.getStatus().then(
       function (status) {
