@@ -392,19 +392,4 @@ module.exports = class InfinitudeThermostat {
       }.bind(this)
     );
   }
-
-  getFilterLifeLevel() {
-    return this.client.getStatus().then(function (status) {
-      return parseFloat(status['filtrlvl'][0]);
-    });
-  }
-
-  getCurrentTemperature(property = 'rt') {
-    return this.client.getTemperatureScale().then(
-      function (tempScale) {
-        return this.getZoneStatus().then(function (zoneStatus) {
-          return this.client.convertToHomeKit(zoneStatus[property][0], tempScale);
-        }.bind(this));
-      }.bind(this))
-  }
 };
