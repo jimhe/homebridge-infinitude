@@ -1,3 +1,5 @@
+<p align="center"> <a href="https://github.com/nebulous/infinitude"><img src="https://user-images.githubusercontent.com/8211291/131715404-6aa429a1-6a57-447c-b1b6-7ac84ee79977.jpg" height=90></a></p>
+
 # homebridge-infinitude
 [Infinitude](https://github.com/nebulous/infinitude) Plugin for Homebridge. Enable Carrier/Bryant Infinity Touch Thermostats in HomeKit.
 
@@ -16,7 +18,7 @@ HomeKit Features:
 - **Thermostat Control**: Set Target Temperature for Heat & Cooling. Infinitude values `htsp` and `clsp` respectively.
 - **Current Temperature:** Dislays current temperature reported by the zone thermostat. Infinitude values `rt`
 - **Hardware Display Unit:** control temperature unit (Celcius/Fahrenheit) of physical Theromstat.
-- **Filter Life Level:** Displays life of Filter, `0` being brand new and `100` needing replacement. Infinitude value `filtrlvl`
+- **Filter Life Level:** Displays life of Filter, `100` being brand new and `0` needing replacement. Infinitude value `filtrlvl`
 - **Current Relative Humidity:** Displays indoor humidity reported by Thermostat. Infinitude value `rh`
 
 # Install
