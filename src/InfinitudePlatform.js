@@ -4,8 +4,9 @@ const configSchema = require('./configSchema');
 const InfinitudeClient = require('./InfinitudeClient');
 const InfinitudeThermostat = require('./InfinitudeThermostat');
 const InfinitudeSensor = require('./InfinitudeSensor');
+const InfinitudeFan = require('./InfinitudeFan');
 
-let AccessoryCategories, Thermostat, TemperatureSensor, OutsideUuid;
+let AccessoryCategories, Thermostat, TemperatureSensor, Fanv2, OutsideUuid;
 
 module.exports = class InfinitudePlatform {
   constructor(log, config, api) {
@@ -25,6 +26,7 @@ module.exports = class InfinitudePlatform {
     Thermostat = api.hap.Service.Thermostat;
     AccessoryCategories = api.hap.Accessory.Categories;
     TemperatureSensor = api.hap.Service.TemperatureSensor;
+    Fanv2 = api.hap.Service.Fanv2;
     OutsideUuid = api.hap.uuid.generate('outsideZone');
 
     this.log = log;
@@ -46,9 +48,13 @@ module.exports = class InfinitudePlatform {
     this.initializeZones(false).then(
       function () {
         this.accessories[accessory.UUID] = accessory;
-        if (accessory.UUID === OutsideUuid) {
+        if (accessory.category == AccessoryCategories.TEMPERATURESENSOR) {
           this.configureSensorAccessory(accessory);
-        } else {
+        }
+        else if (accessory.category == AccessoryCategories.FAN) {
+          this.configureFanAccessory(accessory);
+        }
+        else if (accessory.category == AccessoryCategories.THERMOSTAT) {
           this.configureThermostatAccessory(accessory);
         }
       }.bind(this)
@@ -77,12 +83,18 @@ module.exports = class InfinitudePlatform {
 
         for (const zone of enabledZones) {
           const zoneId = zone.id;
-          const zoneName = `${zone.name} Thermostat`;
-          const tUuid = this.api.hap.uuid.generate(zoneId);
+          const zoneName = zone.name;
+          const tUuid = this.api.hap.uuid.generate(zoneId + "_tstat");
+          const fUuid = this.api.hap.uuid.generate(zoneId + "_fan");
+
           this.zoneIds[tUuid] = zoneId;
-          this.zoneNames[tUuid] = zoneName;
+          this.zoneIds[fUuid] = zoneId;
+          this.zoneNames[tUuid] = `${zoneName} Thermostat`;
+          this.zoneNames[fUuid] = `${zoneName} Fan`;
+
           if (create) {
-            this.accessories[tUuid] = this.accessories[tUuid] || this.createZoneAccessory(zoneName, tUuid);
+            this.accessories[tUuid] = this.accessories[tUuid] || this.createZoneAccessory(this.zoneNames[tUuid], tUuid);
+            this.accessories[fUuid] = this.accessories[fUuid] || this.createFanAccessory(this.zoneNames[fUuid], fUuid);
           }
         }
         if (create && this.config.useOutdoorTemperatureSensor) {
@@ -105,8 +117,10 @@ module.exports = class InfinitudePlatform {
   }
 
   configureThermostatAccessory(accessory) {
-    const thermostatName = this.getThermostatName(accessory);
+    const thermostatName = this.getAccessoryName(accessory);
     const zoneId = this.getZoneId(accessory);
+
+    this.log.debug(`configuring ${thermostatName}`);
     new InfinitudeThermostat(
       thermostatName,
       zoneId,
@@ -119,7 +133,7 @@ module.exports = class InfinitudePlatform {
     );
   }
 
-  getThermostatName(accessory) {
+  getAccessoryName(accessory) {
     return this.zoneNames[accessory.UUID];
   }
 
@@ -134,8 +148,34 @@ module.exports = class InfinitudePlatform {
 
   configureSensorAccessory(accessory) {
     const sensorName = this.getSensorName(accessory);
+    this.log.debug(`configuring ${sensorName}`);
     new InfinitudeSensor(
       sensorName,
+      this.client,
+      this.log,
+      this.config,
+      accessory,
+      this.Service,
+      this.Characteristic
+    )
+  }
+
+  createFanAccessory(fanName, uuid) {
+    const fanAccessory = new this.api.platformAccessory(fanName, uuid, AccessoryCategories.FAN);
+    this.log.debug(`Creating Fan Service`);
+    fanAccessory.addService(Fanv2, fanName);
+    this.api.registerPlatformAccessories(pluginName, platformName, [fanAccessory]);
+    this.configureSensorAccessory(fanAccessory);
+    return fanAccessory;
+  }
+
+  configureFanAccessory(accessory) {
+    const fanName = this.getAccessoryName(accessory);
+    const zoneId = this.getZoneId(accessory);
+    this.log.debug(`configuring ${fanName}`);
+    new InfinitudeFan(
+      fanName,
+      zoneId,
       this.client,
       this.log,
       this.config,
