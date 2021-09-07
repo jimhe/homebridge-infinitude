@@ -187,7 +187,7 @@ module.exports = class InfinitudeThermostat {
       .on(
         'set',
         function (thresholdTemperature, callback) {
-          return this.getTemperatureScale().then(
+          return this.client.getTemperatureScale().then(
             function (tempScale) {
               return this.client.setTargetTemperature(
                 this.zoneId,
@@ -369,11 +369,11 @@ module.exports = class InfinitudeThermostat {
   }
 
   getCurrentTemperature(property = 'rt') {
-    return this.getTemperatureScale().then(
+    return this.client.getTemperatureScale().then(
       function (tempScale) {
         return this.getZoneStatus().then(function (zoneStatus) {
-          return InfinitudeThermostat.convertToHomeKit(zoneStatus[property][0], tempScale);
-        });
+          return this.client.convertToHomeKit(zoneStatus[property][0], tempScale);
+        }.bind(this));
       }.bind(this))
   }
 

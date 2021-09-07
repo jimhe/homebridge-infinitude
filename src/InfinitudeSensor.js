@@ -34,12 +34,4 @@ module.exports = class InfinitudeSensor {
     );
   }
 
-};
-  getZoneTarget() {
-    return this.client.getSystems().then(
-      function(systems) {
-        return systems['system'][0]['config'][0]['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
-      }.bind(this)
-    );
-  }
-};
+}
