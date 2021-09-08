@@ -187,7 +187,7 @@ module.exports = class InfinitudeThermostat {
       .on(
         'set',
         function (thresholdTemperature, callback) {
-          return this.getTemperatureScale().then(
+          return this.client.getTemperatureScale().then(
             function (tempScale) {
               return this.client.setTargetTemperature(
                 this.zoneId,
@@ -214,7 +214,7 @@ module.exports = class InfinitudeThermostat {
       function (callback) {
         this.getFilterLifeLevel().then(function (filterlevel) {
           //reverses filter level to make it more user intuitive. 100 means new, 0 means needs to be replaced.
-          filterlevel = 100-filterlevel;
+          filterlevel = 100 - filterlevel;
           callback(null, filterlevel);
         });
       }.bind(this)
@@ -369,11 +369,11 @@ module.exports = class InfinitudeThermostat {
   }
 
   getCurrentTemperature(property = 'rt') {
-    return this.getTemperatureScale().then(
+    return this.client.getTemperatureScale().then(
       function (tempScale) {
         return this.getZoneStatus().then(function (zoneStatus) {
-          return InfinitudeThermostat.convertToHomeKit(zoneStatus[property][0], tempScale);
-        });
+          return this.client.convertToHomeKit(zoneStatus[property][0], tempScale);
+        }.bind(this));
       }.bind(this))
   }
 
