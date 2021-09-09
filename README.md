@@ -51,7 +51,7 @@ docker run -d -e MODE='Production' -e PASS_REQS='0' jimhe/infinitude:1.0.0
 ```
 [Instructions for Raspberry Pi](https://github.com/nebulous/infinitude/wiki/Installing-Infinitude-on-Raspberry-PI-(raspbian))
 
-Running Infinitude on Homebridge Raspbian Image.
+[Running Infinitude on Homebridge Raspbian Image](https://github.com/rcoletti116/homebridge-infinitude/wiki/Running-Infinitude-on-Homebridge-Raspbian-Image)
 
 ## Useful HomeKit Automations / Scenes:
 You can use HomeKit to completely control your thermostat's schedule.
