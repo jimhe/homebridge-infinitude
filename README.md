@@ -16,6 +16,7 @@ Other settings:
 
 HomeKit Features:
 - **Thermostat Control**: Set Target Temperature for Heat & Cooling. Infinitude values `htsp` and `clsp` respectively.
+- **Read Only Fan**: Currently provides data on whether the fan is On or Off. Hopefully control will come soon.
 - **Current Temperature:** Dislays current temperature reported by the zone thermostat. Infinitude values `rt`
 - **Hardware Display Unit:** control temperature unit (Celcius/Fahrenheit) of physical Theromstat.
 - **Filter Life Level:** Displays life of Filter, `100` being brand new and `0` needing replacement. Infinitude value `filtrlvl`
