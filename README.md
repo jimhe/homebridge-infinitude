@@ -6,10 +6,12 @@
 What is Infinitude? Infinitude is an alternative web service for Carrier Infinity Touch and other compatible thermostats. It allows read and control of your Infinity system over your network (no serial connection needed).
 
 # Behavior
-This plugin will create thermostat accessories for each enabled zone in infinitude. For simplicity, it only supports `OFF` or `AUTO` mode:
+This plugin will create thermostat accessories for each enabled zone in infinitude.
  - In `OFF` mode, it will set infinitude activity for that zone to `away`.
  - In `AUTO` mode, it will set infinitude activity for that zone to `manual`. Upon adjusting the target temperatures,
  it will update that zone's `manual` activity's `clsp` and `htsp` accordingly.
+ 
+ **this needs to be updated**👆🏼
  
 Other settings:
  - If `holdUntil` is specified, it will set `otmr` to the specified hour when changing to `AUTO` mode.
