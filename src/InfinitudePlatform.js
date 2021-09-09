@@ -165,7 +165,7 @@ module.exports = class InfinitudePlatform {
     this.log.debug(`Creating Fan Service`);
     fanAccessory.addService(Fanv2, fanName);
     this.api.registerPlatformAccessories(pluginName, platformName, [fanAccessory]);
-    this.configureSensorAccessory(fanAccessory);
+    this.configureFanAccessory(fanAccessory);
     return fanAccessory;
   }
 
