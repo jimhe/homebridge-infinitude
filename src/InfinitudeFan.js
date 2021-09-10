@@ -39,7 +39,7 @@ module.exports = class InfinitudeFan {
       .on(
         'get',
         function (callback) {
-          this.getActiveState().then(function (currentFanState) {
+          this.getCurrentState().then(function (currentFanState) {
             callback(null, currentFanState);
           });
         }.bind(this)
