@@ -7,6 +7,9 @@ module.exports = Joi.object()
     holdUntil: Joi.string().pattern(new RegExp('^([0-1][0-9]|2[0-3]):[0-5][0-9]$')),
     shutOffAway: Joi.boolean(),
     holdUntilNextActivity: Joi.boolean(),
-    useOutdoorTemperatureSensor: Joi.boolean()
+    useOutdoorTemperatureSensor: Joi.boolean(),
+    manufacturer: Joi.string(),
+    model: Joi.string(),
+    serial: Joi.string()
   })
   .unknown();
