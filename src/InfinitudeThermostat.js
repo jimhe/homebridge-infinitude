@@ -11,7 +11,11 @@ module.exports = class InfinitudeThermostat {
     Service = service;
     Characteristic = characteristic;
 
-    this.initialize(platformAccessory.getService(Service.Thermostat));
+    this.initialize(platformAccessory.getService(Service.Thermostat))
+    platformAccessory.getService(Service.AccessoryInformation)
+    .setCharacteristic(Characteristic.Manufacturer, this.config.manufacturer)
+    .setCharacteristic(Characteristic.Model, this.config.model)
+    .setCharacteristic(Characteristic.SerialNumber, this.config.serial);
   }
 
   initialize(thermostatService) {
