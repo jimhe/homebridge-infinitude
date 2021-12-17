@@ -6,7 +6,7 @@ const InfinitudeThermostat = require('./InfinitudeThermostat');
 const InfinitudeSensor = require('./InfinitudeSensor');
 const InfinitudeFan = require('./InfinitudeFan');
 
-let AccessoryCategories, Thermostat, TemperatureSensor, Fanv2, OutsideUuid;
+let AccessoryCategories, Thermostat, TemperatureSensor, Fanv2, OutsideUuid, AccessoryInformation;
 
 module.exports = class InfinitudePlatform {
   constructor(log, config, api) {
@@ -27,8 +27,9 @@ module.exports = class InfinitudePlatform {
     AccessoryCategories = api.hap.Accessory.Categories;
     TemperatureSensor = api.hap.Service.TemperatureSensor;
     Fanv2 = api.hap.Service.Fanv2;
+    AccessoryInformation = api.hap.Service.AccessoryInformation;
     OutsideUuid = api.hap.uuid.generate('outsideZone');
-
+    
     this.log = log;
     this.api = api;
     this.accessories = {};
