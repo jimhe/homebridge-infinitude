@@ -27,12 +27,28 @@
         "type": "boolean",
         "default": false
       },
+      "manufacturer": {
+        "title": "Manufacturer",
+        "type": "string"
+      },
+      "Model": {
+        "title": "Model,
+        "type": "string"
+      },
+      "serial": {
+        "title": "Serial Number",
+        "type": "string"
+      },
       "useOutdoorTemperatureSensor": {
         "title": "Create outdoor temperature sensor",
         "type": "boolean",
         "default": true
       }
     }
-  }
+  },
+  "layout": [
+    { "type": "section", "title": "Properties", "items": [ "url", "holdUntil", "holdUntilNextActivity", "shutOffAway" ] },
+    { "type": "section", "title": "Accessories", "items": [ "useOutdoorTemperatureSensor" ] },
+    { "type": "section", "title": "Accessory Information", "items": [ "manufacturer", "model", "serial" ] }
+]
 }
-
