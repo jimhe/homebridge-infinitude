@@ -32,7 +32,7 @@
         "type": "string"
       },
       "Model": {
-        "title": "Model,
+        "title": "Model",
         "type": "string"
       },
       "serial": {
