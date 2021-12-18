@@ -31,7 +31,7 @@
         "title": "Manufacturer",
         "type": "string"
       },
-      "Model": {
+      "model": {
         "title": "Model",
         "type": "string"
       },
