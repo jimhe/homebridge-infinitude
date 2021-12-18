@@ -11,7 +11,11 @@ module.exports = class InfinitudeFan {
     Service = service;
     Characteristic = characteristic;
 
-    this.initialize(platformAccessory.getService(Service.Fanv2));
+    this.initialize(platformAccessory.getService(Service.Fanv2))
+    platformAccessory.getService(Service.AccessoryInformation)
+    .setCharacteristic(Characteristic.Manufacturer, this.config.manufacturer)
+    .setCharacteristic(Characteristic.Model, this.config.model)
+    .setCharacteristic(Characteristic.SerialNumber, this.config.serial +"-f");
   }
 
   initialize(FanService) {
