@@ -29,7 +29,7 @@ module.exports = class InfinitudePlatform {
     Fanv2 = api.hap.Service.Fanv2;
     AccessoryInformation = api.hap.Service.AccessoryInformation;
     OutsideUuid = api.hap.uuid.generate('outsideZone');
-    
+
     this.log = log;
     this.api = api;
     this.accessories = {};
