@@ -1,6 +1,6 @@
 {
   "name": "homebridge-infinitude-v2",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "description": "Infinitude Plugin for Homebridge",
   "license": "ISC",
   "main": "src/index.js",
@@ -35,7 +35,6 @@
     ]
   },
   "dependencies": {
-    "@hapi/joi": "^17.1.1",
     "axios": "^0.18.1",
     "fast-xml-parser": "^3.16.0",
     "threads": "^0.12.0",

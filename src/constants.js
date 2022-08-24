@@ -1,4 +1,4 @@
 module.exports = {
-  pluginName: 'homebridge-infinitude',
+  pluginName: 'homebridge-infinitude-v2',
   platformName: 'InfinitudePlatform'
 };
