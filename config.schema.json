@@ -8,6 +8,7 @@
       "type": "array",
       "items": {
         "title": "Thermostats",
+        "description": "Add one thermostat for each instance of Infinitude",
         "type": "object",
         "properties": {
           "name": {
@@ -16,35 +17,41 @@
             "required": true
           },
           "url": {
-            "title": "URL of Infinitude e.g. http://{host}:{port}",
+            "title": "Infinitude URL",
+            "placeholder": "http://{host}:{port}",
             "type": "string",
             "format": "uri",
             "required": true
           },
           "holdUntil": {
-            "title": "Time to hold until (will hold forever if not specified), also used when no activity scheduled in this system",
+            "title": "Time to hold",
+            "description": "Time to hold until (will hold forever if not specified), also used when no activity is scheduled",
             "type": "string",
             "pattern": "^([0-1][0-9]|2[0-3]):[0-5][0-9]$"
           },
           "shutOffAway": {
-            "title": "Set system to Away when set to Off in HomeKit for this system",
+            "title": "Away shut off",
+            "description": "Set system to Away when set to Off in HomeKit",
             "type": "boolean",
             "default": false
           },
           "holdUntilNextActivity": {
-            "title": "Hold until next scheduled activity for this system",
+            "title": "Activity Hold",
+            "description": "Hold until next scheduled activity for this system",
+            "type": "boolean",
+            "default": false
+          },
+          "useFan": {
+            "title": "Configure Fan",
+            "description": "Create an accessory for the fan blower",
             "type": "boolean",
             "default": false
           },
           "useOutdoorTemperatureSensor": {
-            "title": "Create outdoor temperature sensor for this system",
+            "title": "Configure Outdoor Sensor",
+            "description": "Create outdoor temperature sensor for this system",
             "type": "boolean",
             "default": true
-          },
-          "useFan": {
-            "title": "Create an accessory for the fan blower",
-            "type": "boolean",
-            "default": false
           }
         }
       }

@@ -5,20 +5,14 @@ const fs = require('fs');
 
 const thermostats = [];
 
+let AccessoryCategories;
+
 module.exports = class InfinitudePlatform {
   constructor(log, config, api) {
     log.info('Plugin initializing...');
 
-    // if (!config) {
-    //   log.error('Plugin not configured.');
-    //   return;
-    // }
+    AccessoryCategories = api.hap.Accessory.Categories;
 
-    // const result = configSchema.validate(config);
-    // if (result.error) {
-    //   log.error('Invalid config.', result.error.message);
-    //   return;
-    // }
     this.api = api;
     this.config = config;
     this.log = log;
@@ -36,13 +30,19 @@ module.exports = class InfinitudePlatform {
       this.accessoryMap = [];
     }
 
-    if (config.thermostats.length > 0) {
+    if (this.validConfig(config)) {
       for (var i = 0; i < config.thermostats.length; i++) {
         thermostats[i] = new InfinitudeInstance(i, log, config.thermostats[i], api);
       }
-    }
 
-    this.api.on('didFinishLaunching', this.didFinishLaunching.bind(this));
+      this.api.on('didFinishLaunching', this.didFinishLaunching.bind(this));
+    } else {
+      log.info(`${pluginName} is not configured correctly, check the config and restart the homebridge`);
+    }
+  }
+
+  validConfig(config) {
+    return config.thermostats != null && config.thermostats.length > 0;
   }
 
   async didFinishLaunching() {
@@ -57,7 +57,7 @@ module.exports = class InfinitudePlatform {
               this.accessoryMap.push({ accessoryUuid: a, instanceId: t.id });
             }
             const json = JSON.stringify(this.accessoryMap);
-            this.log.info(`Writing to cache ${json}`);
+            this.log.debug(`Writing to cache ${json}`);
             fs.writeFileSync(this.mapPath, json, 'utf8');
           });
         }
@@ -77,11 +77,11 @@ module.exports = class InfinitudePlatform {
         thermostat.initializeZones(false).then(
           function() {
             if (accessory.category == AccessoryCategories.TEMPERATURESENSOR) {
-              thermostat.configureSensorAccessory(accessory);
+              thermostat.configureTemperatureSensor(accessory);
             } else if (accessory.category == AccessoryCategories.FAN) {
-              thermostat.configureFanAccessory(accessory);
+              thermostat.configureFan(accessory);
             } else if (accessory.category == AccessoryCategories.THERMOSTAT) {
-              thermostat.configureThermostatAccessory(accessory);
+              thermostat.configureZoneThermostat(accessory);
             }
           }.bind(this)
         );
