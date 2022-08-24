@@ -16,6 +16,18 @@
             "type": "string",
             "required": true
           },
+          "manufacturer": {
+            "title": "Manufacturer",
+            "type": "string"
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "serial": {
+            "title": "Serial Number",
+            "type": "string"
+          },
           "url": {
             "title": "Infinitude URL",
             "placeholder": "http://{host}:{port}",
