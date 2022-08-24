@@ -12,15 +12,20 @@ module.exports = class InfinitudeFan {
     Characteristic = characteristic;
 
     this.initialize(platformAccessory.getService(Service.Fanv2));
-    platformAccessory
-      .getService(Service.AccessoryInformation)
-      .setCharacteristic(Characteristic.Manufacturer, this.config.manufacturer)
-      .setCharacteristic(Characteristic.Model, this.config.model)
-      .setCharacteristic(Characteristic.SerialNumber, this.config.serial + '-f');
+    this.bindInformation(platformAccessory.getService(Service.AccessoryInformation));
   }
 
-  initialize(FanService) {
-    FanService.getCharacteristic(Characteristic.Active).on(
+  bindInformation(service) {
+    if (this.config.advancedDetails != undefined) {
+      service
+        .setCharacteristic(Characteristic.Manufacturer, this.config.advancedDetails.manufacturer)
+        .setCharacteristic(Characteristic.Model, this.config.advancedDetails.model)
+        .setCharacteristic(Characteristic.SerialNumber, `${this.config.advancedDetails.serial}-f`);
+    }
+  }
+
+  initialize(service) {
+    service.getCharacteristic(Characteristic.Active).on(
       'get',
       function(callback) {
         this.getActiveState().then(function(state) {
@@ -29,7 +34,7 @@ module.exports = class InfinitudeFan {
       }.bind(this)
     );
 
-    FanService.getCharacteristic(Characteristic.TargetFanState).on(
+    service.getCharacteristic(Characteristic.TargetFanState).on(
       'get',
       function(callback) {
         this.getTargetFanState().then(function(targetFanState) {
@@ -38,7 +43,7 @@ module.exports = class InfinitudeFan {
       }.bind(this)
     );
 
-    FanService.getCharacteristic(Characteristic.CurrentFanState).on(
+    service.getCharacteristic(Characteristic.CurrentFanState).on(
       'get',
       function(callback) {
         this.getCurrentState().then(function(currentFanState) {

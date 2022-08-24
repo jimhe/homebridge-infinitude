@@ -11,15 +11,20 @@ module.exports = class InfinitudeSensor {
     Characteristic = characteristic;
 
     this.initialize(platformAccessory.getService(Service.TemperatureSensor));
-    platformAccessory
-      .getService(Service.AccessoryInformation)
-      .setCharacteristic(Characteristic.Manufacturer, this.config.manufacturer)
-      .setCharacteristic(Characteristic.Model, this.config.model)
-      .setCharacteristic(Characteristic.SerialNumber, this.config.serial + '-s');
+    this.bindInformation(platformAccessory.getService(Service.AccessoryInformation));
   }
 
-  initialize(TemperatureSensorService) {
-    TemperatureSensorService.getCharacteristic(Characteristic.CurrentTemperature).on(
+  bindInformation(service) {
+    if (this.config.advancedDetails != undefined) {
+      service
+        .setCharacteristic(Characteristic.Manufacturer, this.config.advancedDetails.manufacturer)
+        .setCharacteristic(Characteristic.Model, this.config.advancedDetails.model)
+        .setCharacteristic(Characteristic.SerialNumber, `${this.config.advancedDetails.serial}-s`);
+    }
+  }
+
+  initialize(service) {
+    service.getCharacteristic(Characteristic.CurrentTemperature).on(
       'get',
       function(callback) {
         this.getCurrentOutdoorTemperature().then(function(currentTemperature) {

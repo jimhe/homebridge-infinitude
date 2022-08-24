@@ -16,17 +16,27 @@
             "type": "string",
             "required": true
           },
-          "manufacturer": {
-            "title": "Manufacturer",
-            "type": "string"
-          },
-          "model": {
-            "title": "Model",
-            "type": "string"
-          },
-          "serial": {
-            "title": "Serial Number",
-            "type": "string"
+          "advancedDetails": {
+            "type": "object",
+            "title": "Detailed Information",
+            "expandable": "true",
+            "properties": {
+              "manufacturer": {
+                "title": "Manufacturer",
+                "default": "Default-Manufacturer",
+                "type": "string"
+              },
+              "model": {
+                "title": "Model",
+                "default": "Default-Model",
+                "type": "string"
+              },
+              "serial": {
+                "title": "Serial Number",
+                "default": "Default-SerialNumber",
+                "type": "string"
+              }
+            }
           },
           "url": {
             "title": "Infinitude URL",

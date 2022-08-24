@@ -12,20 +12,25 @@ module.exports = class InfinitudeThermostat {
     Characteristic = characteristic;
 
     this.initialize(platformAccessory.getService(Service.Thermostat));
-    platformAccessory
-      .getService(Service.AccessoryInformation)
-      .setCharacteristic(Characteristic.Manufacturer, this.config.manufacturer)
-      .setCharacteristic(Characteristic.Model, this.config.model)
-      .setCharacteristic(Characteristic.SerialNumber, this.config.serial);
+    this.bindInformation(platformAccessory.getService(Service.AccessoryInformation));
   }
 
-  initialize(thermostatService) {
-    thermostatService.setCharacteristic(
+  bindInformation(service) {
+    if (this.config.advancedDetails != undefined) {
+      service
+        .setCharacteristic(Characteristic.Manufacturer, this.config.advancedDetails.manufacturer)
+        .setCharacteristic(Characteristic.Model, this.config.advancedDetails.model)
+        .setCharacteristic(Characteristic.SerialNumber, `${this.config.advancedDetails.serial}-s`);
+    }
+  }
+
+  initialize(service) {
+    service.setCharacteristic(
       Characteristic.TemperatureDisplayUnits,
       Characteristic.TemperatureDisplayUnits.FAHRENHEIT
     );
 
-    thermostatService.getCharacteristic(Characteristic.CurrentTemperature).on(
+    service.getCharacteristic(Characteristic.CurrentTemperature).on(
       'get',
       function(callback) {
         this.getCurrentTemperature().then(function(currentTemperature) {
@@ -34,7 +39,7 @@ module.exports = class InfinitudeThermostat {
       }.bind(this)
     );
 
-    thermostatService
+    service
       .getCharacteristic(Characteristic.TargetTemperature)
       .on(
         'get',
@@ -86,7 +91,7 @@ module.exports = class InfinitudeThermostat {
         }.bind(this)
       );
 
-    thermostatService.getCharacteristic(Characteristic.CurrentHeatingCoolingState).on(
+    service.getCharacteristic(Characteristic.CurrentHeatingCoolingState).on(
       'get',
       function(callback) {
         this.getCurrentHeatingCoolingState().then(function(state) {
@@ -95,7 +100,7 @@ module.exports = class InfinitudeThermostat {
       }.bind(this)
     );
 
-    thermostatService
+    service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .on(
         'get',
@@ -153,7 +158,7 @@ module.exports = class InfinitudeThermostat {
         }.bind(this)
       );
 
-    thermostatService
+    service
       .getCharacteristic(Characteristic.HeatingThresholdTemperature)
       .on(
         'get',
@@ -182,7 +187,7 @@ module.exports = class InfinitudeThermostat {
         }.bind(this)
       );
 
-    thermostatService
+    service
       .getCharacteristic(Characteristic.CoolingThresholdTemperature)
       .on(
         'get',
@@ -209,7 +214,7 @@ module.exports = class InfinitudeThermostat {
         }.bind(this)
       );
 
-    thermostatService.getCharacteristic(Characteristic.CurrentRelativeHumidity).on(
+    service.getCharacteristic(Characteristic.CurrentRelativeHumidity).on(
       'get',
       function(callback) {
         this.getCurrentRelativeHumidity().then(function(humidity) {
@@ -218,7 +223,7 @@ module.exports = class InfinitudeThermostat {
       }.bind(this)
     );
 
-    thermostatService.getCharacteristic(Characteristic.FilterLifeLevel).on(
+    service.getCharacteristic(Characteristic.FilterLifeLevel).on(
       'get',
       function(callback) {
         this.getFilterLifeLevel().then(function(filterlevel) {
