@@ -47,7 +47,7 @@ module.exports = class InfinitudePlatform {
 
   async didFinishLaunching() {
     setTimeout(
-      function() {
+      function () {
         for (var i = 0; i < thermostats.length; i++) {
           const t = thermostats[i];
           t.initializeZones(true).then(x => {
@@ -61,7 +61,7 @@ module.exports = class InfinitudePlatform {
             fs.writeFileSync(this.mapPath, json, 'utf8');
           });
         }
-
+        this.log.info("Platform initialized.");
         this.api.emit('didFinishInit');
       }.bind(this),
       // wait 5 seconds to allow for existing accessories to be configured
@@ -75,7 +75,7 @@ module.exports = class InfinitudePlatform {
       var thermostat = thermostats.find(x => x.id == map.instanceId);
       if (thermostat != null) {
         thermostat.initializeZones(false).then(
-          function() {
+          function () {
             if (accessory.category == AccessoryCategories.TEMPERATURESENSOR) {
               thermostat.configureTemperatureSensor(accessory);
             } else if (accessory.category == AccessoryCategories.FAN) {

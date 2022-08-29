@@ -1,6 +1,6 @@
 {
   "name": "homebridge-infinitude-v2",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Infinitude Plugin for Homebridge",
   "license": "ISC",
   "main": "src/index.js",
@@ -15,7 +15,7 @@
     "url": "https://github.com/dotfortun3-code/homebridge-infinitude-v2/issues"
   },
   "engines": {
-    "node": ">=8.9.0",
+    "node": ">=16.3.0",
     "homebridge": ">=0.4.38"
   },
   "author": {

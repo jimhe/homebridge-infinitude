@@ -37,15 +37,16 @@ module.exports = class InfinitudeInstance {
     }
 
     return this.client.getStatus().then(
-      function(status) {
+      function (status) {
         const enabledZones = status['zones'][0]['zone'].filter(zone => zone['enabled'][0] === 'on');
+        const outsideUuid = this.api.hap.uuid.generate(this.id + '_outsideZone');
 
         for (const zone of enabledZones) {
           const zoneId = zone.id;
           const zoneName = zone.name;
           const tUuid = this.api.hap.uuid.generate(this.id + '_' + zoneId + '_tstat');
           const fUuid = this.api.hap.uuid.generate(this.id + '_' + zoneId + '_fan');
-          const outsideUuid = this.api.hap.uuid.generate(this.id + '_outsideZone');
+
 
           this.zoneIds[tUuid] = zoneId;
           this.zoneIds[fUuid] = zoneId;
@@ -55,13 +56,16 @@ module.exports = class InfinitudeInstance {
           if (create) {
             this.accessories[tUuid] =
               this.accessories[tUuid] || this.createZoneThermostat(this.zoneNames[tUuid], tUuid);
-            if (this.config.useFan) {
-              this.accessories[fUuid] = this.accessories[fUuid] || this.createFan(this.zoneNames[fUuid], fUuid);
-            }
-            if (this.config.useOutdoorTemperatureSensor) {
-              this.accessories[outsideUuid] =
-                this.accessories[outsideUuid] || this.createTemperatureSensor(outsideUuid);
-            }
+          }
+        }
+
+        if (create) {
+          if (this.config.useFan) {
+            this.accessories[fUuid] = this.accessories[fUuid] || this.createFan(this.zoneNames[fUuid], fUuid);
+          }
+          if (this.config.useOutdoorTemperatureSensor) {
+            this.accessories[outsideUuid] =
+              this.accessories[outsideUuid] || this.createTemperatureSensor(`Outdoor`, outsideUuid);
           }
         }
 
@@ -77,14 +81,15 @@ module.exports = class InfinitudeInstance {
     zoneAccessory.addService(Thermostat, zoneName);
 
     this.api.registerPlatformAccessories(pluginName, platformName, [zoneAccessory]);
-    this.configureThermostat(zoneAccessory);
+    this.configureZoneThermostat(zoneAccessory);
     return zoneAccessory;
   }
 
   createTemperatureSensor(sensorName, uuid) {
+    this.log.info(`Creating outdoor temperature sensor with name: ${sensorName}, uuid: ${uuid}`);
     const sensorAccessory = new this.api.platformAccessory(sensorName, uuid, AccessoryCategories.TEMPERATURESENSOR);
 
-    this.log.info(`Creating outdoor temperature sensor with uuid ${uuid}`);
+
     sensorAccessory.addService(TemperatureSensor);
     this.api.registerPlatformAccessories(pluginName, platformName, [sensorAccessory]);
     this.configureTemperatureSensor(sensorAccessory);
@@ -118,7 +123,7 @@ module.exports = class InfinitudeInstance {
   }
 
   configureTemperatureSensor(accessory) {
-    const sensorName = this.getSensorName(accessory);
+    const sensorName = `Outdoor`;
     this.log.debug(`configuring ${sensorName}`);
 
     new InfinitudeSensor(sensorName, this.client, this.log, this.config, accessory, this.Service, this.Characteristic);
