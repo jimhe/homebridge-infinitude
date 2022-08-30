@@ -36,12 +36,34 @@ run `sudo npm i -g homebridge-infinitude-v2`
 ## Homebridge Configuration
 ```json
 {
-  "platforms": [
-    {
-      "platform": "InfinitudePlatform",
-      "url": "http://<infinitude host>:<infinitude port>",
-      "holdUntil": "00:00"
-    }
+  "platform": "InfinitudePlatform",
+  "thermostats": [
+      {
+          "name": "Home",
+          "advancedDetails": {
+              "manufacturer": "Default-Manufacturer",
+              "model": "Default-Model",
+              "serial": "Default-SerialNumber"
+          },
+          "url": "http://<infinitude host>:<infinitude port>",
+          "shutOffAway": false,
+          "holdUntilNextActivity": false,
+          "useFan": false,
+          "useOutdoorTemperatureSensor": true
+      },
+      {
+          "name": "Office",
+          "advancedDetails": {
+              "manufacturer": "Default-Manufacturer",
+              "model": "Default-Model",
+              "serial": "Default-SerialNumber"
+          },
+          "url": "http://<infinitude host>:<infinitude port>",
+          "shutOffAway": false,
+          "holdUntilNextActivity": false,
+          "useFan": false,
+          "useOutdoorTemperatureSensor": false
+      }
   ]
 }
 ```
