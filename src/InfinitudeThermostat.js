@@ -246,8 +246,9 @@ module.exports = class InfinitudeThermostat {
         return this.client.getSystem().then(
           function (system) {
             var zoneStatus = system.status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
-            htsp = zoneStatus['htsp'][0];
-            clsp = zoneStatus['clsp'][0];
+
+            const htsp = zoneStatus['htsp'][0];
+            const clsp = zoneStatus['clsp'][0];
             return {
               htsp: this.clamp(this.client.convertToHomeKit(htsp, tempScale), MIN_HEAT_C, MAX_HEAT_C),
               clsp: this.clamp(this.client.convertToHomeKit(clsp, tempScale), MIN_COOL_C, MAX_COOL_C),
