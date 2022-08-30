@@ -245,25 +245,15 @@ module.exports = class InfinitudeThermostat {
       function (tempScale) {
         return this.client.getSystem().then(
           function (system) {
-            return this.getScheduledActivity().then(
-              function (activity) {
-                var zoneStatus = system.status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
-                var htsp = activity['htsp'][0];
-                var clsp = activity['clsp'][0];
-
-                if (zoneStatus['hold'][0] == 'on' && zoneStatus['currentActivity'][0] == 'away') {
-                  htsp = zoneStatus['htsp'][0];
-                  clsp = zoneStatus['clsp'][0];
-                }
-
-                return {
-                  htsp: this.clamp(this.client.convertToHomeKit(htsp, tempScale), MIN_HEAT_C, MAX_HEAT_C),
-                  clsp: this.clamp(this.client.convertToHomeKit(clsp, tempScale), MIN_COOL_C, MAX_COOL_C),
-                  currentTemp: this.getCurrentTemperature(),
-                  mode: system.config['mode'][0]
-                };
-              }.bind(this)
-            );
+            var zoneStatus = system.status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
+            htsp = zoneStatus['htsp'][0];
+            clsp = zoneStatus['clsp'][0];
+            return {
+              htsp: this.clamp(this.client.convertToHomeKit(htsp, tempScale), MIN_HEAT_C, MAX_HEAT_C),
+              clsp: this.clamp(this.client.convertToHomeKit(clsp, tempScale), MIN_COOL_C, MAX_COOL_C),
+              currentTemp: this.getCurrentTemperature(),
+              mode: system.config['mode'][0]
+            };
           }.bind(this)
         );
       }.bind(this)
