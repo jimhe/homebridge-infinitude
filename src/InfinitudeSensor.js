@@ -26,8 +26,8 @@ module.exports = class InfinitudeSensor {
   initialize(service) {
     service.getCharacteristic(Characteristic.CurrentTemperature).on(
       'get',
-      function(callback) {
-        this.getCurrentOutdoorTemperature().then(function(currentTemperature) {
+      function (callback) {
+        this.getCurrentOutdoorTemperature().then(function (currentTemperature) {
           callback(null, currentTemperature);
         });
       }.bind(this)
@@ -36,7 +36,7 @@ module.exports = class InfinitudeSensor {
 
   getCurrentOutdoorTemperature() {
     return this.client.getStatus().then(
-      function(status) {
+      function (status) {
         return this.client.fahrenheitToCelsius(parseFloat(status['oat'][0]), this.client.getTemperatureScale());
       }.bind(this)
     );

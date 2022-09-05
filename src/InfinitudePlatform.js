@@ -1,6 +1,7 @@
 const { pluginName, platformName } = require('./constants');
 
 const InfinitudeInstance = require('./InfinitudeInstance');
+const InfinitudeLog = require('./InfinitudeLog');
 const fs = require('fs');
 
 const thermostats = [];
@@ -15,7 +16,7 @@ module.exports = class InfinitudePlatform {
 
     this.api = api;
     this.config = config;
-    this.log = log;
+    this.log = new InfinitudeLog(log, config.verbose);
     this.pluginPath = `${this.api.user.storagePath()}/${pluginName}.cache`;
     this.mapPath = `${this.pluginPath}/accessoryMap.json`;
 
@@ -32,12 +33,12 @@ module.exports = class InfinitudePlatform {
 
     if (this.validConfig(config)) {
       for (var i = 0; i < config.thermostats.length; i++) {
-        thermostats[i] = new InfinitudeInstance(i, log, config.thermostats[i], api);
+        thermostats[i] = new InfinitudeInstance(i, this.log, this.config.thermostats[i], this.api);
       }
 
       this.api.on('didFinishLaunching', this.didFinishLaunching.bind(this));
     } else {
-      log.info(`${pluginName} is not configured correctly, check the config and restart the homebridge`);
+      this.log.warn(`${pluginName} is not configured correctly, check the config and restart the homebridge`);
     }
   }
 
@@ -62,6 +63,7 @@ module.exports = class InfinitudePlatform {
           });
         }
         this.log.info("Platform initialized.");
+
         this.api.emit('didFinishInit');
       }.bind(this),
       // wait 5 seconds to allow for existing accessories to be configured

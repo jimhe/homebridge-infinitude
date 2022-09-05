@@ -77,6 +77,12 @@
           }
         }
       }
+    },
+    "verbose": {
+      "title": "Verbose Logging",
+      "description": "Enable additional logging for diagnosing issues",
+      "type": "boolean",
+      "default": false
     }
   }
 }
