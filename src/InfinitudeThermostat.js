@@ -82,7 +82,7 @@ module.exports = class InfinitudeThermostat {
                       const mode = state === Characteristic.TargetHeatingCoolingState.HEAT ? 'htsp' : 'clsp';
                       return this.client.setTargetTemperature(
                         this.zoneId,
-                        this.client.convertToInfinitude(thresholdTemperature, tempScale),
+                        this.convertToInfinitude(thresholdTemperature, tempScale),
                         mode,
                         activity,
                         callback
@@ -182,7 +182,7 @@ module.exports = class InfinitudeThermostat {
             function (tempScale) {
               return this.client.setTargetTemperature(
                 this.zoneId,
-                this.client.convertToHomeKit(thresholdTemperature, tempScale),
+                this.convertToHomeKit(thresholdTemperature, tempScale),
                 'htsp',
                 null,
                 callback
@@ -209,7 +209,7 @@ module.exports = class InfinitudeThermostat {
             function (tempScale) {
               return this.client.setTargetTemperature(
                 this.zoneId,
-                this.client.convertToHomeKit(thresholdTemperature, tempScale),
+                this.convertToHomeKit(thresholdTemperature, tempScale),
                 'clsp',
                 null,
                 callback
@@ -247,14 +247,21 @@ module.exports = class InfinitudeThermostat {
           function (system) {
             var zoneStatus = system.status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
 
+            this.log.verbose(`GetTemperatures(): Found zone with ID ${this.zoneId}: ${JSON.stringify(zoneStatus)}`);
+
             const htsp = zoneStatus['htsp'][0];
             const clsp = zoneStatus['clsp'][0];
-            return {
-              htsp: this.clamp(this.client.convertToHomeKit(htsp, tempScale), MIN_HEAT_C, MAX_HEAT_C),
-              clsp: this.clamp(this.client.convertToHomeKit(clsp, tempScale), MIN_COOL_C, MAX_COOL_C),
+
+            var response = {
+              htsp: this.clamp(this.convertToHomeKit(htsp, tempScale), MIN_HEAT_C, MAX_HEAT_C),
+              clsp: this.clamp(this.convertToHomeKit(clsp, tempScale), MIN_COOL_C, MAX_COOL_C),
               currentTemp: this.getCurrentTemperature(),
               mode: system.config['mode'][0]
             };
+
+            this.log.verbose(`GetTemperatures(): Response to HomeKit ${JSON.stringify(response)}`);
+
+            return response;
           }.bind(this)
         );
       }.bind(this)
@@ -383,7 +390,7 @@ module.exports = class InfinitudeThermostat {
       function (tempScale) {
         return this.getZoneStatus().then(
           function (zoneStatus) {
-            return this.client.convertToHomeKit(zoneStatus[property][0], tempScale);
+            return this.convertToHomeKit(zoneStatus[property][0], tempScale);
           }.bind(this)
         );
       }.bind(this)
@@ -408,5 +415,25 @@ module.exports = class InfinitudeThermostat {
 
   clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
+  }
+
+  convertToInfinitude(temperature, scale) {
+    let t = temperature;
+
+    if (scale === 'F') {
+      t = this.client.celsiusToFahrenheit(temperature);
+    }
+
+    return parseFloat(t).toFixed(2);
+  }
+
+  convertToHomeKit(temperature, scale) {
+    let t = temperature;
+
+    if (scale === 'F') {
+      t = this.client.fahrenheitToCelsius(temperature);
+    }
+
+    return parseFloat(t).toFixed(2);
   }
 };

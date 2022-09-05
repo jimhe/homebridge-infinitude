@@ -116,11 +116,11 @@ module.exports = class InfinitudeClient {
         }
 
         const uri = `${this.url}/api/${zoneId}/activity/${activity}?${setpoint}=${targetTemperature}`;
-        this.log.debug(uri);
         return axios
           .get(uri)
           .then(
             function (result) {
+              this.log.verbose(`${uri} response: ${JSON.stringify(result.data)}`);
               this.refreshSystems().then(function () {
                 if (callback) {
                   callback(null);
@@ -150,6 +150,7 @@ module.exports = class InfinitudeClient {
       .get(uri)
       .then(
         function (result) {
+          this.log.verbose(`${uri} response: ${JSON.stringify(result.data)}`);
           this.refreshSystems().then(function () {
             if (callback) {
               callback(null);
@@ -177,6 +178,7 @@ module.exports = class InfinitudeClient {
       .get(uri)
       .then(
         function (result) {
+          this.log.verbose(`${uri} response: ${JSON.stringify(result.data)}`);
           this.refreshSystems().then(function () {
             if (callback) {
               callback(null);
@@ -205,6 +207,8 @@ module.exports = class InfinitudeClient {
         .get(uri)
         .then(
           function (result) {
+            this.log.verbose(`${uri} response: ${JSON.stringify(result.data)}`);
+
             this.refreshSystems().then(function () {
               if (callback) {
                 callback(null);
@@ -229,8 +233,9 @@ module.exports = class InfinitudeClient {
 
   getTemperatureScale() {
     return this.getConfig().then(function (config) {
+      this.log.verbose(`getTemperatureScale() response: ${config['cfgem'][0]}`);
       return config['cfgem'][0];
-    });
+    }.bind(this));
   }
 
   fahrenheitToCelsius(temperature) {
@@ -239,21 +244,5 @@ module.exports = class InfinitudeClient {
 
   celsiusToFahrenheit(temperature) {
     return temperature * 1.8 + 32;
-  }
-
-  convertToInfinitude(temperature, scale) {
-    if (scale === 'F') {
-      return Math.round(this.celsiusToFahrenheit(temperature)).toFixed(1);
-    } else {
-      return temperature;
-    }
-  }
-
-  convertToHomeKit(temperature, scale) {
-    if (scale === 'F') {
-      return this.fahrenheitToCelsius(temperature);
-    } else {
-      return temperature;
-    }
   }
 };
