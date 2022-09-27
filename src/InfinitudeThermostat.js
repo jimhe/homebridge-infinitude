@@ -269,7 +269,7 @@ module.exports = class InfinitudeThermostat {
   }
 
   getCurrentHeatingCoolingState() {
-    return this.getZoneStatus().then(function (status) {
+    return this.client.getZoneStatus(this.zoneId).then(function (status) {
       switch (status['zoneconditioning'][0]) {
         case 'idle':
           return Characteristic.CurrentHeatingCoolingState.OFF;
@@ -278,11 +278,11 @@ module.exports = class InfinitudeThermostat {
         default:
           return Characteristic.CurrentHeatingCoolingState.COOL;
       }
-    });
+    }.bind(this));
   }
 
   getCurrentRelativeHumidity() {
-    return this.getZoneStatus().then(function (status) {
+    return this.client.getZoneStatus(this.zoneId).then(function (status) {
       return parseFloat(status['rh'][0]);
     });
   }
@@ -380,35 +380,19 @@ module.exports = class InfinitudeThermostat {
   }
 
   getFilterLifeLevel() {
-    return this.client.getStatus().then(function (status) {
-      return parseFloat(status['filtrlvl'][0]);
+    return this.client.getStatus('filtrlvl').then(function (filterLevel) {
+      return parseFloat(filterLevel);
     });
   }
 
   getCurrentTemperature(property = 'rt') {
     return this.client.getTemperatureScale().then(
       function (tempScale) {
-        return this.getZoneStatus().then(
+        return this.client.getZoneStatus(this.zoneId).then(
           function (zoneStatus) {
             return this.convertToHomeKit(zoneStatus[property][0], tempScale);
           }.bind(this)
         );
-      }.bind(this)
-    );
-  }
-
-  getZoneStatus() {
-    return this.client.getStatus().then(
-      function (status) {
-        return status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
-      }.bind(this)
-    );
-  }
-
-  getZoneTarget() {
-    return this.client.getConfig().then(
-      function (config) {
-        return config['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
       }.bind(this)
     );
   }
@@ -424,7 +408,7 @@ module.exports = class InfinitudeThermostat {
       t = this.client.celsiusToFahrenheit(temperature);
     }
 
-    return parseFloat(t).toFixed(2);
+    return parseFloat(t).toFixed(1);
   }
 
   convertToHomeKit(temperature, scale) {
@@ -434,6 +418,6 @@ module.exports = class InfinitudeThermostat {
       t = this.client.fahrenheitToCelsius(temperature);
     }
 
-    return parseFloat(t).toFixed(2);
+    return parseFloat(t).toFixed(1);
   }
 };

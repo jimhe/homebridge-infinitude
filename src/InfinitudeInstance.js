@@ -11,6 +11,7 @@ let AccessoryCategories, AccessoryInformation, Thermostat, TemperatureSensor, Fa
 module.exports = class InfinitudeInstance {
   constructor(id, log, config, api) {
     log.info(`Creating instance ${id}...`);
+
     Thermostat = api.hap.Service.Thermostat;
     AccessoryCategories = api.hap.Accessory.Categories;
     AccessoryInformation = api.hap.Service.AccessoryInformation;
@@ -28,6 +29,8 @@ module.exports = class InfinitudeInstance {
     this.config = config;
     this.Service = api.hap.Service;
     this.Characteristic = api.hap.Characteristic;
+
+    this.log.verbose(`Instance ${id} received config ${JSON.stringify(config)}`);
   }
 
   async initializeZones(create = true) {
@@ -36,9 +39,9 @@ module.exports = class InfinitudeInstance {
       return;
     }
 
-    return this.client.getStatus().then(
-      function (status) {
-        const enabledZones = status['zones'][0]['zone'].filter(zone => zone['enabled'][0] === 'on');
+    return this.client.getStatus('zones').then(
+      function (zones) {
+        const enabledZones = zones['zone'].filter(zone => zone['enabled'][0] === 'on');
         const outsideUuid = this.api.hap.uuid.generate(this.id + '_outsideZone');
 
         for (const zone of enabledZones) {
