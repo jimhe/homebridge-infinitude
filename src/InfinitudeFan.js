@@ -27,8 +27,8 @@ module.exports = class InfinitudeFan {
   initialize(service) {
     service.getCharacteristic(Characteristic.Active).on(
       'get',
-      function(callback) {
-        this.getActiveState().then(function(state) {
+      function (callback) {
+        this.getActiveState().then(function (state) {
           callback(null, state);
         });
       }.bind(this)
@@ -36,8 +36,8 @@ module.exports = class InfinitudeFan {
 
     service.getCharacteristic(Characteristic.TargetFanState).on(
       'get',
-      function(callback) {
-        this.getTargetFanState().then(function(targetFanState) {
+      function (callback) {
+        this.getTargetFanState().then(function (targetFanState) {
           callback(null, targetFanState);
         });
       }.bind(this)
@@ -45,8 +45,8 @@ module.exports = class InfinitudeFan {
 
     service.getCharacteristic(Characteristic.CurrentFanState).on(
       'get',
-      function(callback) {
-        this.getCurrentState().then(function(currentFanState) {
+      function (callback) {
+        this.getCurrentState().then(function (currentFanState) {
           callback(null, currentFanState);
         });
       }.bind(this)
@@ -54,8 +54,8 @@ module.exports = class InfinitudeFan {
   }
 
   getCurrentState() {
-    return this.getZoneStatus().then(
-      function(status) {
+    return this.client.getZoneStatus().then(
+      function (status) {
         switch (status['fan'][0]) {
           case 'off':
             return Characteristic.CurrentFanState.IDLE;
@@ -67,8 +67,8 @@ module.exports = class InfinitudeFan {
   }
 
   getActiveState() {
-    return this.getZoneStatus().then(
-      function(status) {
+    return this.client.getZoneStatus().then(
+      function (status) {
         switch (status['fan'][0]) {
           case 'off':
             return Characteristic.Active.INACTIVE;
@@ -81,7 +81,7 @@ module.exports = class InfinitudeFan {
 
   getTargetFanState() {
     return this.getScheduledActivity().then(
-      function(status) {
+      function (status) {
         switch (status['fan'][0]) {
           case 'auto':
             return Characteristic.TargetFanState.AUTO;
@@ -92,16 +92,16 @@ module.exports = class InfinitudeFan {
     );
   }
   getZoneStatus() {
-    return this.client.getStatus().then(
-      function(status) {
-        return status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
+    return this.client.getStatus('zones').then(
+      function (zones) {
+        return zones['zone'].find(zone => zone['id'] === this.zoneId);
       }.bind(this)
     );
   }
 
   getScheduledActivity() {
     return this.client.getSystem().then(
-      function(system) {
+      function (system) {
         var localTime = system.status['localTime'][0].substring(0, 19);
         var systemDate = new Date(localTime);
         var dayOfWeek = systemDate.getDay();

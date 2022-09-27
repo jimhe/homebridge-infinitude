@@ -35,9 +35,9 @@ module.exports = class InfinitudeSensor {
   }
 
   getCurrentOutdoorTemperature() {
-    return this.client.getStatus().then(
-      function (status) {
-        return this.client.fahrenheitToCelsius(parseFloat(status['oat'][0]), this.client.getTemperatureScale());
+    return this.client.getStatus('oat').then(
+      function (oat) {
+        return this.client.fahrenheitToCelsius(parseFloat(oat), this.client.getTemperatureScale());
       }.bind(this)
     );
   }
