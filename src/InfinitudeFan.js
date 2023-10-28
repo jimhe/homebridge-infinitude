@@ -12,76 +12,89 @@ module.exports = class InfinitudeFan {
     Characteristic = characteristic;
 
     this.initialize(platformAccessory.getService(Service.Fanv2));
+    this.bindInformation(platformAccessory.getService(Service.AccessoryInformation));
   }
 
-  initialize(FanService) {
-    FanService.getCharacteristic(Characteristic.Active)
-      .on(
-        'get',
-        function (callback) {
-          this.getActiveState().then(function (state) {
-            callback(null, state);
-          });
-        }.bind(this)
-      );
+  bindInformation(service) {
+    if (this.config.advancedDetails != undefined) {
+      service
+        .setCharacteristic(Characteristic.Manufacturer, this.config.advancedDetails.manufacturer)
+        .setCharacteristic(Characteristic.Model, this.config.advancedDetails.model)
+        .setCharacteristic(Characteristic.SerialNumber, `${this.config.advancedDetails.serial}-f`);
+    }
+  }
 
-    FanService.getCharacteristic(Characteristic.TargetFanState)
-      .on(
-        'get',
-        function (callback) {
-          this.getTargetFanState().then(function (targetFanState) {
-            callback(null, targetFanState);
-          });
-        }.bind(this)
-      );
+  initialize(service) {
+    service.getCharacteristic(Characteristic.Active).on(
+      'get',
+      function (callback) {
+        this.getActiveState().then(function (state) {
+          callback(null, state);
+        });
+      }.bind(this)
+    );
 
-    FanService.getCharacteristic(Characteristic.CurrentFanState)
-      .on(
-        'get',
-        function (callback) {
-          this.getCurrentState().then(function (currentFanState) {
-            callback(null, currentFanState);
-          });
-        }.bind(this)
-      );
+    service.getCharacteristic(Characteristic.TargetFanState).on(
+      'get',
+      function (callback) {
+        this.getTargetFanState().then(function (targetFanState) {
+          callback(null, targetFanState);
+        });
+      }.bind(this)
+    );
+
+    service.getCharacteristic(Characteristic.CurrentFanState).on(
+      'get',
+      function (callback) {
+        this.getCurrentState().then(function (currentFanState) {
+          callback(null, currentFanState);
+        });
+      }.bind(this)
+    );
   }
 
   getCurrentState() {
-    return this.getZoneStatus().then(function (status) {
-      switch (status['fan'][0]) {
-        case 'off':
-          return Characteristic.CurrentFanState.IDLE;
-        default:
-          return Characteristic.CurrentFanState.BLOWING_AIR;
-      }
-    }.bind(this));
+    return this.client.getZoneStatus().then(
+      function (status) {
+        switch (status['fan'][0]) {
+          case 'off':
+            return Characteristic.CurrentFanState.IDLE;
+          default:
+            return Characteristic.CurrentFanState.BLOWING_AIR;
+        }
+      }.bind(this)
+    );
   }
 
   getActiveState() {
-    return this.getZoneStatus().then(function (status) {
-      switch (status['fan'][0]) {
-        case 'off':
-          return Characteristic.Active.INACTIVE;
-        default:
-          return Characteristic.Active.ACTIVE;
-      }
-    }.bind(this));
+    return this.client.getZoneStatus().then(
+      function (status) {
+        switch (status['fan'][0]) {
+          case 'off':
+            return Characteristic.Active.INACTIVE;
+          default:
+            return Characteristic.Active.ACTIVE;
+        }
+      }.bind(this)
+    );
   }
 
   getTargetFanState() {
-    return this.getScheduledActivity().then(function (status) {
-      switch (status['fan'][0]) {
-        case 'auto':
-          return Characteristic.TargetFanState.AUTO;
-        default:
-          return Characteristic.TargetFanState.MANUAL;
-      }
-    }.bind(this));
+    return this.getScheduledActivity().then(
+      function (status) {
+        switch (status['fan'][0]) {
+          case 'auto':
+            return Characteristic.TargetFanState.AUTO;
+          default:
+            return Characteristic.TargetFanState.MANUAL;
+        }
+      }.bind(this)
+    );
   }
   getZoneStatus() {
-    return this.client.getStatus().then(
-      function (status) {
-        return status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
+    return this.client.getStatus('zones').then(
+      function (zones) {
+        return zones['zone'].find(zone => zone['id'] === this.zoneId);
       }.bind(this)
     );
   }
@@ -92,19 +105,18 @@ module.exports = class InfinitudeFan {
         var localTime = system.status['localTime'][0].substring(0, 19);
         var systemDate = new Date(localTime);
         var dayOfWeek = systemDate.getDay();
-        var time = (systemDate.getHours() * 100) + systemDate.getMinutes();
+        var time = systemDate.getHours() * 100 + systemDate.getMinutes();
         var zoneConfig = system.config['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
         var activePeriods = zoneConfig['program'][0]['day'][dayOfWeek]['period'].filter(p => {
           var timePieces = p['time'][0].split(':');
           var periodTime = timePieces[0] * 100 + timePieces[1] * 1;
-          return p['enabled'][0] === 'on' && periodTime <= time
+          return p['enabled'][0] === 'on' && periodTime <= time;
         });
 
         var activityName = 'home';
         if (activePeriods.length > 0) {
           activityName = activePeriods[activePeriods.length - 1]['activity'][0];
-        }
-        else {
+        } else {
           var zoneStatus = system.status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
           activityName = zoneStatus['currentActivity'][0];
         }

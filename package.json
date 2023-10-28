@@ -1,6 +1,6 @@
 {
   "name": "homebridge-infinitude-v2",
-  "version": "0.5.4",
+  "version": "0.7.0",
   "description": "Infinitude Plugin for Homebridge",
   "license": "ISC",
   "main": "src/index.js",
@@ -15,7 +15,7 @@
     "url": "https://github.com/dotfortun3-code/homebridge-infinitude-v2/issues"
   },
   "engines": {
-    "node": ">=8.9.0",
+    "node": ">=16.3.0",
     "homebridge": ">=0.4.38"
   },
   "author": {
@@ -35,21 +35,20 @@
     ]
   },
   "dependencies": {
-    "@hapi/joi": "^17.1.1",
-    "axios": "^0.18.1",
-    "fast-xml-parser": "^3.16.0",
-    "threads": "^0.12.0",
-    "yarn": "^1.22.4"
+    "axios": "^0.21.1",
+    "fast-xml-parser": "^4.0.1",
+    "threads": "^0.12.1",
+    "yarn": "^1.22.17"
   },
   "devDependencies": {
-    "eslint": "^5.3.0",
-    "eslint-config-prettier": "^4.3.0",
-    "eslint-plugin-prettier": "^3.1.0",
-    "husky": "^2.3.0",
-    "jest": "^24.8.0",
-    "jest-mock-axios": "^3.0.0",
-    "lint-staged": "^8.1.7",
-    "nock": "^10.0.6",
-    "prettier": "^1.14.2"
+    "eslint": "^8.7.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
+    "jest": "^27.4.7",
+    "jest-mock-axios": "^4.5.0",
+    "lint-staged": "^12.3.2",
+    "nock": "^13.2.2",
+    "prettier": "^2.5.1"
   }
 }

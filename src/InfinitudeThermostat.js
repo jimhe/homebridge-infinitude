@@ -1,5 +1,10 @@
 let Characteristic, Service;
 
+let MIN_COOL_C = 10;
+let MAX_COOL_C = 35;
+let MIN_HEAT_C = 0;
+let MAX_HEAT_C = 25;
+
 module.exports = class InfinitudeThermostat {
   constructor(name, zoneId, client, log, config, platformAccessory, service, characteristic) {
     this.name = name;
@@ -12,15 +17,25 @@ module.exports = class InfinitudeThermostat {
     Characteristic = characteristic;
 
     this.initialize(platformAccessory.getService(Service.Thermostat));
+    this.bindInformation(platformAccessory.getService(Service.AccessoryInformation));
   }
 
-  initialize(thermostatService) {
-    thermostatService.setCharacteristic(
+  bindInformation(service) {
+    if (this.config.advancedDetails != undefined) {
+      service
+        .setCharacteristic(Characteristic.Manufacturer, this.config.advancedDetails.manufacturer)
+        .setCharacteristic(Characteristic.Model, this.config.advancedDetails.model)
+        .setCharacteristic(Characteristic.SerialNumber, `${this.config.advancedDetails.serial}-s`);
+    }
+  }
+
+  initialize(service) {
+    service.setCharacteristic(
       Characteristic.TemperatureDisplayUnits,
       Characteristic.TemperatureDisplayUnits.FAHRENHEIT
     );
 
-    thermostatService.getCharacteristic(Characteristic.CurrentTemperature).on(
+    service.getCharacteristic(Characteristic.CurrentTemperature).on(
       'get',
       function (callback) {
         this.getCurrentTemperature().then(function (currentTemperature) {
@@ -29,52 +44,59 @@ module.exports = class InfinitudeThermostat {
       }.bind(this)
     );
 
-    thermostatService.getCharacteristic(Characteristic.TargetTemperature).on(
-      'get',
-      function (callback) {
-        this.getTemperatures().then(function (targets) {
-          if (targets.mode === 'heat') {
-            callback(null, targets.htsp);
-          }
-          else if (targets.mode === 'cool') {
-            callback(null, targets.clsp);
-          }
-          else {
-            callback(null, targets.currentTemp);
-          }
-        }.bind(this));
-      }.bind(this)
-    ).on(
-      'set',
-      function (thresholdTemperature, callback) {
-        return this.client.getTemperatureScale().then(
-          function (tempScale) {
-            return this.getNextActivityTime().then(
-              function (time) {
-                let activity = null;
+    service
+      .getCharacteristic(Characteristic.TargetTemperature)
+      .on(
+        'get',
+        function (callback) {
+          this.getTemperatures().then(
+            function (targets) {
+              if (targets.mode === 'heat') {
+                callback(null, targets.htsp);
+              } else if (targets.mode === 'cool') {
+                callback(null, targets.clsp);
+              } else {
+                callback(null, targets.currentTemp);
+              }
+            }.bind(this)
+          );
+        }.bind(this)
+      )
+      .on(
+        'set',
+        function (thresholdTemperature, callback) {
+          return this.client.getTemperatureScale().then(
+            function (tempScale) {
+              return this.getNextActivityTime().then(
+                function (time) {
+                  let activity = null;
 
-                if (!time) {
-                  let holdDuration = this.config.holdUntil ? this.config.holdUntil : "forever";
-                  this.client.setActivity(this.zoneId, "manual", holdDuration, null);
-                  activity = "manual";
-                }
+                  if (!time) {
+                    let holdDuration = this.config.holdUntil ? this.config.holdUntil : 'forever';
+                    this.client.setActivity(this.zoneId, 'manual', holdDuration, null);
+                    activity = 'manual';
+                  }
 
-                return this.getTargetHeatingCoolingState().then(function (state) {
-                  const mode = (state === Characteristic.TargetHeatingCoolingState.HEAT) ? "htsp" : "clsp";
-                  return this.client.setTargetTemperature(
-                    this.zoneId,
-                    this.client.convertToInfinitude(thresholdTemperature, tempScale),
-                    mode,
-                    activity,
-                    callback
+                  return this.getTargetHeatingCoolingState().then(
+                    function (state) {
+                      const mode = state === Characteristic.TargetHeatingCoolingState.HEAT ? 'htsp' : 'clsp';
+                      return this.client.setTargetTemperature(
+                        this.zoneId,
+                        this.convertToInfinitude(thresholdTemperature, tempScale),
+                        mode,
+                        activity,
+                        callback
+                      );
+                    }.bind(this)
                   );
-                }.bind(this))
-              }.bind(this))
-          }.bind(this))
-      }.bind(this)
-    );
+                }.bind(this)
+              );
+            }.bind(this)
+          );
+        }.bind(this)
+      );
 
-    thermostatService.getCharacteristic(Characteristic.CurrentHeatingCoolingState).on(
+    service.getCharacteristic(Characteristic.CurrentHeatingCoolingState).on(
       'get',
       function (callback) {
         this.getCurrentHeatingCoolingState().then(function (state) {
@@ -83,7 +105,7 @@ module.exports = class InfinitudeThermostat {
       }.bind(this)
     );
 
-    thermostatService
+    service
       .getCharacteristic(Characteristic.TargetHeatingCoolingState)
       .on(
         'get',
@@ -96,7 +118,6 @@ module.exports = class InfinitudeThermostat {
       .on(
         'set',
         function (targetHeatingCoolingState, callback) {
-
           switch (targetHeatingCoolingState) {
             case Characteristic.TargetHeatingCoolingState.OFF:
               if (this.config.shutOffAway) {
@@ -104,49 +125,45 @@ module.exports = class InfinitudeThermostat {
                   return this.getNextActivityTime().then(
                     function (time) {
                       if (!time) {
-                        return this.client.setActivity(this.zoneId, "away", "forever", callback);
-                      }
-                      else {
-                        return this.client.setActivity(this.zoneId, "away", time, callback);
+                        return this.client.setActivity(this.zoneId, 'away', 'forever', callback);
+                      } else {
+                        return this.client.setActivity(this.zoneId, 'away', time, callback);
                       }
                     }.bind(this)
-                  )
+                  );
+                } else {
+                  return this.client.setActivity(this.zoneId, 'away', 'forever', callback);
                 }
-                else {
-                  return this.client.setActivity(this.zoneId, "away", "forever", callback);
-                }
-              }
-              else {
+              } else {
                 return this.client.removeHold(this.zoneId).then(
                   function () {
                     return this.client.setSystemMode('off', callback);
                   }.bind(this)
-                )
-
+                );
               }
             case Characteristic.TargetHeatingCoolingState.AUTO:
               return this.client.removeHold(this.zoneId).then(
                 function () {
                   return this.client.setSystemMode('auto', callback);
                 }.bind(this)
-              )
+              );
             case Characteristic.TargetHeatingCoolingState.HEAT:
               return this.client.removeHold(this.zoneId).then(
                 function () {
                   return this.client.setSystemMode('heat', callback);
                 }.bind(this)
-              )
+              );
             case Characteristic.TargetHeatingCoolingState.COOL:
               return this.client.removeHold(this.zoneId).then(
                 function () {
                   return this.client.setSystemMode('cool', callback);
                 }.bind(this)
-              )
+              );
           }
         }.bind(this)
       );
 
-    thermostatService
+    service
       .getCharacteristic(Characteristic.HeatingThresholdTemperature)
       .on(
         'get',
@@ -165,16 +182,17 @@ module.exports = class InfinitudeThermostat {
             function (tempScale) {
               return this.client.setTargetTemperature(
                 this.zoneId,
-                this.client.convertToHomeKit(thresholdTemperature, tempScale),
+                this.convertToHomeKit(thresholdTemperature, tempScale),
                 'htsp',
                 null,
                 callback
               );
-            }.bind(this))
+            }.bind(this)
+          );
         }.bind(this)
       );
 
-    thermostatService
+    service
       .getCharacteristic(Characteristic.CoolingThresholdTemperature)
       .on(
         'get',
@@ -191,16 +209,17 @@ module.exports = class InfinitudeThermostat {
             function (tempScale) {
               return this.client.setTargetTemperature(
                 this.zoneId,
-                this.client.convertToHomeKit(thresholdTemperature, tempScale),
+                this.convertToHomeKit(thresholdTemperature, tempScale),
                 'clsp',
                 null,
                 callback
               );
-            }.bind(this))
+            }.bind(this)
+          );
         }.bind(this)
       );
 
-    thermostatService.getCharacteristic(Characteristic.CurrentRelativeHumidity).on(
+    service.getCharacteristic(Characteristic.CurrentRelativeHumidity).on(
       'get',
       function (callback) {
         this.getCurrentRelativeHumidity().then(function (humidity) {
@@ -209,7 +228,7 @@ module.exports = class InfinitudeThermostat {
       }.bind(this)
     );
 
-    thermostatService.getCharacteristic(Characteristic.FilterLifeLevel).on(
+    service.getCharacteristic(Characteristic.FilterLifeLevel).on(
       'get',
       function (callback) {
         this.getFilterLifeLevel().then(function (filterlevel) {
@@ -226,30 +245,31 @@ module.exports = class InfinitudeThermostat {
       function (tempScale) {
         return this.client.getSystem().then(
           function (system) {
-            return this.getScheduledActivity().then(
-              function (activity) {
-                var zoneStatus = system.status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
-                var htsp = activity['htsp'][0];
-                var clsp = activity['clsp'][0];
+            var zoneStatus = system.status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
 
-                if (zoneStatus['hold'][0] == 'on' && zoneStatus['currentActivity'][0] == 'away') {
-                  htsp = zoneStatus['htsp'][0];
-                  clsp = zoneStatus['clsp'][0];
-                }
+            this.log.verbose(`GetTemperatures(): Found zone with ID ${this.zoneId}: ${JSON.stringify(zoneStatus)}`);
 
-                return {
-                  htsp: this.client.convertToHomeKit(htsp, tempScale),
-                  clsp: this.client.convertToHomeKit(clsp, tempScale),
-                  currentTemp: this.getCurrentTemperature(),
-                  mode: system.config['mode'][0]
-                };
-              }.bind(this))
-          }.bind(this))
-      }.bind(this));
+            const htsp = zoneStatus['htsp'][0];
+            const clsp = zoneStatus['clsp'][0];
+
+            var response = {
+              htsp: this.clamp(this.convertToHomeKit(htsp, tempScale), MIN_HEAT_C, MAX_HEAT_C),
+              clsp: this.clamp(this.convertToHomeKit(clsp, tempScale), MIN_COOL_C, MAX_COOL_C),
+              currentTemp: this.getCurrentTemperature(),
+              mode: system.config['mode'][0]
+            };
+
+            this.log.verbose(`GetTemperatures(): Response to HomeKit ${JSON.stringify(response)}`);
+
+            return response;
+          }.bind(this)
+        );
+      }.bind(this)
+    );
   }
 
   getCurrentHeatingCoolingState() {
-    return this.getZoneStatus().then(function (status) {
+    return this.client.getZoneStatus(this.zoneId).then(function (status) {
       switch (status['zoneconditioning'][0]) {
         case 'idle':
           return Characteristic.CurrentHeatingCoolingState.OFF;
@@ -258,11 +278,11 @@ module.exports = class InfinitudeThermostat {
         default:
           return Characteristic.CurrentHeatingCoolingState.COOL;
       }
-    });
+    }.bind(this));
   }
 
   getCurrentRelativeHumidity() {
-    return this.getZoneStatus().then(function (status) {
+    return this.client.getZoneStatus(this.zoneId).then(function (status) {
       return parseFloat(status['rh'][0]);
     });
   }
@@ -274,8 +294,7 @@ module.exports = class InfinitudeThermostat {
 
         if (zone['hold'][0] == 'on' && zone['currentActivity'][0] == 'away') {
           return Characteristic.TargetHeatingCoolingState.OFF;
-        }
-        else {
+        } else {
           const systemMode = system.config['mode'][0];
 
           switch (systemMode) {
@@ -290,7 +309,6 @@ module.exports = class InfinitudeThermostat {
               return Characteristic.TargetHeatingCoolingState.OFF;
           }
         }
-
       }.bind(this)
     );
   }
@@ -301,19 +319,18 @@ module.exports = class InfinitudeThermostat {
         var localTime = system.status['localTime'][0].substring(0, 19);
         var systemDate = new Date(localTime);
         var dayOfWeek = systemDate.getDay();
-        var time = (systemDate.getHours() * 100) + systemDate.getMinutes();
+        var time = systemDate.getHours() * 100 + systemDate.getMinutes();
         var zoneConfig = system.config['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
         var activePeriods = zoneConfig['program'][0]['day'][dayOfWeek]['period'].filter(p => {
           var timePieces = p['time'][0].split(':');
           var periodTime = timePieces[0] * 100 + timePieces[1] * 1;
-          return p['enabled'][0] === 'on' && periodTime <= time
+          return p['enabled'][0] === 'on' && periodTime <= time;
         });
 
         var activityName = 'home';
         if (activePeriods.length > 0) {
           activityName = activePeriods[activePeriods.length - 1]['activity'][0];
-        }
-        else {
+        } else {
           var zoneStatus = system.status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
           activityName = zoneStatus['currentActivity'][0];
         }
@@ -330,13 +347,13 @@ module.exports = class InfinitudeThermostat {
         var localTime = system.status['localTime'][0].substring(0, 19);
         var systemDate = new Date(localTime);
         var dayOfWeek = systemDate.getDay();
-        var time = (systemDate.getHours() * 100) + systemDate.getMinutes();
+        var time = systemDate.getHours() * 100 + systemDate.getMinutes();
         var zoneConfig = system.config['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
 
         var activePeriod = zoneConfig['program'][0]['day'][dayOfWeek]['period'].find(p => {
           var timePieces = p['time'][0].split(':');
           var periodTime = timePieces[0] * 100 + timePieces[1] * 1;
-          return p['enabled'][0] === 'on' && periodTime > time
+          return p['enabled'][0] === 'on' && periodTime > time;
         });
 
         //if no activity for current day, check the rest of the week.
@@ -363,33 +380,44 @@ module.exports = class InfinitudeThermostat {
   }
 
   getFilterLifeLevel() {
-    return this.client.getStatus().then(function (status) {
-      return parseFloat(status['filtrlvl'][0]);
+    return this.client.getStatus('filtrlvl').then(function (filterLevel) {
+      return parseFloat(filterLevel);
     });
   }
 
   getCurrentTemperature(property = 'rt') {
     return this.client.getTemperatureScale().then(
       function (tempScale) {
-        return this.getZoneStatus().then(function (zoneStatus) {
-          return this.client.convertToHomeKit(zoneStatus[property][0], tempScale);
-        }.bind(this));
-      }.bind(this))
-  }
-
-  getZoneStatus() {
-    return this.client.getStatus().then(
-      function (status) {
-        return status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
+        return this.client.getZoneStatus(this.zoneId).then(
+          function (zoneStatus) {
+            return this.convertToHomeKit(zoneStatus[property][0], tempScale);
+          }.bind(this)
+        );
       }.bind(this)
     );
   }
 
-  getZoneTarget() {
-    return this.client.getConfig().then(
-      function (config) {
-        return config['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
-      }.bind(this)
-    );
+  clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  convertToInfinitude(temperature, scale) {
+    let t = temperature;
+
+    if (scale === 'F') {
+      t = this.client.celsiusToFahrenheit(temperature);
+    }
+
+    return parseFloat(t).toFixed(1);
+  }
+
+  convertToHomeKit(temperature, scale) {
+    let t = temperature;
+
+    if (scale === 'F') {
+      t = this.client.fahrenheitToCelsius(temperature);
+    }
+
+    return parseFloat(t).toFixed(1);
   }
 };
