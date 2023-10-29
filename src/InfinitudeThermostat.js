@@ -236,7 +236,6 @@ module.exports = class InfinitudeThermostat {
         });
       }.bind(this)
     );
-  }
   
     service.getCharacteristic(Characteristic.FilterLifeLevel).on(
       'get',
