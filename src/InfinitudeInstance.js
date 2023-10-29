@@ -60,18 +60,16 @@ module.exports = class InfinitudeInstance {
             this.accessories[tUuid] =
               this.accessories[tUuid] || this.createZoneThermostat(this.zoneNames[tUuid], tUuid);
           }
+          if (create) {
+            if (this.config.useFan) {
+              this.accessories[fUuid] = this.accessories[fUuid] || this.createFan(this.zoneNames[fUuid], fUuid);
+            }
+            if (this.config.useOutdoorTemperatureSensor) {
+              this.accessories[outsideUuid] =
+                this.accessories[outsideUuid] || this.createTemperatureSensor(`Outdoor`, outsideUuid);
+            }
         }
-
-        if (create) {
-          if (this.config.useFan) {
-            this.accessories[fUuid] = this.accessories[fUuid] || this.createFan(this.zoneNames[fUuid], fUuid);
-          }
-          if (this.config.useOutdoorTemperatureSensor) {
-            this.accessories[outsideUuid] =
-              this.accessories[outsideUuid] || this.createTemperatureSensor(`Outdoor`, outsideUuid);
-          }
         }
-
         this.initialized = true;
       }.bind(this)
     );
