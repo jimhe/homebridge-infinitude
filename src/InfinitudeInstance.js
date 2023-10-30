@@ -63,8 +63,10 @@ module.exports = class InfinitudeInstance {
           if (create) {
             if (this.config.useFan) {
               this.accessories[fUuid] = this.accessories[fUuid] || this.createFan(this.zoneNames[fUuid], fUuid);
-            }
-            if (this.config.useOutdoorTemperatureSensor) {
+            }}
+            
+          if(create) {
+                if (this.config.useOutdoorTemperatureSensor) {
               this.accessories[outsideUuid] =
                 this.accessories[outsideUuid] || this.createTemperatureSensor(`Outdoor`, outsideUuid);
             }
