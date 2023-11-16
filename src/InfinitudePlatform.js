@@ -73,20 +73,15 @@ module.exports = class InfinitudePlatform {
 
   configureAccessory(accessory) {
     var map = this.accessoryMap.find(x => x.accessoryUuid == accessory.UUID);
-    if (map != null) {
-      var thermostat = thermostats.find(x => x.id == map.instanceId);
-      if (thermostat != null) {
-        thermostat.initializeZones(false).then(
-          function () {
-            if (accessory.category == AccessoryCategories.TEMPERATURESENSOR) {
-              thermostat.configureTemperatureSensor(accessory);
-            } else if (accessory.category == AccessoryCategories.FAN) {
-              thermostat.configureFan(accessory);
-            } else if (accessory.category == AccessoryCategories.THERMOSTAT) {
-              thermostat.configureZoneThermostat(accessory);
-            }
-          }.bind(this)
-        );
+    var thermostat = thermostats.find(x => x.id == map.instanceId);
+    if (map != null && thermostat != null) {
+      this.log.info(`loading accessory: ${accessory.name} ${accessory.category}`);
+      if (accessory.category == AccessoryCategories.THERMOSTAT) {
+        thermostat.initializeZones(false).then(() => thermostat.configureZoneThermostat(accessory));
+      } else if (accessory.category == AccessoryCategories.SENSOR || accessory.category == AccessoryCategories.OTHER) {
+        thermostat.configureTemperatureSensor(accessory);
+      } else if (accessory.category == AccessoryCategories.FAN) {
+        thermostat.configureFan(accessory);
       } else {
         this.log.info(`Unable to find instance with id ${map.instanceId}.`);
       }
