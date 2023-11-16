@@ -90,7 +90,7 @@ module.exports = class InfinitudeInstance {
 
   createTemperatureSensor(sensorName, uuid) {
     this.log.info(`Creating outdoor temperature sensor with name: ${sensorName}, uuid: ${uuid}`);
-    const sensorAccessory = new this.api.platformAccessory(sensorName, uuid, AccessoryCategories.TEMPERATURESENSOR);
+    const sensorAccessory = new this.api.platformAccessory(sensorName, uuid, AccessoryCategories.SENSOR);
 
 
     sensorAccessory.addService(TemperatureSensor);
