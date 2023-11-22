@@ -74,6 +74,12 @@
             "description": "Create outdoor temperature sensor for this system",
             "type": "boolean",
             "default": true
+          },
+          "useModeSwitches": {
+            "title": "Configure Mode Switches",
+            "description": "Creates switch for changing thermostat modes",
+            "type": "boolean",
+            "default": false
           }
         }
       }
