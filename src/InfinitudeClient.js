@@ -17,12 +17,10 @@ module.exports = class InfinitudeClient {
   }
 
   async refresh(path, handler, callback) {
-    this.log.verbose(`Retrieving from api ${this.url}${path}`);
     return axios
       .get(`${this.url}${path}`, { timeout: 5000 })
       .then(
         function (response) {
-          this.log.verbose(`${path} response: ${JSON.stringify(response.data)} `);
           if (callback) {
             callback(null);
           }
@@ -72,6 +70,13 @@ module.exports = class InfinitudeClient {
 
   getTemperatureScale() {
     return this.getConfig('cfgem');
+  }
+
+  getCurrentActivity(zoneId) {
+    return this.getStatus('zones').then(zones => {
+      const zone = zones['zone'].filter(zone => zone['id'] === zoneId);
+      return zone[0].currentActivity[0];
+    });
   }
 
   getStatus(path = '') {
