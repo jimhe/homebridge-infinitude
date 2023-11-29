@@ -24,6 +24,9 @@ HomeKit Features:
 - **Hardware Display Unit:** control temperature unit (Celcius/Fahrenheit) of physical Theromstat.
 - **Filter Life Level:** Displays life of Filter, `100` being brand new and `0` needing replacement. Infinitude value `filtrlvl`
 - **Current Relative Humidity:** Displays indoor humidity reported by Thermostat. Infinitude value `rh`
+- **Mode Switches:** Change Thermostat modes with HomeKit switches
+
+![IMG_3261](https://github.com/dotfortun3-code/homebridge-infinitude-v2/assets/24662541/caa1dada-00c9-415f-9d8e-64201bb9bc1b)
 
 # Install
 
