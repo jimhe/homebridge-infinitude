@@ -228,15 +228,6 @@ module.exports = class InfinitudeThermostat {
       }.bind(this)
     );
 
-   service.getCharacteristic(Characteristic.FilterChangeIndication).on(
-      'get',
-      function (callback) {
-        this.getFilterChangeIndication().then(function (filterChangeIndication) {
-          callback(null, filterChangeIndication);
-        });
-      }.bind(this)
-    );
-  
     service.getCharacteristic(Characteristic.FilterLifeLevel).on(
       'get',
       function (callback) {
@@ -279,6 +270,7 @@ module.exports = class InfinitudeThermostat {
 
   getCurrentHeatingCoolingState() {
     return this.client.getZoneStatus(this.zoneId).then(function (status) {
+
       switch (status['zoneconditioning'][0]) {
         case 'idle':
           return Characteristic.CurrentHeatingCoolingState.OFF;
@@ -386,15 +378,6 @@ module.exports = class InfinitudeThermostat {
         return activePeriod['time'][0];
       }.bind(this)
     );
-  }
-
-  getFilterChangeIndication() {
-    return this.getFilterLifeLevel().then(function (filterLifeLevel) {
-      // Determine filter change indication based on FilterLifeLevel value
-      // For example, consider filter needs changing when FilterLifeLevel drops below 10%
-      const filterNeedsChanging = filterLifeLevel < 10; // Adjust the threshold as needed
-      return filterNeedsChanging;
-    });
   }
 
   getFilterLifeLevel() {
