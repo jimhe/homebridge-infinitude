@@ -270,7 +270,6 @@ module.exports = class InfinitudeThermostat {
 
   getCurrentHeatingCoolingState() {
     return this.client.getZoneStatus(this.zoneId).then(function (status) {
-
       switch (status['zoneconditioning'][0]) {
         case 'idle':
           return Characteristic.CurrentHeatingCoolingState.OFF;
