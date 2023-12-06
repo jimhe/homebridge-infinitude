@@ -60,16 +60,28 @@ module.exports = class InfinitudeInstance {
           this.zoneNames[tUuid] = `${this.config.name} ${zoneName} Thermostat`;
           this.zoneNames[fUuid] = `${this.config.name} ${zoneName} Fan`;
 
-
+          if (create) {
+            this.accessories[tUuid] =
+              this.accessories[tUuid] || this.createZoneThermostat(this.zoneNames[tUuid], tUuid);
+          }
+          if (create) {
+            if (this.config.useFan) {
+              this.accessories[fUuid] = this.accessories[fUuid] || this.createFan(this.zoneNames[fUuid], fUuid);
+            }}
+            
+          if(create) {
+                if (this.config.useOutdoorTemperatureSensor) {
+              this.accessories[outsideUuid] =
+                this.accessories[outsideUuid] || this.createTemperatureSensor(`Outdoor`, outsideUuid);
+            }
+        }
           if (this.config.useModeSwitches) {
             const switchUuid = this.api.hap.uuid.generate(this.id + '_' + zoneId + '_controller');
 
             this.zoneIds[switchUuid] = zoneId;
             this.zoneNames[switchUuid] = `${this.config.name} ${zoneName} Controller`;
           }
-
         }
-
         this.initialized = true;
       }.bind(this)
     );

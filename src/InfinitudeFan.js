@@ -54,7 +54,7 @@ module.exports = class InfinitudeFan {
   }
 
   getCurrentState() {
-    return this.client.getZoneStatus().then(
+    return this.getZoneStatus().then(
       function (status) {
         switch (status['fan'][0]) {
           case 'off':
@@ -67,7 +67,7 @@ module.exports = class InfinitudeFan {
   }
 
   getActiveState() {
-    return this.client.getZoneStatus().then(
+    return this.getZoneStatus().then(
       function (status) {
         switch (status['fan'][0]) {
           case 'off':
