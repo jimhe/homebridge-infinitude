@@ -112,7 +112,7 @@ module.exports = class InfinitudeClient {
     return data;
   }
 
-  setTargetTemperature(zoneId, targetTemperature, setpoint, activity, callback) {
+  setTargetTemperature(zoneId, targetTemperature, setpoint, activity) {
     // zone 1 is at position 0 of the array
     const zoneArrayPosition = zoneId - 1;
     return this.getStatus().then(
@@ -135,7 +135,7 @@ module.exports = class InfinitudeClient {
     return this.refresh(uri);
   }
 
-  removeHold(zoneId, callback) {
+  removeHold(zoneId) {
     let uri = `/api/${zoneId}/hold?hold=off`;
 
     return this.refresh(uri);
@@ -147,15 +147,5 @@ module.exports = class InfinitudeClient {
     if (systemMode !== mode) {
       return this.refresh(uri);
     }
-  }
-
-
-
-  fahrenheitToCelsius(temperature) {
-    return (temperature - 32) * (5 / 9);
-  }
-
-  celsiusToFahrenheit(temperature) {
-    return temperature * (9 / 5) + 32;
   }
 };

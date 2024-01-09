@@ -1,3 +1,4 @@
+const InfinitudeHelper = require('./InfinitudeHelper');
 let Characteristic, Service;
 
 module.exports = class InfinitudeSensor {
@@ -6,7 +7,7 @@ module.exports = class InfinitudeSensor {
     this.client = client;
     this.log = log;
     this.config = config;
-
+    this.helper = new InfinitudeHelper();
     Service = service;
     Characteristic = characteristic;
 
@@ -24,21 +25,15 @@ module.exports = class InfinitudeSensor {
   }
 
   initialize(service) {
-    service.getCharacteristic(Characteristic.CurrentTemperature).on(
-      'get',
-      function (callback) {
-        this.getCurrentOutdoorTemperature().then(function (currentTemperature) {
-          callback(null, currentTemperature);
-        });
-      }.bind(this)
-    );
+    service.getCharacteristic(Characteristic.CurrentTemperature)
+      .onGet(this.getCurrentOutdoorTemperature.bind(this));
   }
 
-  getCurrentOutdoorTemperature() {
-    return this.client.getStatus('oat').then(
-      function (oat) {
-        return this.client.fahrenheitToCelsius(parseFloat(oat), this.client.getTemperatureScale());
-      }.bind(this)
-    );
+  async getCurrentOutdoorTemperature() {
+    var tempScale = await this.client.getTemperatureScale();
+    let outdoorTemp = await this.client.getStatus('oat');
+    outdoorTemp = parseFloat(outdoorTemp);
+    outdoorTemp = this.helper.convertToHomeKit(outdoorTemp, tempScale);
+    return outdoorTemp;
   }
 };
