@@ -16,14 +16,11 @@ module.exports = class InfinitudeClient {
     };
   }
 
-  async refresh(path, handler, callback) {
+  async refresh(path) {
     return axios
       .get(`${this.url}${path}`, { timeout: 5000 })
       .then(
         function (response) {
-          if (callback) {
-            callback(null);
-          }
           return response;
         }.bind(this)
       )
@@ -127,40 +124,38 @@ module.exports = class InfinitudeClient {
         }
 
         const uri = `/api/${zoneId}/activity/${activity}?${setpoint}=${targetTemperature}`;
-        return this.refresh(uri, null, callback);
+        return this.refresh(uri);
       }.bind(this)
     );
   }
 
-  setActivity(zoneId, activity, until, callback) {
+  setActivity(zoneId, activity, until) {
     let uri = `/api/${zoneId}/hold?activity=${activity}&until=${until}`;
 
-    return this.refresh(uri, null, callback);
+    return this.refresh(uri);
   }
 
   removeHold(zoneId, callback) {
     let uri = `/api/${zoneId}/hold?hold=off`;
 
-    return this.refresh(uri, null, callback);
+    return this.refresh(uri);
   }
 
-  async setSystemMode(mode, callback) {
+  async setSystemMode(mode) {
     let uri = `/api/config?mode=${mode}`;
     const systemMode = await this.getConfig('mode');
     if (systemMode !== mode) {
-      return this.refresh(uri, null, callback);
-    } else {
-      return callback(null);
+      return this.refresh(uri);
     }
   }
 
 
 
   fahrenheitToCelsius(temperature) {
-    return (temperature - 32) / 1.8;
+    return (temperature - 32) * (5 / 9);
   }
 
   celsiusToFahrenheit(temperature) {
-    return temperature * 1.8 + 32;
+    return temperature * (9 / 5) + 32;
   }
 };
