@@ -1,5 +1,4 @@
 const axios = require('axios');
-const parser = require('fast-xml-parser');
 
 module.exports = class InfinitudeClient {
   static get REFRESH_MS() {

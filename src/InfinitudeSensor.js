@@ -10,8 +10,8 @@ module.exports = class InfinitudeSensor {
     this.helper = new InfinitudeHelper();
     Service = service;
     Characteristic = characteristic;
-
-    this.initialize(platformAccessory.getService(Service.TemperatureSensor));
+    this.temperatureService = platformAccessory.getService(Service.TemperatureSensor);
+    this.initialize();
     this.bindInformation(platformAccessory.getService(Service.AccessoryInformation));
   }
 
@@ -24,9 +24,31 @@ module.exports = class InfinitudeSensor {
     }
   }
 
-  initialize(service) {
-    service.getCharacteristic(Characteristic.CurrentTemperature)
-      .onGet(this.getCurrentOutdoorTemperature.bind(this));
+  initialize() {
+    if (this.config.pollOutdoorSensor) {
+      this.initializePolling();
+    }
+    else {
+      this.temperatureService.getCharacteristic(Characteristic.CurrentTemperature)
+        .onGet(this.getCurrentOutdoorTemperature.bind(this));
+    }
+  }
+
+  initializePolling() {
+    let pollTime = this.config.sensorPollTime * 1000;
+    this.log.verbose(`Setting outdoor sensor poll time to ${pollTime}ms`);
+    // Update the temperature every pollTime milliseconds
+    setInterval(this.updateTemperature.bind(this), pollTime);
+    // Initial temperature update
+    this.updateTemperature();
+  }
+
+  async updateTemperature() {
+    const currentTemperature = await this.getCurrentOutdoorTemperature();
+
+    // Update the TemperatureSensor characteristic with the new temperature value
+    this.temperatureService.updateCharacteristic(Characteristic.CurrentTemperature, currentTemperature);
+    this.log.verbose(`Outdoor temperature updated to: ${currentTemperature}°`);
   }
 
   async getCurrentOutdoorTemperature() {
