@@ -53,7 +53,7 @@ module.exports = class InfinitudeSwitch {
 
   async setHomeOn(value) {
     if (value == true) {
-      await this.client.setActivity(this.zoneId, "home", 'forever', null);
+      await this.client.setActivity(this.zoneId, "home", 'forever');
       this.awayService.updateCharacteristic(Characteristic.On, false);
       this.wakeService.updateCharacteristic(Characteristic.On, false);
       this.sleepService.updateCharacteristic(Characteristic.On, false);
@@ -67,7 +67,7 @@ module.exports = class InfinitudeSwitch {
   }
   async setAwayOn(value) {
     if (value == true) {
-      await this.client.setActivity(this.zoneId, "away", 'forever', null);
+      await this.client.setActivity(this.zoneId, "away", 'forever');
       this.wakeService.updateCharacteristic(Characteristic.On, false);
       this.sleepService.updateCharacteristic(Characteristic.On, false);
       this.homeService.updateCharacteristic(Characteristic.On, false);
@@ -81,7 +81,7 @@ module.exports = class InfinitudeSwitch {
   }
   async setWakeOn(value) {
     if (value == true) {
-      await this.client.setActivity(this.zoneId, "wake", 'forever', null);
+      await this.client.setActivity(this.zoneId, "wake", 'forever');
       this.awayService.updateCharacteristic(Characteristic.On, false);
       this.sleepService.updateCharacteristic(Characteristic.On, false);
       this.homeService.updateCharacteristic(Characteristic.On, false);
@@ -95,7 +95,7 @@ module.exports = class InfinitudeSwitch {
   }
   async setSleepOn(value) {
     if (value == true) {
-      await this.client.setActivity(this.zoneId, "sleep", 'forever', null);
+      await this.client.setActivity(this.zoneId, "sleep", 'forever');
       this.awayService.updateCharacteristic(Characteristic.On, false);
       this.wakeService.updateCharacteristic(Characteristic.On, false);
       this.homeService.updateCharacteristic(Characteristic.On, false);

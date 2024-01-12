@@ -196,8 +196,6 @@ module.exports = class InfinitudeThermostat {
 
     var zoneStatus = system.status['zones'][0]['zone'].find(zone => zone['id'] === this.zoneId);
 
-    this.log.verbose(`GetTemperatures(): Found zone with ID ${this.zoneId}: ${JSON.stringify(zoneStatus)}`);
-
     const htsp = parseFloat(zoneStatus['htsp'][0]);
     const clsp = parseFloat(zoneStatus['clsp'][0]);
 
@@ -207,8 +205,6 @@ module.exports = class InfinitudeThermostat {
       currentTemp: currentTemperature,
       mode: system.config['mode'][0]
     };
-
-    this.log.verbose(`GetTemperatures(): Response to HomeKit ${JSON.stringify(response)}`);
 
     return response;
 
