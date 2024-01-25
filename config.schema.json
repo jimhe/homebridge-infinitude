@@ -75,6 +75,24 @@
             "type": "boolean",
             "default": true
           },
+          "pollOutdoorSensor": {
+            "title": "Poll Outdoor Sensor",
+            "description": "Poll the outdoor sensor periodically (may increase reliability)",
+            "type": "boolean",
+            "default": false,
+            "condition": {
+              "functionBody": "return model.thermostats[arrayIndices].useOutdoorTemperatureSensor === true;"
+            }
+          },
+          "sensorPollTime": {
+            "title": "Outdoor Sensor Update Frequency",
+            "description": "Requests Current Temperature Update on set interval in seconds",
+            "type": "number",
+            "default": 120,
+            "condition": {
+              "functionBody": "return model.thermostats[arrayIndices].useOutdoorTemperatureSensor === true && model.thermostats[arrayIndices].pollOutdoorSensor === true;"
+            }
+          },
           "useModeSwitches": {
             "title": "Configure Mode Switches",
             "description": "Creates switch for changing thermostat modes",

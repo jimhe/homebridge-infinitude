@@ -10,7 +10,7 @@ let AccessoryCategories;
 
 module.exports = class InfinitudePlatform {
   constructor(log, config, api) {
-    log.info('Plugin initializing...');
+
 
     AccessoryCategories = api.hap.Accessory.Categories;
 
@@ -20,6 +20,8 @@ module.exports = class InfinitudePlatform {
     this.pluginPath = `${this.api.user.storagePath()}/${pluginName}.cache`;
     this.mapPath = `${this.pluginPath}/accessoryMap.json`;
     this.accessories = [];
+
+    this.log.verbose('Plugin initializing...');
 
     if (!fs.existsSync(this.pluginPath)) {
       fs.mkdirSync(this.pluginPath);
@@ -86,7 +88,7 @@ module.exports = class InfinitudePlatform {
     if (map != null) {
       var instance = instances.find(x => x.id == map.instanceId);
       if (instance != null) {
-        this.log.info(`loading accessory: ${accessory.name} ${accessory.category}`);
+        this.log.verbose(`loading accessory: ${accessory.name} ${accessory.category}`);
         if (accessory.category == AccessoryCategories.THERMOSTAT) {
           instance.configureZoneThermostat(accessory);
         } else if (accessory.category == AccessoryCategories.SENSOR || accessory.category == AccessoryCategories.OTHER) {
@@ -98,10 +100,10 @@ module.exports = class InfinitudePlatform {
         }
       }
       else {
-        this.log.info(`Unable to find instance with id ${map.instanceId}.`);
+        this.log.error(`Unable to find instance with id ${map.instanceId}.`);
       }
     } else {
-      this.log.info(`Unable to find accessory map with id ${accessory.UUID}.`);
+      this.log.error(`Unable to find accessory map with id ${accessory.UUID}.`);
     }
   }
 };

@@ -1,29 +1,26 @@
 const axios = require('axios');
-const parser = require('fast-xml-parser');
 
 module.exports = class InfinitudeClient {
-  static get REFRESH_MS() {
-    return 10000;
+  static get CACHE_DURATION() {
+    return 15000;
   }
+
+  cache = {};
 
   constructor(url, log) {
     this.url = url;
     this.log = log;
 
-    this.xmlOptions = {
-      ignoreAttributes: false,
-      attributeNamePrefix: ''
-    };
+    this.getSystem();
+    setInterval(this.refreshCache.bind(this), InfinitudeClient.CACHE_DURATION);
   }
 
-  async refresh(path, handler, callback) {
+  async refresh(path) {
+    this.log.verbose(`calling ${this.url}${path}`);
     return axios
       .get(`${this.url}${path}`, { timeout: 5000 })
       .then(
         function (response) {
-          if (callback) {
-            callback(null);
-          }
           return response;
         }.bind(this)
       )
@@ -32,6 +29,28 @@ module.exports = class InfinitudeClient {
           this.log.error(error);
         }.bind(this)
       );
+  }
+
+  refreshCache() {
+    for (const key in this.cache) {
+      if (key.startsWith('/api/status/')) {
+        this.getStatus(key.replace('/api/status/', ''), true);
+      }
+      else if (key.startsWith('/api/config/')) {
+        this.getConfig(key.replace('/api/config/', ''), true);
+      }
+    }
+  }
+
+  getCache(path) {
+    this.log.verbose(`cache ${this.url}${path}`);
+    return this.cache[path];
+  }
+
+  cacheRefreshNeeded(path) {
+    const value = this.cache[path];
+    const currDate = new Date();
+    return value == null || (currDate.getTime() - value.lastUpdate.getTime()) > InfinitudeClient.CACHE_DURATION;
   }
 
   getSystem() {
@@ -79,9 +98,26 @@ module.exports = class InfinitudeClient {
     });
   }
 
-  getStatus(path = '') {
-    return this.refresh(`/api/status/${path}`).then(response => {
-      let value = response.data;
+  getStatus(path = '', refresh = false) {
+    const statusPath = `/api/status/${path}`;
+    if (refresh || this.cacheRefreshNeeded(statusPath)) {
+      return this.refresh(statusPath).then(response => {
+        let value = response.data;
+        this.cache[statusPath] = { value: value, lastUpdate: new Date() };
+
+        if (path != '') {
+          value = this.getValue(value, path);
+        }
+
+        return new Promise(
+          function (resolve) {
+            resolve(value);
+          }.bind(this)
+        );
+      });
+    }
+    else {
+      let value = this.getCache(statusPath).value;
 
       if (path != '') {
         value = this.getValue(value, path);
@@ -92,19 +128,33 @@ module.exports = class InfinitudeClient {
           resolve(value);
         }.bind(this)
       );
-    });
+    }
   }
 
-  getConfig(path = '') {
-    return this.refresh(`/api/config/${path}`).then(response => {
-      let value = response.data['data'];
+  getConfig(path = '', refresh = false) {
+    const configPath = `/api/config/${path}`;
+    if (refresh || this.cacheRefreshNeeded(configPath)) {
+
+      return this.refresh(configPath).then(response => {
+        let value = response.data['data'];
+        this.cache[configPath] = { value: value, lastUpdate: new Date() };
+
+        return new Promise(
+          function (resolve) {
+            resolve(value);
+          }.bind(this)
+        );
+      });
+    }
+    else {
+      let value = this.getCache(configPath).value;
 
       return new Promise(
         function (resolve) {
           resolve(value);
         }.bind(this)
       );
-    });
+    }
   }
 
   getValue(data, path) {
@@ -115,7 +165,7 @@ module.exports = class InfinitudeClient {
     return data;
   }
 
-  setTargetTemperature(zoneId, targetTemperature, setpoint, activity, callback) {
+  setTargetTemperature(zoneId, targetTemperature, setpoint, activity) {
     // zone 1 is at position 0 of the array
     const zoneArrayPosition = zoneId - 1;
     return this.getStatus().then(
@@ -126,41 +176,29 @@ module.exports = class InfinitudeClient {
           activity = zone['currentActivity'][0];
         }
 
-        const uri = `/api/${zoneId}/activity/${activity}?${setpoint}=${targetTemperature}`;
-        return this.refresh(uri, null, callback);
+        const uri = `/api/${zoneId}/activity/${activity}?${setpoint}=${targetTemperature} `;
+        return this.refresh(uri);
       }.bind(this)
     );
   }
 
-  setActivity(zoneId, activity, until, callback) {
+  setActivity(zoneId, activity, until) {
     let uri = `/api/${zoneId}/hold?activity=${activity}&until=${until}`;
 
-    return this.refresh(uri, null, callback);
+    return this.refresh(uri);
   }
 
-  removeHold(zoneId, callback) {
+  removeHold(zoneId) {
     let uri = `/api/${zoneId}/hold?hold=off`;
 
-    return this.refresh(uri, null, callback);
+    return this.refresh(uri);
   }
 
-  async setSystemMode(mode, callback) {
+  async setSystemMode(mode) {
     let uri = `/api/config?mode=${mode}`;
     const systemMode = await this.getConfig('mode');
     if (systemMode !== mode) {
-      return this.refresh(uri, null, callback);
-    } else {
-      return callback(null);
+      return this.refresh(uri);
     }
-  }
-
-
-
-  fahrenheitToCelsius(temperature) {
-    return (temperature - 32) / 1.8;
-  }
-
-  celsiusToFahrenheit(temperature) {
-    return temperature * 1.8 + 32;
   }
 };
