@@ -235,7 +235,7 @@ module.exports = class InfinitudeThermostat {
     if (zone['hold'][0] == 'on' && zone['currentActivity'][0] == 'away') {
       return Characteristic.TargetHeatingCoolingState.OFF;
     } else {
-      const systemMode = system.config['mode'][0];
+      const systemMode = system.status['mode'][0];
 
       switch (systemMode) {
         case 'auto':
